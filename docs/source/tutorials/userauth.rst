@@ -43,3 +43,5 @@ For the rest of these tutorials, the location the user is going to be returning 
 See Also: :ref:`Credential Workflow Tutorial <credential-workflow-tutorial>`
 
 :ref:`Home <home-page>` / :ref:`Tutorials Home <tutorials-index>`
+
+.. include:: footer.rst

@@ -59,4 +59,4 @@ Get the Client ID and Secret
    Remember to return to the portal and add the URL once you have it. Afterward you can click off the check box below
    "Service URL"
 
-
+.. include:: footer.rst

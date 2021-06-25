@@ -32,4 +32,4 @@ See Also: :ref:`User Authorization Workflow Tutorial <authentication-workflow-tu
 
 :ref:`Home <home-page>` / :ref:`Tutorials Home <tutorials-index>`
 
-
+.. include:: footer.rst

@@ -14,3 +14,5 @@ Battle.net Client
    :members:
 
 :ref:`Home <home-page>` / :ref:`Code Home <code-index>`
+
+.. include:: footer.rst
