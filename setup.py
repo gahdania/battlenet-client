@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 # noinspection PyPackageRequirements
 setup(
     name="battlenet_client",
-    version="0.0.3b1",
+    version="1.0.0",
     author="David \"Gahd\" Couples",
     author_email="gahdania@gahd.io",
     description="Battle.net REST API Connections",
