@@ -44,4 +44,4 @@ See Also: :ref:`Credential Workflow Tutorial <credential-workflow-tutorial>`
 
 :ref:`Home <home-page>` / :ref:`Tutorials Home <tutorials-index>`
 
-.. include:: footer.rst
+.. include:: ../footer.rst

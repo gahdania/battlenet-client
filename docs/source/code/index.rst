@@ -13,4 +13,4 @@ Modules
 
 :ref:`Home <home-page>`
 
-.. include:: footer.rst
+.. include:: ../footer.rst

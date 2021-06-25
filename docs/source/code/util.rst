@@ -15,4 +15,4 @@ Utility Functions
 
 :ref:`Home <home-page>` / :ref:`Code Home <code-index>`
 
-.. include:: footer.rst
+.. include:: ../footer.rst
