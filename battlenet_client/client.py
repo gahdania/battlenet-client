@@ -181,7 +181,7 @@ class BattleNetClient(OAuth2Session):
         return self.get(url, locale=locale)
 
     def authorization_url(self, **kwargs):
-        """Prepares and returns the authorization URL to blizzard authorization servers
+        """Prepares and returns the authorization URL to the Battle.net authorization servers
 
         Returns:
             str: the URL to the Battle.net authorization server
