@@ -10,10 +10,17 @@ def currency_convertor(value):
         value (int or str): the value to be converted
 
     Returns:
-        dict: gold, silver and copper values
+        list: gold, silver and copper values
     """
+    if not isinstance(value, (str, int)):
+        raise TypeError("Value needs to be a string or integer")
+
     value = int(value)
-    return {'gold': value // 10000, 'silver': (value % 10000) // 100, 'copper': value % 100}
+
+    if value < 0:
+        raise ValueError("Value must be zero or a positive value")
+
+    return value // 10000, (value % 10000) // 100, value % 100
 
 
 def slugify(value):
@@ -25,6 +32,10 @@ def slugify(value):
     Returns:
         (str): the slug of :value:
     """
+
+    if not isinstance(value, str):
+        raise TypeError("Value must be a string")
+
     return value.lower().replace("\'", "").replace(' ', '-')
 
 

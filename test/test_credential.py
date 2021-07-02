@@ -1,20 +1,20 @@
-import battlenet_client
-from requests.exceptions import HTTPError
 from decouple import config
+from requests.exceptions import HTTPError
 
 try:
     import unittest2 as unittest
 except ImportError:
     import unittest as unittest
 
+from battlenet_client.client import BattleNetClient
+from battlenet_client.util import localize
+
 
 class CredentialClientTests(unittest.TestCase):
 
     def setUp(self):
-        _client_id = config('CLIENT_ID')
-        _client_secret = config('CLIENT_SECRET')
-        self.connection = battlenet_client.BattleNetClient('us', locale='en_US', client_id=_client_id,
-                                                           client_secret=_client_secret)
+        self.connection = battlenet_client.BattleNetClient('us', "wow", config('CLIENT_ID'), config('CLIENT_SECRET'),
+                                                           )
 
     def test_not_found(self):
         self.assertRaises(HTTPError,
@@ -26,4 +26,4 @@ class CredentialClientTests(unittest.TestCase):
                                                   namespace='static-us'), dict)
 
     def tearDown(self):
-        pass
+        super().tearDown()

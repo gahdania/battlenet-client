@@ -3,12 +3,14 @@
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
 
-import requests
-from requests_oauthlib import OAuth2Session
-from oauthlib.oauth2 import BackendApplicationClient
-from urllib.parse import unquote
 from io import BytesIO
 from time import sleep
+from urllib.parse import unquote
+
+import requests
+from oauthlib.oauth2 import BackendApplicationClient
+from requests_oauthlib import OAuth2Session
+
 from .util import localize
 
 
@@ -72,17 +74,56 @@ class BattleNetClient(OAuth2Session):
             self.auth_host = f'https://{self.tag}.battle.net'
             self.render_host = f'https://render-{self.tag}.worldofwarcraft.com'
 
-        if redirect_uri and scope:
+        if redirect_uri and scope and 'openid' not in scope:
+            self.__auth_flow = 'oauth'
             super().__init__(client_id=client_id, scope=scope, redirect_uri=redirect_uri)
             # set the mode indicator of the client to "Web Application Flow"
-            self.auth_flow = True
+
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
             self.fetch_token()
-            self.auth_flow = False
+            self.__auth_flow = None
 
-    def request(self, method, uri, *, namespace=None, locale=None, retries=5, fields=None, headers=None, stream=False):
+    @property
+    def auth_flow(self):
+        return self.__auth_flow
+
+    @auth_flow.setter
+    def auth_flow(self, value=None):
+        self.__auth_flow = value
+
+    def validate_token(self, locale=None):
+        """Checks with the API if the token is good or not.
+
+        Args:
+            locale (str): localization desired.
+
+        Returns:
+            bool: True of the token is valid, false otherwise.
+        """
+        url = f"{self.auth_host}/oauth/check_token"
+        return self.get(url, locale=locale)
+
+    def authorization_url(self, **kwargs):
+        """Prepares and returns the authorization URL to the Battle.net authorization servers
+
+        Returns:
+            str: the URL to the Battle.net authorization server
+        """
+        if not self.auth_flow:
+            raise ValueError("Requires Authorization Workflow")
+
+        auth_url = f"{self.auth_host}/oauth/authorize"
+        authorization_url, self._state = super().authorization_url(url=auth_url, **kwargs)
+        return unquote(authorization_url)
+
+    def fetch_token(self, **kwargs):
+        token_url = f"{self.auth_host}/oauth/token"
+        super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
+                            **kwargs)
+
+    def __request(self, method, uri, *, namespace=None, locale=None, retries=5, fields=None, headers=None, stream=False):
         """Sends the request to given `uri`
 
         Args:
@@ -147,11 +188,11 @@ class BattleNetClient(OAuth2Session):
                 else:
                     return BytesIO(raw_data.content)
 
-    def get(self, *args, **kwargs):
-        return self.request('get', *args, **kwargs)
+    def get(self, uri, **kwargs):
+        return self.__request("GET", uri, **kwargs)
 
-    def post(self, *args, **kwargs):
-        return self.request('post', *args, **kwargs)
+    def post(self, uri, **kwargs):
+        return self.__request("POST", uri, **kwargs)
 
     def get_user_info(self, locale=None):
         """Returns the user info
@@ -166,34 +207,4 @@ class BattleNetClient(OAuth2Session):
             raise ValueError("Requires Authorization Workflow")
 
         url = f"{self.auth_host}/oauth/userinfo"
-        return self.get(url, locale=locale)
-
-    def validate_token(self, locale=None):
-        """Checks with the API if the token is good or not.
-
-        Args:
-            locale (str): localization desired.
-
-        Returns:
-            bool: True of the token is valid, false otherwise.
-        """
-        url = f"{self.auth_host}/oauth/check_token"
-        return self.get(url, locale=locale)
-
-    def authorization_url(self, **kwargs):
-        """Prepares and returns the authorization URL to the Battle.net authorization servers
-
-        Returns:
-            str: the URL to the Battle.net authorization server
-        """
-        if not self.auth_flow:
-            raise ValueError("Requires Authorization Workflow")
-
-        auth_url = f"{self.auth_host}/oauth/authorize"
-        authorization_url, self._state = super().authorization_url(url=auth_url, **kwargs)
-        return unquote(authorization_url)
-
-    def fetch_token(self, **kwargs):
-        token_url = f"{self.auth_host}/oauth/token"
-        super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
-                            **kwargs)
+        return self.post(url, locale=locale)
