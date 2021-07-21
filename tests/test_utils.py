@@ -8,15 +8,11 @@ from battlenet_client.util import *
 
 class UtilityTests(unittest.TestCase):
 
-    def setUp(self):
-        super().setUp()
-
     def test_localize(self):
-        lang, country = localize('EnuS')
-        self.assertIsInstance(lang, str)
-        self.assertIsInstance(country, str)
-        self.assertEqual(lang, 'en')
-        self.assertEqual(country, 'US')
+        locale = localize('EnuS')
+        self.assertIsInstance(locale, str)
+        self.assertEqual(locale[:2], 'en')
+        self.assertEqual(locale[-2:], 'US')
 
     def test_localize_wrong_type(self):
         self.assertRaises(TypeError, lambda: localize(1))
@@ -29,11 +25,11 @@ class UtilityTests(unittest.TestCase):
         self.assertRaises(ValueError, lambda: localize('enZZ'))
 
     def test_slugify(self):
-        name = slugify('Zul\'jin')
+        name = slugify("Zul'jin")
         self.assertEqual(name, 'zuljin')
 
     def test_slugify_case(self):
-        name = slugify('Zul\'jin')
+        name = slugify("Zul'jin")
         self.assertTrue(name.islower())
 
     def test_slugify_type_error(self):
@@ -43,7 +39,7 @@ class UtilityTests(unittest.TestCase):
         self.assertRaises(TypeError, lambda: slugify({'lang': 'en', 'country': 'US'}))
 
     def test_slugify_no_apostrophe(self):
-        name = slugify('Zul\'jin')
+        name = slugify("Zul'jin")
         self.assertEqual(name.find('\''), -1)
 
     def test_slugify_no_space(self):

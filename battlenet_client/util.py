@@ -46,7 +46,7 @@ def localize(locale):
         locale (str): the locality to be standardized
 
     Returns:
-        (tuple of str): the locale <lang> and <COUNTRY>
+        (str): the locale in the format of "<lang>_<COUNTRY>"
 
     Raise:
         TypeError: when locale is not a string
@@ -61,4 +61,4 @@ def localize(locale):
     if locale[-2:].lower() not in ('us', 'mx', 'br', 'gb', 'es', 'fr', 'ru', 'de', 'pt', 'it', 'kr', 'tw', 'cn'):
         raise ValueError('Invalid country code')
 
-    return locale[:2].lower(), locale[-2:].upper()
+    return f"{locale[:2].lower()}_{locale[-2:].upper()}"
