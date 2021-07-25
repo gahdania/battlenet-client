@@ -11,7 +11,7 @@ import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from .util import localize
+from battlenet_client.decorators import params_headers
 
 
 class BattleNetClient(OAuth2Session):
@@ -68,47 +68,8 @@ class BattleNetClient(OAuth2Session):
             self.fetch_token()
             self.auth_flow = None
 
-    def validate_token(self):
-        """Checks with the API if the token is good or not.
-
-        Returns:
-            bool: True of the token is valid, false otherwise.
-        """
-        url = f"{self.auth_host}/oauth/check_token"
-        data = super().post(url, params={'token': self.access_token})
-        return data.status_code == 200 and data.json()['client_id'] == self.client_id
-
-    def authorization_url(self, **kwargs):
-        """Prepares and returns the authorization URL to the Battle.net authorization servers
-
-        Returns:
-            str: the URL to the Battle.net authorization server
-        """
-        if not self.auth_flow:
-            raise ValueError("Requires Authorization Workflow")
-
-        auth_url = f"{self.auth_host}/oauth/authorize"
-        authorization_url, self._state = super().authorization_url(url=auth_url, **kwargs)
-        return unquote(authorization_url)
-
-    def fetch_token(self, **kwargs):
-        token_url = f"{self.auth_host}/oauth/token"
-        super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
-                            **kwargs)
-
+    @params_headers
     def get(self, uri, locale, namespace, **kwargs):
-
-        kwargs['params'] = {'locale': localize(locale)}
-
-        if 'headers' not in kwargs.keys():
-            kwargs['headers'] = {'Battlenet-Namespace': getattr(self, f"{namespace}")}
-        else:
-            kwargs['headers']['Battlenet-Namespace'] = getattr(self, f"{namespace}")
-
-        if 'fields' in kwargs.keys():
-            fields = ','.join([f"{key}={value}" for key, value in kwargs['fields'].items()])
-            kwargs['params'].update({'fields': fields})
-            kwargs.pop('fields', None)
 
         for _ in range(5):
             try:
@@ -127,20 +88,8 @@ class BattleNetClient(OAuth2Session):
                 else:
                     return BytesIO(raw_data.content)
 
+    @params_headers
     def post(self, uri, locale, namespace, **kwargs):
-
-        kwargs['params'] = {'locale': localize(locale)}
-
-        if 'headers' not in kwargs.keys():
-            kwargs['headers'] = {'Battlenet-Namespace': getattr(self, f"{namespace}")}
-        else:
-            kwargs['headers']['Battlenet-Namespace'] = getattr(self, f"{namespace}")
-
-        if 'fields' in kwargs.keys():
-            fields = ','.join([f"{key}={value}" for key, value in kwargs['fields'].items()])
-            kwargs['params'].update({'fields': fields})
-            kwargs.pop('fields', None)
-
         for _ in range(5):
             try:
                 raw_data = super().post(uri, **kwargs)
@@ -172,3 +121,31 @@ class BattleNetClient(OAuth2Session):
 
         url = f"{self.auth_host}/oauth/userinfo"
         return self.post(url, locale, None)
+
+    def validate_token(self):
+        """Checks with the API if the token is good or not.
+
+        Returns:
+            bool: True of the token is valid, false otherwise.
+        """
+        url = f"{self.auth_host}/oauth/check_token"
+        data = super().post(url, params={'token': self.access_token})
+        return data.status_code == 200 and data.json()['client_id'] == self.client_id
+
+    def authorization_url(self, **kwargs):
+        """Prepares and returns the authorization URL to the Battle.net authorization servers
+
+        Returns:
+            str: the URL to the Battle.net authorization server
+        """
+        if not self.auth_flow:
+            raise ValueError("Requires Authorization Workflow")
+
+        auth_url = f"{self.auth_host}/oauth/authorize"
+        authorization_url, self._state = super().authorization_url(url=auth_url, **kwargs)
+        return unquote(authorization_url)
+
+    def fetch_token(self, **kwargs):
+        token_url = f"{self.auth_host}/oauth/token"
+        super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
+                            **kwargs)
