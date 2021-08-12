@@ -11,7 +11,8 @@ import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from battlenet_client.decorators import params_headers
+from battlenet_client.util import localize
+from battlenet_client.exceptions import BNetDataNotFoundError, BNetRegionNotFoundError
 
 
 class BattleNetClient(OAuth2Session):
@@ -36,8 +37,13 @@ class BattleNetClient(OAuth2Session):
     def __init__(self, region, game, client_id, client_secret, *, scope=None, redirect_uri=None):
 
         self._state = None
-        self.tag = region.strip().lower()
-        self.game = game
+
+        if region.strip().lower() in ('us', 'eu', 'kr', 'tw', 'cn'):
+            self.tag = region.strip().lower()
+        else:
+            raise BNetRegionNotFoundError("Region not available")
+
+        self.game = game.lower()
 
         self._client_secret = client_secret
 
@@ -68,10 +74,26 @@ class BattleNetClient(OAuth2Session):
             self.fetch_token()
             self.auth_flow = None
 
-    @params_headers
-    def get(self, uri, locale, namespace, **kwargs):
+    def __str__(self):
+        return f"{self.game.upper()} API Client"
 
-        for _ in range(5):
+    def __repr__(self):
+        return f"{self.__class__.__name__} Instance: {self.game.lower()}"
+
+    def endpoint(self, uri, locale, namespace, retries=5, **kwargs):
+
+        kwargs['params'] = {'locale': localize(locale)}
+
+        if 'headers' not in kwargs.keys():
+            kwargs['headers'] = {'Battlenet-Namespace': getattr(self, namespace)}
+        else:
+            kwargs['headers']['Battlenet-Namespace'] = getattr(self, namespace)
+
+        if 'fields' in kwargs.keys():
+            kwargs['params'].update({key: value for key, value in kwargs['fields'].items()})
+            kwargs.pop('fields', None)
+
+        for _ in range(retries):
             try:
                 raw_data = super().get(uri, **kwargs)
                 raw_data.raise_for_status()
@@ -80,25 +102,8 @@ class BattleNetClient(OAuth2Session):
             except requests.exceptions.HTTPError as error:
                 if error.response.status_code == 429:
                     sleep(1.0)
-                else:
-                    raise error
-            else:
-                if raw_data.headers['content-type'].startswith('application/json'):
-                    return raw_data.json()
-                else:
-                    return BytesIO(raw_data.content)
-
-    @params_headers
-    def post(self, uri, locale, namespace, **kwargs):
-        for _ in range(5):
-            try:
-                raw_data = super().post(uri, **kwargs)
-                raw_data.raise_for_status()
-            except requests.Timeout:
-                sleep(2.5)
-            except requests.exceptions.HTTPError as error:
-                if error.response.status_code == 429:
-                    sleep(1.0)
+                elif error.response.status_code == 404:
+                    raise BNetDataNotFoundError
                 else:
                     raise error
             else:
@@ -117,10 +122,10 @@ class BattleNetClient(OAuth2Session):
             dict: the json decoded information for the user (user # and battle tag ID)
         """
         if not self.auth_flow:
-            raise ValueError("Requires Authorization Workflow")
+            raise TypeError("Requires Authorization Workflow")
 
         url = f"{self.auth_host}/oauth/userinfo"
-        return self.post(url, locale, None)
+        return self.post(url, params={'locale': locale}, headers={'Battlenet-Namespace': None})
 
     def validate_token(self):
         """Checks with the API if the token is good or not.
@@ -129,7 +134,7 @@ class BattleNetClient(OAuth2Session):
             bool: True of the token is valid, false otherwise.
         """
         url = f"{self.auth_host}/oauth/check_token"
-        data = super().post(url, params={'token': self.access_token})
+        data = super().post(url, params={'token': self.access_token}, headers={'Battlenet-Namespace': None})
         return data.status_code == 200 and data.json()['client_id'] == self.client_id
 
     def authorization_url(self, **kwargs):

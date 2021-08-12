@@ -1,9 +1,14 @@
-from requests.exceptions import HTTPError
-
-
-class BattleNetError(Exception):
+class BNetError(Exception):
     pass
 
 
-class BattleNetDataNotFoundError(HTTPError):
+class BNetDataNotFoundError(BNetError):
+    pass
+
+
+class BNetRegionNotFoundError(BNetError):
+    pass
+
+
+class BNetNegativeIndexError(BNetError):
     pass
