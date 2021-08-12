@@ -1,0 +1,5 @@
+UNITED_STATES = 'us'
+EUROPE = 'eu'
+TAIWAN = 'tw'
+KOREA = 'kr'
+CHINA = 'cn'
