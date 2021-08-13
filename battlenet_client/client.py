@@ -20,6 +20,7 @@ class BattleNetClient(OAuth2Session):
 
     Args:
         region (str): region abbreviation for use with the APIs
+        game (dict): the game for the request
         client_id (str): the client ID from the developer portal
         client_secret (str): the client secret from the developer portal
 
@@ -43,7 +44,7 @@ class BattleNetClient(OAuth2Session):
         else:
             raise BNetRegionNotFoundError("Region not available")
 
-        self.game = game.lower()
+        self.game = game
 
         self._client_secret = client_secret
 
@@ -75,10 +76,10 @@ class BattleNetClient(OAuth2Session):
             self.auth_flow = None
 
     def __str__(self):
-        return f"{self.game.upper()} API Client"
+        return f"{self.game['name']} API Client"
 
     def __repr__(self):
-        return f"{self.__class__.__name__} Instance: {self.game.lower()}"
+        return f"{self.__class__.__name__} Instance: {self.game['name']}"
 
     def endpoint(self, uri, locale, namespace, retries=5, **kwargs):
 
