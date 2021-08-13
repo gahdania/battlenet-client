@@ -1,6 +1,6 @@
 .. _credential-workflow-tutorial:
 
-:ref:`Home <home-page>` / :ref:`Tutorials Home <tutorials-index>`
+:ref:`Home <root>` / :ref:`Tutorials Home <tutorials-index>`
 
 Credential Authorization Workflow
 =================================
@@ -30,6 +30,6 @@ That is it. Again, there are other packages that work with this class, allowing 
 
 See Also: :ref:`User Authorization Workflow Tutorial <authentication-workflow-tutorial>`
 
-:ref:`Home <home-page>` / :ref:`Tutorials Home <tutorials-index>`
+:ref:`Home <root>` / :ref:`Tutorials Home <tutorials-index>`
 
 .. include:: ../footer.rst

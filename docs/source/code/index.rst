@@ -1,4 +1,4 @@
-:ref:`Home <home-page>`
+:ref:`Home <root>`
 
 Modules
 =======
@@ -10,7 +10,8 @@ Modules
 
    client
    util
+   exceptions
 
-:ref:`Home <home-page>`
+:ref:`Home <root>`
 
 .. include:: ../footer.rst

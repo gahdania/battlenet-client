@@ -1,4 +1,4 @@
-.. _home-page:
+.. _root:
 
 .. include:: header.rst
 

@@ -1,4 +1,4 @@
-:ref:`Home <home-page>`
+:ref:`Home <root>`
 
 Tutorials
 =========
@@ -12,6 +12,6 @@ Tutorials
    userauth
    devportal
 
-:ref:`Home <home-page>`
+:ref:`Home <root>`
 
 .. include:: ../footer.rst

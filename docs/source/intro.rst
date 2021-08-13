@@ -4,7 +4,7 @@ Introduction
 BattleNet Client was developed to provide a uniform access point for the other Battle.net projects that connect to
 Blizzard's `Battle.net Developer Portal <https://develop.battle.net>`_. The other packages,
 `WoW API <https://gitlab.com/battlenet1/wow-api>`_, `Hearthstone API <https://gitlab.com/battlenet1/heartstone-api>`_,
-`Starcraft2 API <https://gitlab.com/battlenet1/starcraft2-api>`_ extends the Battle.Net Client
+`Starcraft2 API <https://gitlab.com/battlenet1/starcraft2-api>`_ extends the Battle.Net Client for the respective game
 
 Installation
 ============
@@ -16,7 +16,7 @@ For Windows, OS X and Linux
 
 .. code-block:: bash
 
-   pip install battlenet-clients
+   pip install battlenet-client
 
 Using GIT
 ---------
@@ -68,7 +68,8 @@ Below is a typical example of using the authorization code flow.
    # <redirect>: the URI where you want users to return after successfully authenticating with Battle.net
    # <client ID>: the client ID from the Developer Portal
    # <client secret>: the client secret from the Developer Portal
-   client = BattleNetClient(<region_tag>, <scope>, <redirect>, client_id='<client id>', client_secret='<client secret>')
+   client = BattleNetClient(battlenet_client.UNITED_STATES, battlenet_client.WOW, scope='[wow.profile]',
+        redirect='<REDIRECT URL>', <CLIENT ID>', '<CLIENT SECRET'>)
    redirect(client.authorization_url)
 
    # user goes to Blizzard's authentication site on battle.net and successfully logs in
@@ -77,15 +78,15 @@ Below is a typical example of using the authorization code flow.
    # <api_uri>: The API endpoint URL w/o the scheme, or host
    # <locale>: the desired localization to use
    # <namespace>: the namespace expected by the :api_uri:
-   # for the endpoints that do not require a post
-   client.get(<api_uri>, locale=localize(<locale>), namespace=client.<namespace>)
-   # for the ones that do
-   client.post(<api_uri>, locale=localize(<locale>), namespace=client.<namespace>)
+   # for the endpoints that use the GET method
+   client.endpoint(<api_uri>, <locale>, <namespace>)
+   # for the endpoints that use the POST method
+   client.token_validation()
 
 
 For more detailed instructions please see the :ref:`tutorials index <tutorials-index>`
 
-For a complete list of the classes, functions, and parameters go to :ref:`BattleNet Class Index <clients-code-target>`
+For a complete list of the classes, functions, and parameters go to :ref:`BattleNet Class Index <clients-code>`
 
 To use the utility functions, simply import the required ones and pass then call them as any normal function
 

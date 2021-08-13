@@ -55,7 +55,7 @@ class BattleNetClient(OAuth2Session):
         if self.tag == 'cn':
             self.api_host = 'https://gateway.battlenet.com.cn'
             self.auth_host = 'https://www.battlenet.com.cn'
-            self.render_host = None  # may need someone playing on the chinese client to help me
+            self.render_host = f'https://render.worldofwarcraft.com.cn'
         elif self.tag == 'kr' or self.tag == 'tw':
             self.api_host = f'https://{self.tag}.api.blizzard.com'
             self.auth_host = f'https://apac.battle.net'
@@ -65,7 +65,7 @@ class BattleNetClient(OAuth2Session):
             self.auth_host = f'https://{self.tag}.battle.net'
             self.render_host = f'https://render-{self.tag}.worldofwarcraft.com'
 
-        if redirect_uri and scope and 'openid' not in scope:
+        if redirect_uri and scope:
             self.auth_flow = 'oauth'
             super().__init__(client_id=client_id, scope=scope, redirect_uri=redirect_uri)
             # set the mode indicator of the client to "Web Application Flow"

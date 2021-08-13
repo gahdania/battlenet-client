@@ -1,18 +1,16 @@
-:ref:`Home <home-page>` / :ref:`Code Home <code-index>`
+:ref:`Home <root>` / :ref:`Code Home <code-index>`
 
 Utility Functions
 =================
 
-.. _util-code-target:
+.. _util-code:
 
 .. py:currentmodule:: battlenet_client.util
-
-.. _utils-definition:
 
 .. automodule:: battlenet_client.util
   :members:
 
 
-:ref:`Home <home-page>` / :ref:`Code Home <code-index>`
+:ref:`Home <root>` / :ref:`Code Home <code-index>`
 
 .. include:: ../footer.rst

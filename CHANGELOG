@@ -11,7 +11,7 @@ client.py - added str and repr methods
 
 ### Changed
 util.py - allow localize to except a None type to retrieve all of the locales for an API endpoint
-client.py - rewrite of endpoint, and renaming to game_data
+client.py - rewrite of endpoint
           - updated changes for constants
 exceptions.py - added BNetNegativeIndexError, and BNetNoDataFoundError
 

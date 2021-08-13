@@ -1,4 +1,4 @@
-:ref:`Home <home-page>` / :ref:`Tutorials Index <tutorials-index>`
+:ref:`Home <root>` / :ref:`Tutorials Index <tutorials-index>`
 
 Developer Portal Instructions
 =============================
@@ -52,7 +52,7 @@ Get the Client ID and Secret
 
 .. warning:: All data retrieved, and entered in/on the site is the intellectual property of Activision/Blizzard
 
-:ref:`Home <home-page>` / :ref:`Tutorials Index <tutorials-index>`
+:ref:`Home <root>` / :ref:`Tutorials Index <tutorials-index>`
 
 .. [#] The process is current as of 2020-May-03.  The form may change without notice.  
 .. [#] If you do not have a service URL yet, then click the check box under "Service URL".
