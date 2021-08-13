@@ -13,8 +13,9 @@ Clone the latest version: https://gitlab.com/battlenet1/battlenet-client.git
 
 ## Usage Example
     # client_id and client_secret found in your battle.net developer account 
-    from battlenet_client import BattlenetClient
-    client = BattleNetClient('us', 'enus', client_id='<client_id>', client_secret='<client_secret>')
+    import battlenet_client
+    client = battlenet_client.BattleNetClient(battlenet_client.UNITED_STATES, battlenet_client.WOW,
+                 client_id='<client_id>', client_secret='<client_secret>')
     client.get('data/wow/playable-class/1', locale='en_US', namespace='static-us')
 
 For more information, please the [wiki][wiki]
@@ -22,16 +23,7 @@ For more information, please the [wiki][wiki]
 Note: This package is a dependency of my other [Battle.net REST API packages](https://gitlab.com/battlenet1)
 
 ## Release History
-0.0.3
-  * Further reorganization
-  * Cleaned up handling of the locality string
-  * Added capability for handling of re-releases (Example: WoW Classic)
-
-0.0.2
-  * Reorganization of code
-
-0.0.1
-  * Initial release
+Please change log for complete history
 
 ## Meta
 
