@@ -2,13 +2,17 @@ class BNetError(Exception):
     pass
 
 
-class BNetDataNotFoundError(BNetError):
-    pass
-
-
 class BNetRegionNotFoundError(BNetError):
     pass
 
 
-class BNetNegativeIndexError(BNetError):
+class BNetDataNotFoundError(BNetError):
+    pass
+
+
+class BNetAccessForbiddenError(BNetError):
+    pass
+
+
+class BNetClientError(BNetError):
     pass

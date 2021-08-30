@@ -7,31 +7,33 @@ except ImportError:
     import unittest
 
 from battlenet_client.client import BattleNetClient
+from battlenet_client.constants import UNITED_STATES, WOW
+from battlenet_client.exceptions import *
 
 
 class CredentialClientTests(unittest.TestCase):
 
     def setUp(self):
-        self.connection = BattleNetClient('us', "wow", config('CLIENT_ID'), config('CLIENT_SECRET'))
+        self.connection = BattleNetClient(UNITED_STATES, WOW, config('CLIENT_ID'), config('CLIENT_SECRET'))
 
     def test_get_not_found(self):
-        self.assertRaises(HTTPError,
-                          lambda: self.connection.get(
+        self.assertRaises(BNetDataNotFoundError,
+                          lambda: self.connection.api_get(
                               f'{self.connection.api_host}/data/wow/playable-class/-1', 'en_US', 'static'))
 
     def test_get_found(self):
-        self.assertIsInstance(self.connection.get(
+        self.assertIsInstance(self.connection.api_get(
                               f'{self.connection.api_host}/data/wow/playable-class/1', 'enus', 'static'), dict)
 
     def test_post_not_found(self):
-        self.assertRaises(HTTPError,
-                          lambda: self.connection.post(f'{self.connection.api_host}/data/wow/playable-class/-1',
-                                                       'en_US', 'static'))
+        self.assertRaises(BNetDataNotFoundError,
+                          lambda: self.connection.api_post(f'{self.connection.api_host}/data/wow/playable-class/-1',
+                                                           'en_US', 'static'))
 
     def test_post_invalid(self):
-        self.assertRaises(HTTPError,
-                          lambda: self.connection.post(f'{self.connection.api_host}/data/wow/playable-class/1',
-                                                       'enus', 'static'))
+        self.assertRaises(BNetDataNotFoundError,
+                          lambda: self.connection.api_post(f'{self.connection.api_host}/data/wow/playable-class/1',
+                                                           'enus', 'static'))
 
     def tearDown(self):
         self.connection.close()

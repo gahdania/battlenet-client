@@ -12,7 +12,8 @@ from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
 from battlenet_client.util import localize
-from battlenet_client.exceptions import BNetDataNotFoundError, BNetRegionNotFoundError
+from battlenet_client.exceptions import *
+import battlenet_client.constants
 
 
 class BattleNetClient(OAuth2Session):
@@ -39,10 +40,13 @@ class BattleNetClient(OAuth2Session):
 
         self._state = None
 
-        if region.strip().lower() in ('us', 'eu', 'kr', 'tw', 'cn'):
-            self.tag = region.strip().lower()
-        else:
-            raise BNetRegionNotFoundError("Region not available")
+        try:
+            self.tag = getattr(battlenet_client.constants, region)
+        except AttributeError:
+            if region.strip().lower() in ('us', 'eu', 'kr', 'tw', 'cn'):
+                self.tag = region.strip().lower()
+            else:
+                raise BNetRegionNotFoundError("Region not available")
 
         self.game = game
 
@@ -55,10 +59,10 @@ class BattleNetClient(OAuth2Session):
         if self.tag == 'cn':
             self.api_host = 'https://gateway.battlenet.com.cn'
             self.auth_host = 'https://www.battlenet.com.cn'
-            self.render_host = f'https://render.worldofwarcraft.com.cn'
+            self.render_host = 'https://render.worldofwarcraft.com.cn'
         elif self.tag == 'kr' or self.tag == 'tw':
             self.api_host = f'https://{self.tag}.api.blizzard.com'
-            self.auth_host = f'https://apac.battle.net'
+            self.auth_host = 'https://apac.battle.net'
             self.render_host = f'https://render-{self.tag}.worldofwarcraft.com'
         else:
             self.api_host = f'https://{self.tag}.api.blizzard.com'
@@ -81,52 +85,65 @@ class BattleNetClient(OAuth2Session):
     def __repr__(self):
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
-    def endpoint(self, uri, locale, namespace, retries=5, **kwargs):
+    def api_get(self, *args, **kwargs):
+        """Convenience function for the GET method"""
+        return self.__endpoint('get', *args, **kwargs)
 
-        kwargs['params'] = {'locale': localize(locale)}
+    def api_post(self, *args, **kwargs):
+        """Convenience function for the POST method"""
+        return self.__endpoint('post', *args, **kwargs)
 
-        if 'headers' not in kwargs.keys():
-            kwargs['headers'] = {'Battlenet-Namespace': getattr(self, namespace)}
+    def __endpoint(self, method, uri, locale, namespace, *, retries=5, params=None, headers=None, fields=None):
+        """Processes the API request into the appropriate headers for the Requests.request() method
+
+        Args:
+            method (str): the HTTP method to use
+            uri (str): the URI for the API endpoint
+            locale (str): the locale identifier to use with the API
+            namespace (str or None): the namespace that is needed for API
+
+        Keyword Args:
+            retries (int, optional): the number of retries at getting to the API endpoint (default is 5)
+            params (dict, optional): dict of the parameters to be passed via query string to the endpoint
+            headers (dict, optional):  Additional headers to sent with the request
+            fields (dict, optional): search parameters and values to send
+        """
+
+        if params:
+            params['locale'] = localize(locale)
         else:
-            kwargs['headers']['Battlenet-Namespace'] = getattr(self, namespace)
+            params = {'locale': localize(locale)}
+        
+        if fields:
+            params.update({key: value for key, value in fields.items()})
 
-        if 'fields' in kwargs.keys():
-            kwargs['params'].update({key: value for key, value in kwargs['fields'].items()})
-            kwargs.pop('fields', None)
+        if headers:
+            headers['Battlenet-Namespace'] = getattr(self, namespace)
+        else:
+            headers = {'Battlenet-Namespace': getattr(self, namespace)}
 
         for _ in range(retries):
             try:
-                raw_data = super().get(uri, **kwargs)
+                raw_data = super().request(method, uri, params=params, headers=headers)
                 raw_data.raise_for_status()
             except requests.Timeout:
                 sleep(2.5)
             except requests.exceptions.HTTPError as error:
                 if error.response.status_code == 429:
                     sleep(1.0)
-                elif error.response.status_code == 404:
-                    raise BNetDataNotFoundError
-                else:
-                    raise error
+
+                if error.response.status_code == 404:
+                    raise BNetDataNotFoundError(error)
+
+                if error.response.status_code == 403:
+                    raise BNetAccessForbiddenError(error)
+
+                raise error
             else:
                 if raw_data.headers['content-type'].startswith('application/json'):
                     return raw_data.json()
                 else:
                     return BytesIO(raw_data.content)
-
-    def get_user_info(self, locale=None):
-        """Returns the user info
-
-        Args:
-            locale (str): localization to use
-
-        Returns:
-            dict: the json decoded information for the user (user # and battle tag ID)
-        """
-        if not self.auth_flow:
-            raise TypeError("Requires Authorization Workflow")
-
-        url = f"{self.auth_host}/oauth/userinfo"
-        return self.post(url, params={'locale': locale}, headers={'Battlenet-Namespace': None})
 
     def validate_token(self):
         """Checks with the API if the token is good or not.
