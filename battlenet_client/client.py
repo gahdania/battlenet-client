@@ -117,11 +117,6 @@ class BattleNetClient(OAuth2Session):
         if fields:
             params.update({key: value for key, value in fields.items()})
 
-        if headers:
-            headers['Battlenet-Namespace'] = getattr(self, namespace)
-        else:
-            headers = {'Battlenet-Namespace': getattr(self, namespace)}
-
         for _ in range(retries):
             try:
                 raw_data = super().request(method, uri, params=params, headers=headers)
