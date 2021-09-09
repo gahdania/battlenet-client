@@ -93,14 +93,13 @@ class BattleNetClient(OAuth2Session):
         """Convenience function for the POST method"""
         return self.__endpoint('post', *args, **kwargs)
 
-    def __endpoint(self, method, uri, locale, namespace, *, retries=5, params=None, headers=None, fields=None):
+    def __endpoint(self, method, uri, locale, *, retries=5, params=None, headers=None, fields=None):
         """Processes the API request into the appropriate headers for the Requests.request() method
 
         Args:
             method (str): the HTTP method to use
             uri (str): the URI for the API endpoint
             locale (str): the locale identifier to use with the API
-            namespace (str or None): the namespace that is needed for API
 
         Keyword Args:
             retries (int, optional): the number of retries at getting to the API endpoint (default is 5)
