@@ -15,10 +15,9 @@ Clone the latest version: https://gitlab.com/battlenet1/battlenet-client.git
     # client_id and client_secret found in your battle.net developer account 
     from battlenet_client.client import BattleNetClient
     from battlenet_client.constants import UNITED_STATES, WOW
-    client = battlenet_client.BattleNetClient(UNITED_STATES, WOW, client_id='<client_id>',
-        client_secret='<client_secret>')
+    client = BattleNetClient(UNITED_STATES, WOW, <client_id>, <client_secret>)
     client.api_get(f'{client.api_host}/data/wow/playable-class/1', 'en_US',
-        headers={'Battlenet-Namespace': 'static-us')
+        headers={'Battlenet-Namespace': 'static-us'})
 
 For more information, please the [wiki][wiki]
 
