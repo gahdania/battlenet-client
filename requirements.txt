@@ -1,5 +1,2 @@
-requests
-oauthlib
 requests-oauthlib
 python-decouple
-unittest2

@@ -12,12 +12,12 @@ from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
 from battlenet_client.util import localize
-from battlenet_client.exceptions import *
-import battlenet_client.constants
+from battlenet_client import exceptions
+from battlenet_client import constants
 
 
 class BattleNetClient(OAuth2Session):
-    """Handles the communication using OAuth v2 client to Battle.net REST API
+    """Handles the communication using OAuth v2 client to the Battle.net REST API
 
     Args:
         region (str): region abbreviation for use with the APIs
@@ -34,27 +34,25 @@ class BattleNetClient(OAuth2Session):
         api_host (str): the host to use for accessing the API endpoints
         auth_host (str): the host to use for authentication
         render_host (str): the hose to use for images
+        game (dict): holds basic info about the game
     """
 
     def __init__(self, region, game, client_id, client_secret, *, scope=None, redirect_uri=None):
 
         self._state = None
+        self.tag: str = ""
 
         try:
-            self.tag = getattr(battlenet_client.constants, region)
+            self.tag = getattr(constants, region)
         except AttributeError:
             if region.strip().lower() in ('us', 'eu', 'kr', 'tw', 'cn'):
                 self.tag = region.strip().lower()
             else:
-                raise BNetRegionNotFoundError("Region not available")
+                raise exceptions.BNetRegionNotFoundError("Region not available")
 
         self.game = game
 
         self._client_secret = client_secret
-
-        self.dynamic = f"dynamic-{self.tag}"
-        self.static = f"static-{self.tag}"
-        self.profile = f"profile-{self.tag}"
 
         if self.tag == 'cn':
             self.api_host = 'https://gateway.battlenet.com.cn'
@@ -77,7 +75,7 @@ class BattleNetClient(OAuth2Session):
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
             self.fetch_token()
-            self.auth_flow = None
+            self.auth_flow = 'credential'
 
     def __str__(self):
         return f"{self.game['name']} API Client"
@@ -94,7 +92,7 @@ class BattleNetClient(OAuth2Session):
         return self.__endpoint('post', *args, **kwargs)
 
     def __endpoint(self, method, uri, locale, *, retries=5, params=None, headers=None, fields=None):
-        """Processes the API request into the appropriate headers for the Requests.request() method
+        """Processes the API request into the appropriate headers and parameters
 
         Args:
             method (str): the HTTP method to use
@@ -112,7 +110,7 @@ class BattleNetClient(OAuth2Session):
             params['locale'] = localize(locale)
         else:
             params = {'locale': localize(locale)}
-        
+
         if fields:
             params.update({key: value for key, value in fields.items()})
 
@@ -127,10 +125,10 @@ class BattleNetClient(OAuth2Session):
                     sleep(1.0)
 
                 if error.response.status_code == 404:
-                    raise BNetDataNotFoundError(error)
+                    raise exceptions.BNetDataNotFoundError(error)
 
                 if error.response.status_code == 403:
-                    raise BNetAccessForbiddenError(error)
+                    raise exceptions.BNetAccessForbiddenError(error)
 
                 raise error
             else:
