@@ -1,7 +1,7 @@
 image: python:3.8-slim
 
 test:
-  stage: tests
+  stage: test
   tags:
     - gitlab-org
   script:
