@@ -10,18 +10,23 @@ def test_localize():
     assert(locale[-2:] == 'US')
 
 
-def test_localize_wrong_type():
+@pytest.mark.parametrize("test_input", [
+    ['EnuS', 'EngB'],
+    ('EnuS', 'EngB'),
+    {'lang': 'en', 'country': 'US'}
+])
+def test_localize_wrong_type(test_input):
     with pytest.raises(TypeError):
-        localize(1)
-        localize(['EnuS', 'EngB'])
-        localize(('EnuS', 'EngB'))
-        localize({'lang': 'en', 'country': 'US'})
+        localize(test_input)
 
 
-def test_localize_wrong_lang_country():
+@pytest.mark.parametrize("test_value", [
+    'zzus',
+    'enZZ'
+])
+def test_localize_wrong_lang_country(test_value):
     with pytest.raises(ValueError):
-        localize('zzus')
-        localize('enZZ')
+        localize(test_value)
 
 
 def test_slugify():
@@ -29,12 +34,14 @@ def test_slugify():
     assert(slugify("Zul'jin").islower())
 
 
-def test_slugify_type_error():
+@pytest.mark.parametrize("test_input", [
+    ['EnuS', 'EngB'],
+    ('EnuS', 'EngB'),
+    {'lang': 'en', 'country': 'US'}
+])
+def test_slugify_type_error(test_input):
     with pytest.raises(TypeError):
-        slugify(1)
-        slugify(['EnuS', 'EngB'])
-        slugify(('EnuS', 'EngB'))
-        slugify({'lang': 'en', 'country': 'US'})
+        slugify(test_input)
 
 
 def test_slugify_no_apostrophe():
@@ -64,8 +71,11 @@ def test_currency_convertor_negative():
         currency_convertor(-1)
 
 
-def test_currency_convertor_wrong_types():
+@pytest.mark.parametrize("test_input", [
+    [1, 3, 4],
+    (1, 3, 4),
+    {'g': 1, 's': 3, 'c': 4}
+])
+def test_currency_convertor_wrong_types(test_input):
     with pytest.raises(TypeError):
-        currency_convertor([1, 3, 4])
-        currency_convertor((1, 3, 4))
-        currency_convertor({'g': 1, 's': 3, 'c': 4})
+        currency_convertor(test_input)
