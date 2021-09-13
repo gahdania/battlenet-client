@@ -11,3 +11,4 @@ __pycache__/
 /build/
 /public/
 battlenet_client.egg-info
+.coverage

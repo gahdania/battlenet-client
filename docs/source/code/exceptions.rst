@@ -19,7 +19,7 @@ Battle.net Client
    :inherited-members:
    :members:
 
-.. autoclass:: BNetNegativeIndexError
+.. autoclass:: BNetAccessForbiddenError
    :inherited-members:
    :members:
 

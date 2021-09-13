@@ -3,6 +3,7 @@
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
 
+
 class BNetError(Exception):
     """Base Error class for BattleNet Client"""
     pass

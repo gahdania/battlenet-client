@@ -24,8 +24,10 @@ For the rest of these tutorials, the location the user is going to be returning 
 
 .. code-block:: python3
 
-    from battlenet_client import BattleNetClient
-    client = BattleNetClient('<region abbreviation>', '<scope of request>', '<redirection uri>', client_id='<CLIENT ID>', client_secret='<CLIENT_SECRET>')
+    from battlenet_client.client import BattleNetClient
+    from battlenet_client.constants import UNITED_STATES, WOW
+    client = BattleNetClient(UNITED_STATES, WOW, <CLIENT ID>, <CLIENT_SECRET>, scope=<scope of request>,
+        redirect_uri=<redirection uri>)
 
     # from the html generator part of the project
     # generate a link or redirect the user to authenticate the user with Battle.Net
@@ -35,10 +37,10 @@ For the rest of these tutorials, the location the user is going to be returning 
     # to the redirection URI you supplied
     # then like the credential workflow we call the request to the API
     # request the data via a GET as below
-    client.get('<endpoint uri>', locale='<locale requested>', namespace='<namespace>')
+    client.api_get(<endpoint uri>, <locale requested>, headers={'Battlenet-Namespace': <namespace>})
 
     # or as a post
-    client.post('<endpoint uri>', locale='<locale requested>', namespace='<namespace>')
+    client.api_post(<endpoint uri>, <locale requested>, headers={'Battlenet-Namespace': <namespace>})
 
 See Also: :ref:`Credential Workflow Tutorial <credential-workflow-tutorial>`
 

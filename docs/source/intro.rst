@@ -39,17 +39,18 @@ Below is a typical example in using the client credential flow.
 
 .. code-block:: python3
 
-   from battlenet_client import BattleNetClient
-   # <region_tag>: the region tag, ie us, eu, tw, kr, or cn
+   from battlenet_client.client import BattleNetClient
+   from battlenet_client.constants import UNITED_STATES, WOW
+   # <region_tag>: use the constant appropriate for your region
    # <client ID>: the client ID from the Developer Portal
    # <client secret>: the client secret from the Developer Portal
-   client = BattleNetClient('us', locale=<locale>, client_id='<client ID>', client_secret='<client secret>')
+   client = BattleNetClient(UNITED_STATES, WOW, <client ID>, <client secret>)
 
-   # <method>:  Typically 'get' or 'post' with 'get' being the most frequent
+   # <method>:  Typically use 'api_get' or 'api_post' depending on the API endpoint being reached
    # <api_uri>: The API endpoint URL w/o the scheme, or host
    # <locale>: the desired localization to use if something other than when the client was created
    # <namespace>: the namespace expected by the :api_uri:
-   client.request(<method>, <api_uri>, locale=client.localize(<locale>), namespace=client.<namespace>)
+   client.api_get(<api_uri>, <locale>, headers={'Battlenet-Namespace': <namespace>-<region_tag>})
 
 Authorization Code Flow
 -----------------------
@@ -68,8 +69,8 @@ Below is a typical example of using the authorization code flow.
    # <redirect>: the URI where you want users to return after successfully authenticating with Battle.net
    # <client ID>: the client ID from the Developer Portal
    # <client secret>: the client secret from the Developer Portal
-   client = BattleNetClient(battlenet_client.UNITED_STATES, battlenet_client.WOW, scope='[wow.profile]',
-        redirect='<REDIRECT URL>', <CLIENT ID>', '<CLIENT SECRET'>)
+   client = BattleNetClient(UNITED_STATES, WOW, <CLIENT ID>, <CLIENT SECRET>, scope=[wow.profile, ],
+       redirect_uri=<REDIRECT URL>)
    redirect(client.authorization_url)
 
    # user goes to Blizzard's authentication site on battle.net and successfully logs in
@@ -79,9 +80,9 @@ Below is a typical example of using the authorization code flow.
    # <locale>: the desired localization to use
    # <namespace>: the namespace expected by the :api_uri:
    # for the endpoints that use the GET method
-   client.endpoint(<api_uri>, <locale>, <namespace>)
+   client.api_get(<api_uri>, <locale>, headers={'Battlenet-Namespace': <namespace>-<region_tag>})
    # for the endpoints that use the POST method
-   client.token_validation()
+   client.api_post(<api_uri>, <locale>, headers={'Battlenet-Namespace': <namespace>-<region_tag>})
 
 
 For more detailed instructions please see the :ref:`tutorials index <tutorials-index>`

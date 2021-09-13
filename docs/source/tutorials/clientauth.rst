@@ -18,13 +18,14 @@ instantiate it.
 .. code-block:: python3
 
     # Import it
-    from battlenet_client import BattleNetClient
+    from battlenet_client.client import BattleNetClient
+    from battlenet_client.constants import UNITED_STATES, WOW
 
     # Instantiate it
-    client = BattleNetClient('<region abbreviation>', client_id='<client id>', client_secret='<client_secret>')
+    client = BattleNetClient(UNITED_STATES, WOW, <client id>, <client_secret>)
 
     # request the data from it
-    return client.request('<method>', '<api endpoint uri>', locale='<locale preferred>', namespace='<namespace>')
+    return client.api_get('<api endpoint uri>', '<locale preferred>', headers={'Battlnet-Namespace': '<namespace>'})
 
 That is it. Again, there are other packages that work with this class, allowing you to focus on the more important parts of your project
 
