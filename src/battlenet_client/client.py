@@ -160,6 +160,10 @@ class BattleNetClient(OAuth2Session):
         return unquote(authorization_url)
 
     def fetch_token(self, **kwargs):
+
+        if not self.auth_flow:
+            raise ValueError("Requires Authorization Workflow")
+
         token_url = f"{self.auth_host}/oauth/token"
         super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
                             **kwargs)
