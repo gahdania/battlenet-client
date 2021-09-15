@@ -12,3 +12,4 @@ __pycache__/
 /public/
 battlenet_client.egg-info
 .coverage
+/.tox

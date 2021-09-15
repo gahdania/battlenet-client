@@ -40,7 +40,6 @@ class BattleNetClient(OAuth2Session):
     def __init__(self, region, game, client_id, client_secret, *, scope=None, redirect_uri=None):
 
         self._state = None
-        self.tag: str = ""
 
         try:
             self.tag = getattr(constants, region)
@@ -68,14 +67,14 @@ class BattleNetClient(OAuth2Session):
             self.render_host = f'https://render-{self.tag}.worldofwarcraft.com'
 
         if redirect_uri and scope:
-            self.auth_flow = 'oauth'
+            self.auth_flow = True
             super().__init__(client_id=client_id, scope=scope, redirect_uri=redirect_uri)
             # set the mode indicator of the client to "Web Application Flow"
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
             self.fetch_token()
-            self.auth_flow = 'credential'
+            self.auth_flow = False
 
     def __str__(self):
         return f"{self.game['name']} API Client"
