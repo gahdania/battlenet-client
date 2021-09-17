@@ -18,5 +18,4 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-
-.. include::  footer.rst
+.. include:: footer.rst
