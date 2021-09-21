@@ -12,8 +12,8 @@ from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
 from battlenet_client.util import localize
-from battlenet_client import exceptions
-from battlenet_client import constants
+from battlenet_client import exceptions, constants
+from battlenet_client import bnet
 
 
 class BattleNetClient(OAuth2Session):
@@ -66,6 +66,13 @@ class BattleNetClient(OAuth2Session):
             self.auth_host = f'https://{self.tag}.battle.net'
             self.render_host = f'https://render-{self.tag}.worldofwarcraft.com'
 
+        # load the API endpoints programmatically
+        for mod_name in bnet.__all__:
+            mod = getattr(bnet, mod_name)
+            for cls_name in dir(mod):
+                if not cls_name.startswith('__') and isinstance(getattr(mod, cls_name), type):
+                    setattr(self, mod_name, getattr(mod, cls_name)(self))
+
         if redirect_uri and scope:
             self.auth_flow = True
             super().__init__(client_id=client_id, scope=scope, redirect_uri=redirect_uri)
@@ -117,7 +124,7 @@ class BattleNetClient(OAuth2Session):
             try:
                 raw_data = super().request(method, uri, params=params, headers=headers)
                 raw_data.raise_for_status()
-            except requests.Timeout:
+            except requests.exceptions.Timeout:
                 sleep(2.5)
             except requests.exceptions.HTTPError as error:
                 if error.response.status_code == 429:
