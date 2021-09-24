@@ -2,6 +2,7 @@
 
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
+from typing import List, Any, Optional, Union
 
 from io import BytesIO
 from time import sleep
@@ -36,7 +37,8 @@ class BattleNetClient(OAuth2Session):
         game (dict): holds basic info about the game
     """
 
-    def __init__(self, region, game, client_id, client_secret, *, scope=None, redirect_uri=None):
+    def __init__(self, region: str, game: dict, client_id: str, client_secret: str, *,
+                 scope: Optional[List[str]] = None, redirect_uri: Optional[str] = None) -> None:
 
         self._state = None
 
@@ -82,21 +84,22 @@ class BattleNetClient(OAuth2Session):
             self.fetch_token()
             self.auth_flow = False
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.game['name']} API Client"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
-    def api_get(self, *args, **kwargs):
+    def api_get(self, uri: str, **kwargs: Optional[dict]) -> Union[dict, list, BytesIO]:
         """Convenience function for the GET method"""
-        return self.__endpoint('get', *args, **kwargs)
+        return self.__endpoint('get', uri, **kwargs)
 
-    def api_post(self, *args, **kwargs):
+    def api_post(self, uri: str, **kwargs: Optional[dict]) -> Union[dict, list, BytesIO]:
         """Convenience function for the POST method"""
-        return self.__endpoint('post', *args, **kwargs)
+        return self.__endpoint('post', uri, **kwargs)
 
-    def __endpoint(self, method, uri, locale, *, retries=5, params=None, headers=None, fields=None):
+    def __endpoint(self, method: str, uri: str, locale: str, *, retries: int = 5, params: Optional[dict] = None,
+                   headers: Optional[dict] = None, fields: Optional[dict] = None) -> Union[dict, list, BytesIO]:
         """Processes the API request into the appropriate headers and parameters
 
         Args:
@@ -142,7 +145,7 @@ class BattleNetClient(OAuth2Session):
                 else:
                     return BytesIO(raw_data.content)
 
-    def validate_token(self):
+    def validate_token(self) -> bool:
         """Checks with the API if the token is good or not.
 
         Returns:
@@ -152,7 +155,7 @@ class BattleNetClient(OAuth2Session):
         data = super().post(url, params={'token': self.access_token}, headers={'Battlenet-Namespace': None})
         return data.status_code == 200 and data.json()['client_id'] == self.client_id
 
-    def authorization_url(self, **kwargs):
+    def authorization_url(self, **kwargs: Optional[dict]) -> str:
         """Prepares and returns the authorization URL to the Battle.net authorization servers
 
         Returns:
@@ -165,33 +168,28 @@ class BattleNetClient(OAuth2Session):
         authorization_url, self._state = super().authorization_url(url=auth_url, **kwargs)
         return unquote(authorization_url)
 
-    def fetch_token(self, **kwargs):
+    def fetch_token(self, **kwargs: Optional[dict]) -> None:
         token_url = f"{self.auth_host}/oauth/token"
         super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
                             **kwargs)
 
     @staticmethod
-    def currency_convertor(value):
+    def currency_convertor(value: int) -> tuple:
         """Returns the value into gold, silver and copper
 
         Args:
-            value (int or str): the value to be converted
+            value (int): the value to be converted
 
         Returns:
             list: gold, silver and copper values
         """
-        if not isinstance(value, (str, int)):
-            raise TypeError("Value needs to be a string or integer")
-
-        value = int(value)
-
         if value < 0:
             raise ValueError("Value must be zero or a positive value")
 
         return value // 10000, (value % 10000) // 100, value % 100
 
     @staticmethod
-    def slugify(value):
+    def slugify(value: str) -> str:
         """Returns the 'slugified' string
 
         Args:
@@ -207,7 +205,7 @@ class BattleNetClient(OAuth2Session):
         return value.lower().replace("\'", "").replace(' ', '-')
 
     @staticmethod
-    def localize(locale):
+    def localize(locale: str) -> str:
         """Returns the standardized locale
 
         Args:
