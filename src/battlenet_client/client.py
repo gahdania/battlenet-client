@@ -11,7 +11,6 @@ import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from battlenet_client.util import localize
 from battlenet_client import exceptions, constants
 from battlenet_client import bnet
 
@@ -113,9 +112,9 @@ class BattleNetClient(OAuth2Session):
         """
 
         if params:
-            params['locale'] = localize(locale)
+            params.update({'locale': self.localize(locale)})
         else:
-            params = {'locale': localize(locale)}
+            params = {'locale': self.localize(locale)}
 
         if fields:
             params.update({key: value for key, value in fields.items()})
@@ -170,3 +169,64 @@ class BattleNetClient(OAuth2Session):
         token_url = f"{self.auth_host}/oauth/token"
         super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
                             **kwargs)
+
+    @staticmethod
+    def currency_convertor(value):
+        """Returns the value into gold, silver and copper
+
+        Args:
+            value (int or str): the value to be converted
+
+        Returns:
+            list: gold, silver and copper values
+        """
+        if not isinstance(value, (str, int)):
+            raise TypeError("Value needs to be a string or integer")
+
+        value = int(value)
+
+        if value < 0:
+            raise ValueError("Value must be zero or a positive value")
+
+        return value // 10000, (value % 10000) // 100, value % 100
+
+    @staticmethod
+    def slugify(value):
+        """Returns the 'slugified' string
+
+        Args:
+            value (str): the string to be converted into a slug
+
+        Returns:
+            (str): the slug of :value:
+        """
+
+        if not isinstance(value, str):
+            raise TypeError("Value must be a string")
+
+        return value.lower().replace("\'", "").replace(' ', '-')
+
+    @staticmethod
+    def localize(locale):
+        """Returns the standardized locale
+
+        Args:
+            locale (str): the locality to be standardized
+
+        Returns:
+            (str): the locale in the format of "<lang>_<COUNTRY>"
+
+        Raise:
+            TypeError: when locale is not a string
+            ValueError: when the lang and country are not in the given lists
+        """
+        if not isinstance(locale, str):
+            raise TypeError('Locale must be a string')
+
+        if locale[:2].lower() not in ('en', 'es', 'pt', 'fr', 'ru', 'de', 'it', 'ko', 'zh'):
+            raise ValueError('Invalid language code')
+
+        if locale[-2:].lower() not in ('us', 'mx', 'br', 'gb', 'es', 'fr', 'ru', 'de', 'pt', 'it', 'kr', 'tw', 'cn'):
+            raise ValueError('Invalid country code')
+
+        return f"{locale[:2].lower()}_{locale[-2:].upper()}"

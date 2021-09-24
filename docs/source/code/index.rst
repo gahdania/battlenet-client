@@ -9,7 +9,6 @@ Modules
    :maxdepth: 2
 
    client
-   util
    exceptions
 
 :ref:`Home <root>`
