@@ -1,6 +1,6 @@
-"""BattleNet Clients handle the processing on the requests with the Developer Portal API
+"""This module defines the base client class for the Battle.net API
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+.. moduleauthor: David Couples <gahdania@gahd.io>
 """
 
 from io import BytesIO
@@ -11,7 +11,6 @@ import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from battlenet_client.util import localize
 from battlenet_client import exceptions, constants
 from battlenet_client import bnet
 
@@ -90,11 +89,11 @@ class BattleNetClient(OAuth2Session):
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
     def api_get(self, *args, **kwargs):
-        """Convenience function for the GET method"""
+        """HTTP GET accessor method"""
         return self.__endpoint('get', *args, **kwargs)
 
     def api_post(self, *args, **kwargs):
-        """Convenience function for the POST method"""
+        """HTTP POST accessor method"""
         return self.__endpoint('post', *args, **kwargs)
 
     def __endpoint(self, method, uri, locale, *, retries=5, params=None, headers=None, fields=None):
@@ -106,16 +105,20 @@ class BattleNetClient(OAuth2Session):
             locale (str): the locale identifier to use with the API
 
         Keyword Args:
-            retries (int, optional): the number of retries at getting to the API endpoint (default is 5)
-            params (dict, optional): dict of the parameters to be passed via query string to the endpoint
-            headers (dict, optional):  Additional headers to sent with the request
-            fields (dict, optional): search parameters and values to send
+            retries (int, optional): the number of retries at getting to the
+                API endpoint (default is 5)
+            params (dict, optional): dict of the parameters to be passed via
+                query string to the endpoint
+            headers (dict, optional):  Additional headers to sent with the
+                request
+            fields (dict, optional): search parameters and values to add to
+                the request
         """
 
         if params:
-            params['locale'] = localize(locale)
+            params['locale'] = self.localize(locale)
         else:
-            params = {'locale': localize(locale)}
+            params = {'locale': self.localize(locale)}
 
         if fields:
             params.update({key: value for key, value in fields.items()})
@@ -154,7 +157,8 @@ class BattleNetClient(OAuth2Session):
         return data.status_code == 200 and data.json()['client_id'] == self.client_id
 
     def authorization_url(self, **kwargs):
-        """Prepares and returns the authorization URL to the Battle.net authorization servers
+        """Prepares and returns the authorization URL to the Battle.net
+        authorization servers
 
         Returns:
             str: the URL to the Battle.net authorization server
@@ -174,3 +178,64 @@ class BattleNetClient(OAuth2Session):
         token_url = f"{self.auth_host}/oauth/token"
         super().fetch_token(token_url=token_url, client_id=self.client_id, client_secret=self._client_secret,
                             **kwargs)
+
+    @staticmethod
+    def currency_convertor(value):
+        """Returns the value into gold, silver and copper
+
+        Args:
+            value (int or str): the value to be converted
+
+        Returns:
+            list: gold, silver and copper values
+        """
+        if not isinstance(value, (str, int)):
+            raise TypeError("Value needs to be a string or integer")
+
+        value = int(value)
+
+        if value < 0:
+            raise ValueError("Value must be zero or a positive value")
+
+        return value // 10000, (value % 10000) // 100, value % 100
+
+    @staticmethod
+    def slugify(value):
+        """Returns the 'slugified' string
+
+        Args:
+            value (str): the string to be converted into a slug
+
+        Returns:
+            (str): the slug of :value:
+        """
+
+        if not isinstance(value, str):
+            raise TypeError("Value must be a string")
+
+        return value.lower().replace("\'", "").replace(' ', '-')
+
+    @staticmethod
+    def localize(locale):
+        """Returns the standardized locale
+
+        Args:
+            locale (str): the locality to be standardized
+
+        Returns:
+            (str): the locale in the format of "<lang>_<COUNTRY>"
+
+        Raise:
+            TypeError: when locale is not a string
+            ValueError: when the lang and country are not in the given lists
+        """
+        if not isinstance(locale, str):
+            raise TypeError('Locale must be a string')
+
+        if locale[:2].lower() not in ('en', 'es', 'pt', 'fr', 'ru', 'de', 'it', 'ko', 'zh'):
+            raise ValueError('Invalid language code')
+
+        if locale[-2:].lower() not in ('us', 'mx', 'br', 'gb', 'es', 'fr', 'ru', 'de', 'pt', 'it', 'kr', 'tw', 'cn'):
+            raise ValueError('Invalid country code')
+
+        return f"{locale[:2].lower()}_{locale[-2:].upper()}"

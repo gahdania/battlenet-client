@@ -1,6 +1,6 @@
-"""Defines the exceptions for the package
+"""This module defines the exceptions for the package
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+.. moduleauthor: David Couples <gahdania@gahd.io>
 """
 
 

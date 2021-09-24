@@ -1,6 +1,6 @@
-"""Provides access to the API endpoints that are not game specific
+"""This module defines access to the API endpoints from Battle.net, not a game
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+.. moduleauthor: David Couples <gahdania@gahd.io>
 """
 from battlenet_client.exceptions import BNetClientError
 
@@ -10,11 +10,11 @@ class BattleNetAPI:
     def __init__(self, client):
         self.client = client
 
-    def user_info(self, locale=None):
-        """Returns the user info
+    def user_info(self, locale):
+        """Accesses the user's information
 
         Args:
-            locale (str): localization to use
+            locale (str): localization to use,
 
         Returns:
             dict: the json decoded information for the user (user # and battle tag ID)

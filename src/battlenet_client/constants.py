@@ -1,6 +1,6 @@
-"""Defines the constants used with the package
+"""This module defines the constants used in the package
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+.. moduleauthor: David Couples <gahdania@gahd.io>
 """
 
 UNITED_STATES = 'us'
