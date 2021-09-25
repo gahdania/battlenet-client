@@ -1,13 +1,13 @@
 :ref:`Home <root>` / :ref:`Code Home <code-index>`
 
-Battle.net Client
-=================
+Battle.net API
+==============
 
-.. _clients-code:
+.. _bnet api:
 
-.. py:currentmodule:: battlenet_client.client
+.. py:currentmodule:: battlenet_client.bnet.bnet
 
-.. autoclass:: BattleNetClient
+.. autoclass:: BattleNetAPI
    :members:
 
 :ref:`Home <root>` / :ref:`Code Home <code-index>`

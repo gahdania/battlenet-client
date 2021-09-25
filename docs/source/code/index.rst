@@ -9,6 +9,7 @@ Modules
    :maxdepth: 2
 
    client
+   bnet
    exceptions
 
 :ref:`Home <root>`

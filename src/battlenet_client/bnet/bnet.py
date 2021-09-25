@@ -2,18 +2,20 @@
 
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
-from typing import Optional
+from typing import Optional, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from battlenet_client.client import BattleNetClient
 
 from battlenet_client.exceptions import BNetClientError
-from battlenet_client.client import BattleNetClient
 
 
 class BattleNetAPI:
 
-    def __init__(self, client: BattleNetClient) -> None:
+    def __init__(self, client: 'BattleNetClient') -> None:
         self.client = client
 
-    def user_info(self, locale: Optional[str] = None) -> dict:
+    def user_info(self, locale: Optional[str] = None) -> Any:
         """Returns the user info
 
         Args:

@@ -1,7 +1,7 @@
 :ref:`Home <root>` / :ref:`Code Home <code-index>`
 
-Battle.net Client
-=================
+Battle.net Exceptions
+=====================
 
 .. _exceptions-code:
 
