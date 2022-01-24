@@ -2,7 +2,7 @@
 
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
-from typing import List, Optional, Any, Dict, Tuple
+from typing import List, Optional, Any, Dict, Tuple, BinaryIO, Union
 
 from decouple import config
 from io import BytesIO
@@ -98,15 +98,29 @@ class BattleNetClient(OAuth2Session):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
-    def api_get(self, uri: str, **kwargs) -> Any:
-        """Convenience function for the GET method"""
+    def _get(self, uri: str, **kwargs) -> Any:
+        """Convenience function for the GET method
+
+        Args:
+            uri (str): the URI to request
+
+        Returns:
+              dict:  The response from the Battle.net API
+        """
         return self.__endpoint('get', uri, **kwargs)
 
-    def api_post(self, uri: str, **kwargs) -> Any:
-        """Convenience function for the POST method"""
+    def _post(self, uri: str, **kwargs) -> Any:
+        """Convenience function for the POST method
+
+        Args:
+            uri (str): the URI to request
+
+        Returns:
+              dict:  The response from the Battle.net API
+        """
         return self.__endpoint('post', uri, **kwargs)
 
-    def __endpoint(self, method: str, uri: str, locale: str, *, retries: int = 5,
+    def __endpoint(self, method: str, uri: str, *, retries: int = 5,
                    params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, Any]] = None,
                    fields: Optional[Dict[str, Any]] = None) -> Any:
         """Processes the API request into the appropriate headers and parameters
@@ -114,19 +128,16 @@ class BattleNetClient(OAuth2Session):
         Args:
             method (str): the HTTP method to use
             uri (str): the URI for the API endpoint
-            locale (str): the locale identifier to use with the API
 
         Keyword Args:
             retries (int, optional): the number of retries at getting to the API endpoint (default is 5)
             params (dict, optional): dict of the parameters to be passed via query string to the endpoint
             headers (dict, optional):  Additional headers to sent with the request
-            fields (dict, optional): search parameters and values to send
+            fields (dict, optional): search parameters to form
         """
 
-        if params:
-            params.update({'locale': self.localize(locale)})
-        else:
-            params = {'locale': self.localize(locale)}
+        if not params:
+            params = {}
 
         if fields:
             params.update({key: value for key, value in fields.items()})
@@ -135,11 +146,6 @@ class BattleNetClient(OAuth2Session):
             try:
                 raw_data = super().request(method, uri, params=params, headers=headers)
                 raw_data.raise_for_status()
-
-                if raw_data.headers['content-type'].startswith('application/json'):
-                    return raw_data.json()
-                else:
-                    return BytesIO(raw_data.content)
             except requests.exceptions.Timeout:
                 sleep(2.5)
             except requests.exceptions.HTTPError as error:
@@ -153,6 +159,11 @@ class BattleNetClient(OAuth2Session):
                     raise exceptions.BNetAccessForbiddenError(error)
 
                 raise error
+            else:
+                if raw_data.headers['content-type'].startswith('application/json'):
+                    return raw_data.json()
+                else:
+                    return BytesIO(raw_data.content)
 
     def validate_token(self) -> bool:
         """Checks with the API if the token is good or not.
@@ -163,8 +174,8 @@ class BattleNetClient(OAuth2Session):
 
         url = f"{self.auth_host}/oauth/check_token"
         data = super().post(url, params={'token': self.access_token}, headers={'Battlenet-Namespace': None})
-
-        return bool(data.status_code == 200 and data.json()['client_id'] == self.client_id)
+        result: bool = data.status_code == 200 and data.json()['client_id'] == self.client_id
+        return result
 
     def authorization_url(self, **kwargs) -> str:
         """Prepares and returns the authorization URL to the Battle.net authorization servers
@@ -186,13 +197,13 @@ class BattleNetClient(OAuth2Session):
 
     @staticmethod
     def currency_convertor(value: int) -> Tuple[int, int, int]:
-        """Returns the value into gold, silver and copper
+        """Returns the value into gold, silver and copper values
 
         Args:
             value (int): the value to be converted
 
         Returns:
-            list: gold, silver and copper values
+            tuple: gold, silver and copper values
         """
         if value < 0:
             raise ValueError("Value must be zero or a positive value")
@@ -209,10 +220,6 @@ class BattleNetClient(OAuth2Session):
         Returns:
             (str): the slug of :value:
         """
-
-        if not isinstance(value, str):
-            raise TypeError("Value must be a string")
-
         return value.lower().replace("\'", "").replace(' ', '-')
 
     @staticmethod
