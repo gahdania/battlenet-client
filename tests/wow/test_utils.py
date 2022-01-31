@@ -1,6 +1,6 @@
 import pytest
 
-from wow_api.util import currency_convertor
+from wow import currency_convertor
 
 
 @pytest.mark.parametrize("value", [

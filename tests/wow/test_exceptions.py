@@ -8,9 +8,8 @@ from battlenet_client.client import BattleNetClient
 from battlenet_client.constants import UNITED_STATES, WOW
 from decouple import config
 
-from wow_api.exceptions import WoWClientError, WoWReleaseError
-from wow_api.wow.achievement import AchievementAPI
-from wow_api.wow.auction import AuctionAPI
+from wow import WoWClientError, WoWReleaseError
+from wow import AchievementAPI
 
 
 class TestAchivementAPI:

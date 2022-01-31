@@ -2,7 +2,7 @@
 
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
-from typing import Optional, Any, TYPE_CHECKING
+from typing import Optional, Any, TYPE_CHECKING, List, Dict
 
 if TYPE_CHECKING:
     from battlenet_client.client import BattleNetClient
@@ -10,10 +10,13 @@ if TYPE_CHECKING:
 from battlenet_client.exceptions import BNetClientError
 
 
-class BattleNetAPI:
+class BattleNetAPI(BattleNetClient):
 
-    def __init__(self, client: 'BattleNetClient') -> None:
-        self.client = client
+    def __init__(self, region: str, game: Dict[str, str], *, client_id: Optional[str] = None,
+                 client_secret: Optional[str] = None, scope: Optional[List[str]] = None,
+                 redirect_uri: Optional[str] = None) -> None:
+        super().__init__(region, game, client_id=client_id, client_secret=client_secret, scope=scope,
+                         redirect_uri=redirect_uri)
 
     def user_info(self, locale: Optional[str] = None) -> Any:
         """Returns the user info
@@ -27,8 +30,8 @@ class BattleNetAPI:
         Notes:
             this function requires the BattleNet Client to be use OAuth (Authentication Workflow)
         """
-        if not self.client.auth_flow:
+        if not self.auth_flow:
             raise BNetClientError("Requires Authorization Code Workflow")
 
-        url = f"{self.client.auth_host}/oauth/userinfo"
-        return self.client.api_get(url, params={'locale': locale})
+        url = f"{self.auth_host}/oauth/userinfo"
+        return self._get(url, params={'locale': locale})

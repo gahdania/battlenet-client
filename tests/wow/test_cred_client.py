@@ -1,10 +1,10 @@
 import pytest
 
-from wow_api.constants import CLASSIC, TBC_CLASSIC
-from wow_api.exceptions import WoWReleaseError
-from wow_api.wow.item import ItemAPI
-from wow_api.wow.account import AccountAPI
-from wow_api.wow.character import CharacterAPI
+from wow.constants import CLASSIC, TBC_CLASSIC
+from wow import WoWReleaseError
+from wow import ItemAPI
+from wow import AccountAPI
+from wow import CharacterAPI
 
 
 @pytest.mark.usefixtures("cred_client")

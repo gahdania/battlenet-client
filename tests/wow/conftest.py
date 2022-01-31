@@ -1,6 +1,6 @@
 import pytest
 
-from wow_api.client import WoWClient
+from wow import WoWClient
 from battlenet_client.constants import UNITED_STATES
 
 
