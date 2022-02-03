@@ -33,7 +33,9 @@ class HearthstoneAPI:
 
         return self.client.search(locale, "cards")
 
-    def card(self, locale, card_id, game_mode="constructed"):
+    def card(
+        self, locale: str, card_id: str, game_mode: Optional[str] = "constructed"
+    ) -> Dict[str, Any]:
         """Returns the card provided by `card_id'
 
         Args:
@@ -78,7 +80,7 @@ class HearthstoneAPI:
 
         return self.client.search(locale, "cardbacks")
 
-    def card_back(self, locale, card_back_id):
+    def card_back(self, locale: str, card_back_id: str) -> Dict[str, Any]:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
         Args:
@@ -110,7 +112,7 @@ class HearthstoneAPI:
         """
         return self.client.search(locale, "deck", field_values)
 
-    def metadata(self, locale, meta_data=None):
+    def metadata(self, locale: str, meta_data: Optional[str] = None) -> Dict[str, Any]:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
         Args:

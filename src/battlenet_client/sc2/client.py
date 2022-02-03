@@ -17,14 +17,14 @@ Disclaimer:
 import importlib
 from decouple import config
 
-from battlenet_client.bnet.client import Client as BattleNetClient
+from battlenet_client.bnet.client import BNetClient
 from battlenet_client.bnet.constants import SC2
 
 
 MODULES = ["account", "ladder", "legacy", "profile", "resources", "sc2"]
 
 
-class Client(BattleNetClient):
+class SC2Client(BNetClient):
     """Defines the client workflow class for the World of Warcraft API
 
     Args:

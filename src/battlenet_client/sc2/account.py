@@ -4,18 +4,16 @@
 from typing import Any, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
-    from battlenet_client.sc2.client import SC2Client
+    from client import SC2Client
 
-from battlenet_client.sc2.decorators import verify_client
-from battlenet_client.sc2.exceptions import SC2ClientError
+from exceptions import SC2ClientError
 
 
 class PlayerAPI:
     def __init__(self, client: "SC2Client") -> None:
         self.client = client
 
-    @verify_client
-    def player(self, locale: str, account_id: int) -> Dict[str, Any]:
+    def player(self, locale: str, account_id: str) -> Dict[str, Any]:
         """Returns the player data for the provided `account_id`.
 
         Args:

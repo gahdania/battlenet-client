@@ -1,24 +1,25 @@
-from battlenet_client.sc2.decorators import verify_client
+from typing import Any, TYPE_CHECKING, Dict, Union
+
+if TYPE_CHECKING:
+    from client import SC2Client
+
 from battlenet_client.sc2.exceptions import SC2RegionError
 
 
 class ProfileAPI:
-    def __init__(self, client):
+    def __init__(self, client: "SC2Client") -> None:
         self.client = client
 
-    @verify_client
-    def static(self, locale, region_id):
+    def static(self, locale: str, region_id: int) -> Dict[str, Any]:
 
         return self.client.community(locale, "static", "profile", region_id)
 
-    @verify_client
-    def metadata(self, locale, region_id, realm_id, profile_id):
+    def metadata(self, locale: str, region_id: str, realm_id: str, profile_id: str):
 
         return self.client.community(
             locale, "metadata", "profile", region_id, realm_id, profile_id
         )
 
-    @verify_client
     def profile(self, locale, region_id, realm_id, profile_id):
         """
 
@@ -33,7 +34,6 @@ class ProfileAPI:
         """
         return self.client.community(locale, "profile", region_id, realm_id, profile_id)
 
-    @verify_client
     def ladder(self, locale, region_id, realm_id, profile_id, ladder_id=None):
         if ladder_id is not None:
             return self.client.community(
@@ -52,7 +52,6 @@ class CNProfileAPI:
 
         self.client = client
 
-    @verify_client
     def profile(self, locale, profile_id, region, name):
 
         if self.client.tag != 5:
@@ -60,7 +59,6 @@ class CNProfileAPI:
 
         return self.client.community(locale, "profile", profile_id, region, name)
 
-    @verify_client
     def ladders(self, locale, profile_id, region, name):
         if self.client.tag != 5:
             raise SC2RegionError("This API is available in this region")
@@ -69,7 +67,6 @@ class CNProfileAPI:
             locale, "profile", profile_id, region, name, "ladders"
         )
 
-    @verify_client
     def match_history(self, locale, profile_id, region, name):
         if self.client.tag != 5:
             raise SC2RegionError("This API is available in this region")
