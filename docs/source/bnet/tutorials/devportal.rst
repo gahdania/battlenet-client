@@ -54,7 +54,7 @@ Get the Client ID and Secret
 
 :ref:`Home <root>` / :ref:`Tutorials Index <tutorials-index>`
 
-.. [#] The process is current as of 2020-May-03.  The form may change without notice.  
+.. [#] The process is current as of 2020-May-03.  The form may change without notice.
 .. [#] If you do not have a service URL yet, then click the check box under "Service URL".
    Remember to return to the portal and add the URL once you have it. Afterward you can click off the check box below
    "Service URL"
