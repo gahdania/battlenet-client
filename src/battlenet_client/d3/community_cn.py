@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 from urllib.parse import quote
 
 
-class CommunityAPI:
+class CommunityCNAPI:
     def __init__(self, client: "D3Client") -> None:
         self.client = client
 
@@ -60,15 +60,17 @@ class CommunityAPI:
     def api_account(self, locale: str, b_tag: str) -> Dict[str, Any]:
         return self.client.profile_api(locale, f"{quote(b_tag)}/")
 
-    def api_hero(self, locale: str, b_tag: str, hero_id: str) -> Dict[str, Any]:
-        return self.client.profile_api(locale, quote(b_tag), "hero", hero_id)
-
-    def api_hero_items(self, locale: str, b_tag: str, hero_id: str) -> Dict[str, Any]:
-        return self.client.profile_api(locale, quote(b_tag), "hero", hero_id, "items")
-
-    def api_follower_items(
-        self, locale: str, b_tag: str, hero_id: str
+    def api_hero(
+        self, locale: str, b_tag: str, hero_id: str, category: Optional[str] = None
     ) -> Dict[str, Any]:
-        return self.client.profile_api(
-            locale, quote(b_tag), "hero", hero_id, "follower-items"
-        )
+        if category:
+            if category in ("items", "follower-items"):
+                return self.client.profile_api(
+                    locale, quote(b_tag), "hero", hero_id, category
+                )
+            else:
+                raise ValueError(
+                    "Invalid category;  Valid catgories are 'items' and 'follower-items'"
+                )
+        else:
+            return self.client.profile_api(locale, quote(b_tag), "hero", hero_id)

@@ -2,6 +2,7 @@
 
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
+import importlib
 from typing import List, Optional, Any, Dict, Tuple
 
 from decouple import config
@@ -69,6 +70,15 @@ class BNetClient(OAuth2Session):
 
         self._client_secret = client_secret
 
+        # load additional modules programmatically
+        if self.tag == "cn":
+            mod = importlib.import_module("bnet.oauth_cn")
+            for cls_name in dir(mod):
+                if not cls_name.startswith("__") and isinstance(
+                    getattr(mod, cls_name), type
+                ):
+                    setattr(self, "oauth", getattr(mod, cls_name)(self))
+
         if self.tag == "cn":
             self.api_host = "https://gateway.battlenet.com.cn"
             self.auth_host = "https://www.battlenet.com.cn"
@@ -87,7 +97,6 @@ class BNetClient(OAuth2Session):
             super().__init__(
                 client_id=client_id, scope=scope, redirect_uri=redirect_uri
             )
-            # set the mode indicator of the client to "Web Application Flow"
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
@@ -291,21 +300,3 @@ class BNetClient(OAuth2Session):
             raise ValueError("Invalid country code")
 
         return f"{locale[:2].lower()}_{locale[-2:].upper()}"
-
-    def user_info(self, locale: Optional[str] = None) -> Any:
-        """Returns the user info
-
-        Args:
-            locale (str): localization to use
-
-        Returns:
-            dict: the json decoded information for the user (user # and battle tag ID)
-
-        Notes:
-            this function requires the BattleNet Client to be use OAuth (Authentication Workflow)
-        """
-        if not self.auth_flow:
-            raise exceptions.BNetClientError("Requires Authorization Code Workflow")
-
-        url = f"{self.auth_host}/oauth/userinfo"
-        return self._get(url, params={"locale": locale})
