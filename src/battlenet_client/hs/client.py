@@ -15,7 +15,7 @@ Disclaimer:
 .. moduleauthor:: David "Gahd" Couples <gahdania@gahd.io>
 """
 import importlib
-from typing import Optional, Any, List
+from typing import Optional, Any, Dict, List
 
 from battlenet_client.bnet.client import BNetClient
 from battlenet_client.bnet.constants import HS
@@ -57,7 +57,7 @@ class HSClient(BNetClient):
     def __repr__(self):
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.tag}"
 
-    def game_data(self, locale: str, *args, **kwargs) -> Any:
+    def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
         """Used to retrieve data from the source data APIs
 
         Args:
@@ -73,23 +73,13 @@ class HSClient(BNetClient):
 
         return self._get(uri, **kwargs)
 
-    # def media_data(self, locale: str, namespace: str, *args: Union[str, int]) -> Any:
-    #     """Used to retrieve media data including URLs for them
-    #
-    #     Args:
-    #         locale (str): the locale to use, example: en_US
-    #         namespace (str): namespace the API requires, example: static
-    #
-    #     Returns:
-    #         dict: data returned by the API
-    #     """
-    #     join_args = [self.slugify(str(arg)) for arg in args if arg is not None]
-    #     uri = f"{self.api_host}/data/wow/media/{'/'.join(join_args)}"
-    #     return self._get(uri, params={'locale': locale}, headers={'Battlenet-Namespace': getattr(self, namespace)})
-
     def search(
-        self, locale: str, document: str, fields: Optional[List[Any]] = None
-    ) -> Any:
+        self,
+        locale: str,
+        document: str,
+        fields: Optional[List[Dict[str, Any]]] = None,
+        **kwargs,
+    ) -> Dict[str, Any]:
         """Used to perform searches where available
 
         Args:
@@ -101,8 +91,7 @@ class HSClient(BNetClient):
             dict: data returned by the API
         """
         uri = f"{self.api_host}/hearthstone/{self.slugify(document)}"
-        return self._get(
-            uri,
-            params={"locale": self.localize(locale)},
-            fields=fields,
-        )
+        kwargs["params"]["locale"] = self.localize(locale)
+        kwargs["fields"] = fields
+
+        return self._get(uri, **kwargs)

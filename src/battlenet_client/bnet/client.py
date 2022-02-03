@@ -2,7 +2,8 @@
 
 .. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
 """
-from typing import List, Optional, Any, Dict, Tuple
+import importlib
+from typing import Optional, Any, Dict, Tuple, List, Union
 
 from decouple import config
 from io import BytesIO
@@ -13,8 +14,8 @@ import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-import exceptions
-import constants
+from . import constants
+from . import exceptions
 
 
 class BNetClient(OAuth2Session):
@@ -73,7 +74,7 @@ class BNetClient(OAuth2Session):
             self.api_host = "https://gateway.battlenet.com.cn"
             self.auth_host = "https://www.battlenet.com.cn"
             self.render_host = "https://render.worldofwarcraft.com.cn"
-        elif self.tag == "kr" or self.tag == "tw":
+        elif self.tag in ("kr", "tw"):
             self.api_host = f"https://{self.tag}.api.blizzard.com"
             self.auth_host = "https://apac.battle.net"
             self.render_host = f"https://render-{self.tag}.worldofwarcraft.com"
@@ -87,7 +88,6 @@ class BNetClient(OAuth2Session):
             super().__init__(
                 client_id=client_id, scope=scope, redirect_uri=redirect_uri
             )
-            # set the mode indicator of the client to "Web Application Flow"
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
@@ -100,7 +100,7 @@ class BNetClient(OAuth2Session):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
-    def _get(self, uri: str, **kwargs) -> Any:
+    def _get(self, uri: str, **kwargs) -> Dict[str, Any]:
         """Convenience function for the GET method
 
         Args:
@@ -111,7 +111,7 @@ class BNetClient(OAuth2Session):
         """
         return self.__endpoint("get", uri, **kwargs)
 
-    def _post(self, uri: str, **kwargs) -> Any:
+    def _post(self, uri: str, **kwargs) -> Dict[str, Any]:
         """Convenience function for the POST method
 
         Args:
@@ -127,11 +127,11 @@ class BNetClient(OAuth2Session):
         method: str,
         uri: str,
         *,
-        retries: int = 5,
+        retries: Optional[int] = 5,
         params: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, Any]] = None,
         fields: Optional[Dict[str, Any]] = None,
-    ) -> Any:
+    ) -> Union[Dict[str, Any], BytesIO]:
         """Processes the API request into the appropriate headers and parameters
 
         Args:
@@ -291,21 +291,3 @@ class BNetClient(OAuth2Session):
             raise ValueError("Invalid country code")
 
         return f"{locale[:2].lower()}_{locale[-2:].upper()}"
-
-    def user_info(self, locale: Optional[str] = None) -> Any:
-        """Returns the user info
-
-        Args:
-            locale (str): localization to use
-
-        Returns:
-            dict: the json decoded information for the user (user # and battle tag ID)
-
-        Notes:
-            this function requires the BattleNet Client to be use OAuth (Authentication Workflow)
-        """
-        if not self.auth_flow:
-            raise exceptions.BNetClientError("Requires Authorization Code Workflow")
-
-        url = f"{self.auth_host}/oauth/userinfo"
-        return self._get(url, params={"locale": locale})

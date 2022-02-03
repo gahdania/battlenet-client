@@ -11,12 +11,16 @@ class HearthstoneAPI:
         self.client = client
 
     def card_search(
-        self, locale: str, field_values: Optional[List[str]] = None
+        self,
+        locale: str,
+        game_mode: Optional[str] = "constructed",
+        field_values: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
         """Searches for cards that match `field_values'
 
         Args:
             locale (str): locale to use with the API
+            game_mode (str): the game mode for the cards, default is 'constructed'
             field_values (dict): search criteria, as key/value pairs
                 For more information for the field names and options:
                 https://develop.battle.net/documentation/hearthstone/game-data-apis
@@ -29,9 +33,11 @@ class HearthstoneAPI:
         """
 
         if field_values:
-            return self.client.search(locale, "cards", field_values)
+            return self.client.search(
+                locale, "cards", fields=field_values, params={"gameMode": game_mode}
+            )
 
-        return self.client.search(locale, "cards")
+        return self.client.search(locale, "cards", params={"gameMode": game_mode})
 
     def card(
         self, locale: str, card_id: str, game_mode: Optional[str] = "constructed"
@@ -59,7 +65,7 @@ class HearthstoneAPI:
         )
 
     def card_back_search(
-        self, locale: str, field_values: Optional[List[str]] = None
+        self, locale: str, field_values: Optional[List[Dict[str, Any]]] = None
     ) -> Dict[str, Any]:
         """Searches for cards that match `field_values'
 
@@ -76,7 +82,7 @@ class HearthstoneAPI:
             HSClientError: when a client other than HSClient is used.
         """
         if field_values:
-            return self.client.search(locale, "cardbacks", field_values)
+            return self.client.search(locale, "cardbacks", fields=field_values)
 
         return self.client.search(locale, "cardbacks")
 
@@ -95,7 +101,9 @@ class HearthstoneAPI:
         """
         return self.client.game_data(locale, "cardbacks", card_back_id)
 
-    def card_deck(self, locale, field_values: List[str]) -> Dict[str, Any]:
+    def card_deck(
+        self, locale, field_values: Optional[List[Dict[str, Any]]]
+    ) -> Dict[str, Any]:
         """Searches for cards that match `field_values'
 
         Args:

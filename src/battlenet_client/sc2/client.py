@@ -17,11 +17,12 @@ Disclaimer:
 import importlib
 from decouple import config
 
+from typing import Optional, List, Dict, Any
+
 from battlenet_client.bnet.client import BNetClient
 from battlenet_client.bnet.constants import SC2
 
-
-MODULES = ["account", "ladder", "legacy", "profile", "resources", "sc2"]
+from constants import MODULES
 
 
 class SC2Client(BNetClient):
@@ -40,12 +41,12 @@ class SC2Client(BNetClient):
 
     def __init__(
         self,
-        region,
+        region: str,
         *,
-        scope=None,
-        redirect_uri=None,
-        client_id=None,
-        client_secret=None,
+        scope: Optional[List[str]] = None,
+        redirect_uri: Optional[str] = None,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
     ):
 
         if not client_id:
@@ -63,16 +64,10 @@ class SC2Client(BNetClient):
             redirect_uri=redirect_uri,
         )
 
-        # load the API endpoints programmatically
-        for mod_name in MODULES:
-            mod = importlib.import_module(f"battlenet_client.sc2.{mod_name}")
-            for cls_name in dir(mod):
-                if not cls_name.startswith("__") and isinstance(
-                    getattr(mod, cls_name), type
-                ):
-                    setattr(self, mod_name, getattr(mod, cls_name)(self))
+    def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
 
-    def game_data(self, locale, *args, **kwargs):
+        kwargs["params"]["locale"] = self.localize(locale)
+
         if args[0].startswith("https"):
             uri = args[0]
         else:
@@ -80,7 +75,10 @@ class SC2Client(BNetClient):
 
         return self._get(uri, **kwargs)
 
-    def community(self, locale, *args, **kwargs):
+    def community(self, locale: str, *args, **kwargs):
+
+        kwargs["params"]["locale"] = self.localize(locale)
+
         if args[0].startswith("https"):
             uri = args[0]
         else:

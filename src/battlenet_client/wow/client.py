@@ -5,7 +5,7 @@ There are two flavors of client, one implements the client credential workflow, 
 to be the most common.  The other implements the user authorization workflow
 
 Examples:
-    > from battlenet_client.wow import Client
+    > from battlenet_client.wow import WoWClient
     > client = Client(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
 
 Disclaimer:
@@ -14,18 +14,20 @@ Disclaimer:
 
 .. moduleauthor:: David "Gahd" Couples <gahdania@gahd.io>
 """
-from typing import List, Optional, Any, Dict, Union
+from typing import List, Optional, Any, Dict, Union, Tuple
+
+from io import BytesIO
 
 import importlib
 
-from battlenet_client.bnet.client import Client as BattleNetClient
+from battlenet_client.bnet.client import BNetClient
 from battlenet_client.bnet.constants import WOW
 
-from exceptions import ClientError
-from constants import MODULES
+from .exceptions import WoWClientError
+from .constants import MODULES
 
 
-class Client(BattleNetClient):
+class WoWClient(BNetClient):
     """Defines the client workflow class for the World of Warcraft API
 
     Args:
@@ -89,10 +91,12 @@ class Client(BattleNetClient):
                 ):
                     setattr(self, mod_name, getattr(mod, cls_name)(self))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.release} {self.tag}"
 
-    def game_data(self, locale: str, namespace: str, *args: Union[str, int]) -> Any:
+    def game_data(
+        self, locale: str, namespace: str, *args: Union[str, int]
+    ) -> Dict[str, Any]:
         """Used to retrieve data from the source data APIs
 
         Args:
@@ -121,7 +125,7 @@ class Client(BattleNetClient):
             namespace (str): namespace the API requires, example: static
 
         Returns:
-            dict: data returned by the API
+            dict: data returned by the   API
         """
         if isinstance(args[0], str) and args[0].startswith("http"):
             uri = args[0]
@@ -147,7 +151,7 @@ class Client(BattleNetClient):
             dict: data returned by the API
         """
         if not self.auth_flow:
-            raise ClientError("Requires Authorization Workflow")
+            raise WoWClientError("Requires Authorization Workflow")
 
         if isinstance(args[0], str) and args[0].startswith("http"):
             uri = args[0]
@@ -158,7 +162,9 @@ class Client(BattleNetClient):
             uri, params={"namespace": getattr(self, namespace), "locale": locale}
         )
 
-    def media_data(self, locale: str, namespace: str, *args: Union[str, int]) -> Any:
+    def media_data(
+        self, locale: str, namespace: str, *args: Union[str, int]
+    ) -> Union[Dict[str, Any], BytesIO]:
         """Used to retrieve media data including URLs for them
 
         Args:
@@ -177,7 +183,7 @@ class Client(BattleNetClient):
         )
 
     def search(
-        self, locale: str, namespace: str, document: str, fields: Dict[str, Any]
+        self, locale: str, namespace: str, document: str, fields: List[Dict[str, Any]]
     ) -> Any:
         """Used to perform searches where available
 
@@ -199,7 +205,7 @@ class Client(BattleNetClient):
         )
 
     @staticmethod
-    def currency_convertor(value):
+    def currency_convertor(value: int) -> Tuple[int, int, int]:
         """Returns the value into gold, silver and copper
 
         Args:

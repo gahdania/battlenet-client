@@ -14,6 +14,7 @@ Disclaimer:
 
 .. moduleauthor:: David "Gahd" Couples <gahdania@gahd.io>
 """
+from typing import List, Optional, Any, Dict, Tuple
 import importlib
 from decouple import config
 
@@ -39,13 +40,13 @@ class D3Client(BNetClient):
 
     def __init__(
         self,
-        region,
+        region: str,
         *,
-        scope=None,
-        redirect_uri=None,
-        client_id=None,
-        client_secret=None,
-    ):
+        scope: Optional[List[str]] = None,
+        redirect_uri: Optional[str] = None,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+    ) -> None:
 
         if not client_id:
             client_id = config("CLIENT_ID")
@@ -71,7 +72,7 @@ class D3Client(BNetClient):
                 ):
                     setattr(self, mod_name, getattr(mod, cls_name)(self))
 
-    def game_data(self, locale, *args, **kwargs):
+    def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
         if args[0].startswith("https"):
             uri = args[0]
         else:
@@ -81,7 +82,7 @@ class D3Client(BNetClient):
 
         return self._get(uri, **kwargs)
 
-    def community(self, locale, *args, **kwargs):
+    def community(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
         if args[0].startswith("https"):
             uri = args[0]
         else:
@@ -89,11 +90,11 @@ class D3Client(BNetClient):
         kwargs["params"]["locale"] = self.localize(locale)
         return self._get(uri, **kwargs)
 
-    def profile_api(self, locale, *args, **kwargs):
+    def profile_api(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
         if args[0].startswith("https"):
             uri = args[0]
         else:
             uri = f"{self.api_host}/d3/profile/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
         kwargs["params"]["locale"] = self.localize(locale)
-        return self.get(uri, **kwargs)
+        return self._get(uri, **kwargs)

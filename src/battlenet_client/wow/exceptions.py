@@ -4,7 +4,7 @@ class WoWError(Exception):
     pass
 
 
-class ClientError(WoWError):
+class WoWClientError(WoWError):
     """Exception used when using the wrong client, ie using Hearthstone's
     client with the WoW APIs, or when using the client credential workflow
     instead of the authorization workflow for certain APIs"""

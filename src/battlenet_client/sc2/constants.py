@@ -4,4 +4,4 @@ EU = 2
 APAC = 3  # Korea and Taiwan
 CN = 5
 
-MODULES = ("account", "ladder", "legacy", "profile", "resources", "sc2")
+MODULES = {"noncn": ("community", "game_data"), "cn": ("community_cn", "game_data")}

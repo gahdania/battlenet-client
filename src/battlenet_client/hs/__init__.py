@@ -1,1 +1,1 @@
-from client import HSClient
+from .client import HSClient

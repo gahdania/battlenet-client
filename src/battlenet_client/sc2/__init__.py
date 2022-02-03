@@ -1,1 +1,1 @@
-from client import SC2Client
+from .client import SC2Client

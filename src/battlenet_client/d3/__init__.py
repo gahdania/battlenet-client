@@ -1,1 +1,1 @@
-from client import D3Client
+from .client import D3Client
