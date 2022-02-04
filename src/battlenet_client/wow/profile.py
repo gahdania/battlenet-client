@@ -569,7 +569,7 @@ class CharacterReputations:
         )
 
 
-class CharacterSoulbinds:
+class CharacterSoulBinds:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
