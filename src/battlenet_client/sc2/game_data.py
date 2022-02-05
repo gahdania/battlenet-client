@@ -8,6 +8,8 @@ class LeagueData:
     def __init__(self, client: "SC2Client") -> None:
         self.client = client
 
+    class_name = "league_data"
+
     def league_data(
         self, locale: str, season_id: str, queue_id: str, team_type: str, league_id: str
     ) -> Dict[str, Any]:

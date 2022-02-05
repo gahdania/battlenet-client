@@ -1,6 +1,8 @@
-"""BattleNet Clients handle the processing on the requests with the Developer Portal API
+"""Generates the final Battle.net REST API requests
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+
+Classes:
+    BNetClient
 """
 import importlib
 from typing import Optional, Any, Dict, Tuple, List, Union
@@ -14,7 +16,7 @@ import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from . import constants
+from .. import constants
 from . import exceptions
 
 
@@ -24,10 +26,10 @@ class BNetClient(OAuth2Session):
     Args:
         region (str): region abbreviation for use with the APIs
         game (dict): the game for the request
-        client_id (str): the client ID from the developer portal
-        client_secret (str): the client secret from the developer portal
 
     Keyword Args:
+        client_id (str): the client ID from the developer portal
+        client_secret (str): the client secret from the developer portal
         scope (list, optional): the scope or scopes to use during the endpoints that require the Web Application Flow
         redirect_uri (str, optional): the URI to return after a successful authentication between the user and Blizzard
 
@@ -88,6 +90,21 @@ class BNetClient(OAuth2Session):
             super().__init__(
                 client_id=client_id, scope=scope, redirect_uri=redirect_uri
             )
+
+            mod = importlib.import_module("battlenet_client.oauth")
+            if self.tag == "cn":
+                setattr(
+                    self,
+                    getattr(mod, "BNetOauthCN").__class__name__,
+                    getattr(mod, "BNetOauthCN")(self),
+                )
+            else:
+                setattr(
+                    self,
+                    getattr(mod, "BNetOauth").__class__name,
+                    getattr(mod, "BNetOauth")(self),
+                )
+
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
@@ -106,6 +123,11 @@ class BNetClient(OAuth2Session):
         Args:
             uri (str): the URI to request
 
+        Keyword Args:
+            params (dict): query string parameters for the API
+            headers (dict, optional): the headers to add to the request
+            fields (dict, optional): the fields and values for searches
+
         Returns:
               dict:  The response from the Battle.net API
         """
@@ -116,6 +138,11 @@ class BNetClient(OAuth2Session):
 
         Args:
             uri (str): the URI to request
+
+        Keyword Args:
+            params (dict): query string parameters for the API
+            headers (dict, optional): the headers to add to the request
+            fields (dict, optional): the fields and values for searches
 
         Returns:
               dict:  The response from the Battle.net API
@@ -128,7 +155,7 @@ class BNetClient(OAuth2Session):
         uri: str,
         *,
         retries: Optional[int] = 5,
-        params: Optional[Dict[str, Any]] = None,
+        params: Dict[str, Any] = None,
         headers: Optional[Dict[str, Any]] = None,
         fields: Optional[Dict[str, Any]] = None,
     ) -> Union[Dict[str, Any], BytesIO]:
@@ -140,9 +167,12 @@ class BNetClient(OAuth2Session):
 
         Keyword Args:
             retries (int, optional): the number of retries at getting to the API endpoint (default is 5)
-            params (dict, optional): dict of the parameters to be passed via query string to the endpoint
+            params (dict): dict of the parameters to be passed via query string to the endpoint
             headers (dict, optional):  Additional headers to sent with the request
             fields (dict, optional): search parameters to form
+
+        Returns:
+          dict:  The response from the Battle.net API
         """
 
         if not params:
@@ -160,14 +190,8 @@ class BNetClient(OAuth2Session):
             except requests.exceptions.HTTPError as error:
                 if error.response.status_code == 429:
                     sleep(1.0)
-
-                if error.response.status_code == 404:
-                    raise exceptions.BNetDataNotFoundError(error)
-
-                if error.response.status_code == 403:
-                    raise exceptions.BNetAccessForbiddenError(error)
-
-                raise error
+                else:
+                    raise error
             else:
                 if raw_data.headers["content-type"].startswith("application/json"):
                     return raw_data.json()
@@ -208,6 +232,11 @@ class BNetClient(OAuth2Session):
         return unquote(authorization_url)
 
     def fetch_token(self, **kwargs) -> None:
+        """Retrieves the OAUTH token from API
+
+        Returns:
+            None
+        """
         token_url = f"{self.auth_host}/oauth/token"
         super().fetch_token(
             token_url=token_url,
@@ -215,79 +244,3 @@ class BNetClient(OAuth2Session):
             client_secret=self._client_secret,
             **kwargs,
         )
-
-    @staticmethod
-    def currency_convertor(value: int) -> Tuple[int, int, int]:
-        """Returns the value into gold, silver and copper values
-
-        Args:
-            value (int): the value to be converted
-
-        Returns:
-            tuple: gold, silver and copper values
-        """
-        if value < 0:
-            raise ValueError("Value must be zero or a positive value")
-
-        return value // 10000, (value % 10000) // 100, value % 100
-
-    @staticmethod
-    def slugify(value: str) -> str:
-        """Returns the 'slugified' string
-
-        Args:
-            value (str): the string to be converted into a slug
-
-        Returns:
-            (str): the slug of :value:
-        """
-        return value.lower().replace("'", "").replace(" ", "-")
-
-    @staticmethod
-    def localize(locale: str) -> str:
-        """Returns the standardized locale
-
-        Args:
-            locale (str): the locality to be standardized
-
-        Returns:
-            (str): the locale in the format of "<lang>_<COUNTRY>"
-
-        Raise:
-            TypeError: when locale is not a string
-            ValueError: when the lang and country are not in the given lists
-        """
-        if not isinstance(locale, str):
-            raise TypeError("Locale must be a string")
-
-        if locale[:2].lower() not in (
-            "en",
-            "es",
-            "pt",
-            "fr",
-            "ru",
-            "de",
-            "it",
-            "ko",
-            "zh",
-        ):
-            raise ValueError("Invalid language code")
-
-        if locale[-2:].lower() not in (
-            "us",
-            "mx",
-            "br",
-            "gb",
-            "es",
-            "fr",
-            "ru",
-            "de",
-            "pt",
-            "it",
-            "kr",
-            "tw",
-            "cn",
-        ):
-            raise ValueError("Invalid country code")
-
-        return f"{locale[:2].lower()}_{locale[-2:].upper()}"

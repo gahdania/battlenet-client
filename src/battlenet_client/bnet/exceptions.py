@@ -1,6 +1,9 @@
-"""Defines the exceptions for the package
+"""Defines exceptions related to the Battle.net OAuth API wrappers
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+Classes:
+    BNetError
+    BNetRegionNotFoundError
+    BNetClientError
 """
 
 
@@ -12,18 +15,6 @@ class BNetError(Exception):
 
 class BNetRegionNotFoundError(BNetError):
     """Error raised when an invalid region code is detected"""
-
-    pass
-
-
-class BNetDataNotFoundError(BNetError):
-    """Error raised when the Battle.net API returns a 404"""
-
-    pass
-
-
-class BNetAccessForbiddenError(BNetError):
-    """Error raised with the Battle.net API returns a 403"""
 
     pass
 

@@ -18,13 +18,14 @@ from typing import List, Optional, Any, Dict, Union, Tuple
 
 from io import BytesIO
 
-import importlib
+from importlib import import_module
 
 from battlenet_client.bnet.client import BNetClient
-from battlenet_client.bnet.constants import WOW
+from battlenet_client.constants import WOW
 
 from .exceptions import WoWClientError
 from .constants import MODULES
+from ..misc import slugify
 
 
 class WoWClient(BNetClient):
@@ -83,10 +84,14 @@ class WoWClient(BNetClient):
             self.profile = f"profile-{self.release}-{self.tag}"
 
         # load the API endpoints programmatically
-        for mod_name, classes in MODULES[self.release].items():
-            mod = importlib.import_module(f"battlenet_client.wow.{mod_name}")
-            for cls in classes:
-                setattr(self, cls.lower(), getattr(mod, cls)(self))
+        mod = import_module(f"battlenet_client.wow.game_data")
+        for cls in MODULES[self.release]["game_data"]:
+            setattr(self, getattr(mod, cls).class_name, getattr(mod, cls)(self))
+
+        if self.auth_flow:
+            mod = import_module(f"battlenet_client.wow.profile")
+            for cls in MODULES[self.release]["profile"]:
+                setattr(self, getattr(mod, cls).class_name, getattr(mod, cls)(self))
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.release} {self.tag}"
@@ -171,7 +176,7 @@ class WoWClient(BNetClient):
         Returns:
             dict: data returned by the API
         """
-        join_args = [self.slugify(str(arg)) for arg in args if arg is not None]
+        join_args = [slugify(str(arg)) for arg in args if arg is not None]
         uri = f"{self.api_host}/data/wow/media/{'/'.join(join_args)}"
         return self._get(
             uri,
@@ -193,7 +198,7 @@ class WoWClient(BNetClient):
         Returns:
             dict: data returned by the API
         """
-        uri = f"{self.api_host}/data/wow/search/{self.slugify(document)}"
+        uri = f"{self.api_host}/data/wow/search/{slugify(document)}"
         return self._get(
             uri,
             params={"locale": locale},

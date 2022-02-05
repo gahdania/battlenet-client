@@ -1,17 +1,19 @@
-from typing import Any, TYPE_CHECKING, Dict, Optional
+from typing import Any, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
     from client import SC2Client
 
-from exceptions import SC2ClientError, SC2RegionError
+from exceptions import SC2RegionError
 
 
-class CNProfileAPI:
+class CNProfile:
     def __init__(self, client: "SC2Client") -> None:
         if client.tag != "cn":
             raise SC2RegionError("Invalid region for API")
 
         self.client = client
+
+    class_name = "profile"
 
     def profile(
         self, locale: str, profile_id: str, region: str, name: str
@@ -43,24 +45,28 @@ class CNProfileAPI:
         )
 
 
-class CNLadderAPI:
+class CNLadder:
     def __init__(self, client: "SC2Client") -> None:
         if client.tag != "cn":
             raise SC2RegionError("Invalid region for API")
 
         self.client = client
+
+    class_name = "ladder"
 
     def ladder(self, locale: str, profile_id: str) -> Dict[str, Any]:
 
         return self.client.community(locale, "ladder", profile_id)
 
 
-class CNDataResourceAPI:
+class CNDataResource:
     def __init__(self, client: "SC2Client") -> None:
         if client.tag != "cn":
             raise SC2RegionError("Invalid region for API")
 
         self.client = client
+
+    class_name = "data_resource"
 
     def achievements(self, locale: str) -> Dict[str, Any]:
         """Returns the achievements for Starcraft II

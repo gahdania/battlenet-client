@@ -1,9 +1,18 @@
-"""Defines the constants used with the package
+"""Generates package wide constants
 
-.. moduleauthor: David "Gahd" Couples <gahdania@gahd.io>
+Constants:
+    NORTH_AMERICA
+    EUROPE
+    TAIWAN
+    KOREA
+    CHINA
+    WOW
+    D3
+    SC2
+    BNET
 """
 
-UNITED_STATES = "us"
+NORTH_AMERICA = "us"
 EUROPE = "eu"
 TAIWAN = "tw"
 KOREA = "kr"
@@ -13,5 +22,4 @@ WOW = {"abbrev": "wow", "name": "World of Warcraft"}
 D3 = {"abbrev": "d3", "name": "Diablo III"}
 SC2 = {"abbrev": "sc2", "name": "Starcraft II"}
 HS = {"abbrev": "hs", "name": "Heartsthone"}
-OW = {"abbrev": "ow", "name": "Overwatch"}
 BNET = {"abbrev": "bnet", "name": "Battle.net Data"}

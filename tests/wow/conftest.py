@@ -1,7 +1,7 @@
 import pytest
 
 from battlenet_client.wow import WoWClient
-from battlenet_client.bnet.constants import UNITED_STATES
+from battlenet_client.constants import UNITED_STATES
 
 
 @pytest.fixture

@@ -20,9 +20,10 @@ from decouple import config
 from typing import Optional, List, Dict, Any
 
 from battlenet_client.bnet.client import BNetClient
-from battlenet_client.bnet.constants import SC2
+from battlenet_client.constants import SC2
 
-from constants import MODULES
+from .constants import MODULES
+from ..misc import localize
 
 
 class SC2Client(BNetClient):
@@ -64,9 +65,20 @@ class SC2Client(BNetClient):
             redirect_uri=redirect_uri,
         )
 
+        # load the API endpoints programmatically
+        if self.tag == "cn":
+            mod_group = "cn"
+        else:
+            mod_group = "noncn"
+
+        for mod_name, classes in MODULES[mod_group].items():
+            mod = importlib.import_module(f"battlenet_client.sc2.{mod_name}")
+            for cls in classes:
+                setattr(self, getattr(mod, cls).class_name, getattr(mod, cls)(self))
+
     def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
 
-        kwargs["params"]["locale"] = self.localize(locale)
+        kwargs["params"]["locale"] = localize(locale)
 
         if args[0].startswith("https"):
             uri = args[0]
@@ -77,7 +89,7 @@ class SC2Client(BNetClient):
 
     def community(self, locale: str, *args, **kwargs):
 
-        kwargs["params"]["locale"] = self.localize(locale)
+        kwargs["params"]["locale"] = localize(locale)
 
         if args[0].startswith("https"):
             uri = args[0]

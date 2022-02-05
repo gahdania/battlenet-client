@@ -5,7 +5,7 @@ Notes:
 import pytest
 
 from battlenet_client.bnet.client import BattleNetClient
-from battlenet_client.bnet.constants import UNITED_STATES, WOW
+from battlenet_client.constants import UNITED_STATES, WOW
 from decouple import config
 
 from battlenet_client.wow import WoWClientError, WoWReleaseError

@@ -1,4 +1,4 @@
-from typing import Optional, Any, TYPE_CHECKING, Dict, List
+from typing import Optional, Any, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
     from client import WoWClient
@@ -9,6 +9,8 @@ from .exceptions import WoWReleaseError
 class Account:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "account"
 
     def account_profile_summary(self, locale: str) -> Dict[str, Any]:
         """Accesses a summary of the account
@@ -66,6 +68,8 @@ class CharacterAchievements:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_achievement"
+
     def achievement_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -118,6 +122,8 @@ class CharacterAppearance:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_appearance"
+
     def appearance_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -145,6 +151,8 @@ class CharacterAppearance:
 class CharacterCollections:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "character_collections"
 
     def collections(
         self,
@@ -194,6 +202,8 @@ class CharacterEncounters:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_encounters"
+
     def encounters(
         self,
         locale: str,
@@ -242,6 +252,8 @@ class CharacterEquipment:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_equipment"
+
     def equipment_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -269,6 +281,8 @@ class CharacterEquipment:
 class CharacterHunterPets:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "character_hunter_pets"
 
     def hunter_pets_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -298,6 +312,8 @@ class CharacterMedia:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_media"
+
     def media_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -325,6 +341,8 @@ class CharacterMedia:
 class CharacterMythicKeystone:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "character_mythic_keystone"
 
     def mythic_keystone(
         self,
@@ -372,6 +390,8 @@ class CharacterProfessions:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_profession"
+
     def professions_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -399,6 +419,8 @@ class CharacterProfessions:
 class CharacterProfile:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "character_profile"
 
     def profile(
         self, locale: str, realm_name: str, character_name: str, status: bool = False
@@ -459,6 +481,8 @@ class CharacterPVP:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_pvp"
+
     def pvp(
         self,
         locale: str,
@@ -504,6 +528,8 @@ class CharacterQuests:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_quests"
+
     def quests(
         self, locale: str, realm_name: str, character_name: str, completed: bool = False
     ) -> Dict[str, Any]:
@@ -545,6 +571,8 @@ class CharacterReputations:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_reputation"
+
     def reputations_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -572,6 +600,8 @@ class CharacterReputations:
 class CharacterSoulBinds:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "character_soul_binds"
 
     def soulbinds(
         self, locale: str, realm_name: str, character_name: str
@@ -601,6 +631,8 @@ class CharacterSpecializations:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_specialization"
+
     def specializations_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -628,6 +660,8 @@ class CharacterSpecializations:
 class CharacterStatistics:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "character_statistics"
 
     def statistics_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -657,6 +691,8 @@ class CharacterTitles:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    class_name = "character_titles"
+
     def title_summary(
         self, locale: str, realm_name: str, character_name: str
     ) -> Dict[str, Any]:
@@ -684,6 +720,8 @@ class CharacterTitles:
 class Guild:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    class_name = "guild"
 
     def guild(self, locale: str, realm_name: str, guild_name: str) -> Dict[str, Any]:
         """Returns a single guild by its name and realm.
