@@ -83,10 +83,18 @@ class WoWClient(BNetClient):
             self.profile = f"profile-{self.release}-{self.tag}"
 
         # load the API endpoints programmatically
-        for mod_name, classes in MODULES[self.release].items():
-            mod = importlib.import_module(f"battlenet_client.wow.{mod_name}")
+        for classes in MODULES[self.release]["game_data"]:
+            mod = importlib.import_module(f"battlenet_client.wow.game_data")
             for cls in classes:
-                setattr(self, cls.lower(), getattr(mod, cls)(self))
+                setattr(self, getattr(mod, cls).__class_name, getattr(mod, cls)(self))
+
+        if self.auth_flow:
+            for classes in MODULES[self.release]["profile"]:
+                mod = importlib.import_module(f"battlenet_client.wow.profile")
+                for cls in classes:
+                    setattr(
+                        self, getattr(mod, cls).__class_name, getattr(mod, cls)(self)
+                    )
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.release} {self.tag}"

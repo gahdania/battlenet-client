@@ -6,9 +6,11 @@ if TYPE_CHECKING:
 from exceptions import SC2ClientError
 
 
-class ProfileAPI:
+class Profile:
     def __init__(self, client: "SC2Client") -> None:
         self.client = client
+
+    __class_name = "profile"
 
     def static(self, locale: str, region_id: int) -> Dict[str, Any]:
 
@@ -56,9 +58,11 @@ class ProfileAPI:
         )
 
 
-class LadderAPI:
+class Ladder:
     def __init__(self, client: "SC2Client") -> None:
         self.client = client
+
+    __class_name = "ladder"
 
     def grandmaster(self, locale: str, region_id: int) -> Dict[str, Any]:
         return self.client.community(locale, "ladder", "grandmaster", region_id)
@@ -67,9 +71,11 @@ class LadderAPI:
         return self.client.community(locale, "ladder", "season", region_id)
 
 
-class AccountAPI:
+class Account:
     def __init__(self, client: "SC2Client") -> None:
         self.client = client
+
+    __class_name = "account"
 
     def player(self, locale: str, account_id: str) -> Dict[str, Any]:
         """Returns the player data for the provided `account_id`.
@@ -87,9 +93,11 @@ class AccountAPI:
         return self.client.community(locale, "player", account_id)
 
 
-class LegacyAPI:
+class Legacy:
     def __init__(self, client: "SC2Client") -> None:
         self.client = client
+
+    __class_name = "legacy"
 
     def profile(
         self, locale: str, region_id: int, realm_id: int, profile_id: int

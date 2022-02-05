@@ -20,7 +20,7 @@ from typing import Optional, Any, Dict, List
 from battlenet_client.bnet.client import BNetClient
 from battlenet_client.bnet.constants import HS
 
-from constants import MODULES
+from .constants import MODULES
 
 
 class HSClient(BNetClient):
@@ -52,7 +52,11 @@ class HSClient(BNetClient):
                 if not cls_name.startswith("__") and isinstance(
                     getattr(mod, cls_name), type
                 ):
-                    setattr(self, mod_name, getattr(mod, cls_name)(self))
+                    setattr(
+                        self,
+                        getattr(mod, cls_name).__class_name,
+                        getattr(mod, cls_name)(self),
+                    )
 
     def __repr__(self):
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.tag}"

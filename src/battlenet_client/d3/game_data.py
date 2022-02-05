@@ -4,9 +4,11 @@ if TYPE_CHECKING:
     from client import D3Client
 
 
-class GameDataAPI:
+class GameData:
     def __init__(self, client: "D3Client") -> None:
         self.client = client
+
+    __class_name = "game_data"
 
     def season(self, locale: str, season_id: Optional[int] = None) -> Dict[str, Any]:
         if season_id:

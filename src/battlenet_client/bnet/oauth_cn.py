@@ -41,6 +41,8 @@ class BNetOauth(BNetClient):
             redirect_uri=redirect_uri,
         )
 
+    __class_name = "oauth"
+
     def __str__(self) -> str:
         return f"{self.game['name']} API Client"
 

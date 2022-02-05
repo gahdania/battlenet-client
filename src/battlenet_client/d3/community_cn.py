@@ -6,9 +6,11 @@ if TYPE_CHECKING:
 from urllib.parse import quote
 
 
-class CommunityCNAPI:
+class CommunityCN:
     def __init__(self, client: "D3Client") -> None:
         self.client = client
+
+    __class_name = "community"
 
     def act(self, locale: str, act_id: Optional[int] = None) -> Dict[str, Any]:
 

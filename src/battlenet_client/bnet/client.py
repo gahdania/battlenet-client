@@ -88,6 +88,30 @@ class BNetClient(OAuth2Session):
             super().__init__(
                 client_id=client_id, scope=scope, redirect_uri=redirect_uri
             )
+
+            if self.tag == "cn":
+                mod = importlib.import_module("battlenet_client.oauth_cn")
+                for cls_name in dir(mod):
+                    if not cls_name.startswith("__") and isinstance(
+                        getattr(mod, cls_name), type
+                    ):
+                        setattr(
+                            self,
+                            getattr(mod, cls_name).__class__name__,
+                            getattr(mod, cls_name)(self),
+                        )
+            else:
+                mod = importlib.import_module("battlenet_client.oauth")
+                for cls_name in dir(mod):
+                    if not cls_name.startswith("__") and isinstance(
+                        getattr(mod, cls_name), type
+                    ):
+                        setattr(
+                            self,
+                            getattr(mod, cls_name).__class__name,
+                            getattr(mod, cls_name)(self),
+                        )
+
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"

@@ -6,15 +6,17 @@ if TYPE_CHECKING:
     from client import HSClient
 
 
-class HearthstoneAPI:
+class Hearthstone:
     def __init__(self, client: "HSClient") -> None:
         self.client = client
+
+    __class_name = "game"
 
     def card_search(
         self,
         locale: str,
         game_mode: Optional[str] = "constructed",
-        field_values: Optional[List[str]] = None,
+        field_values: Optional[List[Dict[str, Any]]] = None,
     ) -> Dict[str, Any]:
         """Searches for cards that match `field_values'
 

@@ -16,6 +16,8 @@ class Achievement:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "achievement"
+
     def achievement_category(
         self, locale: str, category_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -75,6 +77,8 @@ class Achievement:
 class Auction:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "auction"
 
     def auction(
         self,
@@ -144,6 +148,8 @@ class Azerite:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "azerite"
+
     def azerite_essence(
         self, locale: str, essence_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -194,6 +200,8 @@ class ConnectedRealm:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "connected_realm"
+
     def connected_realm(
         self, locale: str, connected_realm_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -234,6 +242,8 @@ class ConnectedRealm:
 class Covenant:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "covennant"
 
     def covenant(
         self, locale: str, covenant_id: Optional[int] = None
@@ -303,6 +313,8 @@ class Covenant:
 class Creature:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "creature"
 
     def creature_family(
         self, locale: str, family_id: Optional[int] = None
@@ -393,6 +405,8 @@ class GuildCrest:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "guild_crest"
+
     def guild_crest_components_index(self, locale: str) -> Dict[str, Any]:
         """Returns an index of guild crest components.
 
@@ -436,6 +450,8 @@ class GuildCrest:
 class Item:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "item"
 
     def item_class(self, locale: str, class_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of item classes, or a specific item class
@@ -526,6 +542,8 @@ class Item:
 class Journal:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "journal"
 
     def journal_expansion(
         self, locale: str, expansion_id: Optional[int] = None
@@ -618,6 +636,8 @@ class Media:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "media"
+
     def media_search(
         self, locale: str, field_values: List[Dict[str, Any]]
     ) -> Dict[str, Any]:
@@ -636,6 +656,8 @@ class Media:
 class ModifiedCrafting:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "modified_crafting"
 
     def modified_crafting(self, locale: str) -> Dict[str, Any]:
         """Returns an index of modified crafting recipes
@@ -695,6 +717,8 @@ class Mount:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "mount"
+
     def mount(self, locale: str, mount_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of mounts, or a specific mount
 
@@ -729,6 +753,8 @@ class MythicKeystoneAffix:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "mk_affix"
+
     def mythic_keystone_affix(
         self, locale: str, affix_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -761,6 +787,8 @@ class MythicKeystoneAffix:
 class MythicKeystoneDungeon:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "mk_dungeon"
 
     def mythic_keystone_dungeon(
         self, locale: str, dungeon_id: Optional[int] = None
@@ -839,6 +867,8 @@ class MythicKeystoneLeaderboard:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "mk_leaderboard"
+
     def mythic_keystone_leader_board(
         self,
         locale: str,
@@ -883,6 +913,8 @@ class MythicRaid:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "mythic_raid"
+
     def mythic_raid_leaderboard(
         self, locale: str, raid_name: str, faction: str
     ) -> Dict[str, Any]:
@@ -909,6 +941,8 @@ class MythicRaid:
 class Pet:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "pet"
 
     def pet(self, locale: str, pet_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of pets, or the data about the specified pet
@@ -967,6 +1001,8 @@ class PlayableClass:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "playable_class"
+
     def playable_class(
         self, locale: str, class_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -1014,6 +1050,8 @@ class PlayableRace:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "playable_race"
+
     def playable_race(
         self, locale: str, race_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -1034,6 +1072,8 @@ class PlayableRace:
 class PlayableSpec:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "playable_spec"
 
     def playable_spec(
         self, locale: str, spec_id: Optional[int] = None
@@ -1074,6 +1114,8 @@ class Power:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "power"
+
     def power_type(self, locale: str, power_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of power types, or a specific power type
 
@@ -1092,6 +1134,8 @@ class Power:
 class Profession:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "profession"
 
     def profession(
         self, locale: str, profession_id: Optional[int] = None
@@ -1167,6 +1211,8 @@ class PvPSeason:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "pvp_season"
+
     def pvp_season(
         self, locale: str, season_id: Optional[int] = None
     ) -> Dict[str, Any]:
@@ -1228,6 +1274,8 @@ class PvPTier:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "pvp_tier"
+
     def pvp_tier(self, locale: str, tier_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of pvp tier, or a specific pvp tier
 
@@ -1258,6 +1306,8 @@ class PvPTier:
 class Quest:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "quest"
 
     def quest(self, locale: str, quest_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of quests, or a specific quest
@@ -1332,6 +1382,8 @@ class Realm:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "realm"
+
     def realm(self, locale: str, realm_name: Optional[str] = None) -> Dict[str, Any]:
         """Returns an index of realms, or a specific realm
 
@@ -1367,6 +1419,8 @@ class Region:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "region"
+
     def region(self, locale: str, region_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of regions, or a specific region
 
@@ -1385,6 +1439,8 @@ class Region:
 class Reputation:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "reputation"
 
     def reputation_faction(
         self, locale: str, faction_id: Optional[int] = None
@@ -1424,6 +1480,8 @@ class Reputation:
 class Spell:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "spell"
 
     def spell(self, locale: str, spell_id: int) -> Dict[str, Any]:
         """Returns an index of spells, or a specific spell
@@ -1468,6 +1526,8 @@ class Talent:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "talent"
+
     def talent(self, locale: str, talent_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of spells, or a specific spell
 
@@ -1502,6 +1562,8 @@ class Talent:
 class TechTalent:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "tech_talent"
 
     def tech_talent_tree(
         self, locale: str, tree_id: Optional[int] = None
@@ -1550,6 +1612,8 @@ class Title:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
 
+    __class_name = "title"
+
     def title(self, locale: str, title_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of spells, or a specific spell
 
@@ -1568,6 +1632,8 @@ class Title:
 class WoWToken:
     def __init__(self, client: "WoWClient") -> None:
         self.client = client
+
+    __class_name = "wow_token"
 
     def wow_token_index(self, locale: str) -> Dict[str, Any]:
         """Returns the WoW Token index.
