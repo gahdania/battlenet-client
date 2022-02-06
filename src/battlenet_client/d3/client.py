@@ -1,18 +1,12 @@
-"""Defines the client for connected to the World of Warcraft/Classic/TBC Classic
-
-This module contains the client class definitions for accessing World of Warcraft  data.
-There are two flavors of client, one implements the client credential workflow, which happens
-to be the most common.  The other implements the user authorization workflow
+"""Defines the client for connected to the Diablo III API
 
 Examples:
-    > from wow_api import WoWCredentialClient
-    > client = WoWCredentialClient(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
+    > from battlenet_client import d3
+    > client = d3.D3Client(<region>, client_id='<client ID>', client_secret='<client secret>')
 
 Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
-    and any data pertaining thereto
-
-.. moduleauthor:: David "Gahd" Couples <gahdania@gahd.io>
+    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    retrieved from this API.
 """
 from typing import List, Optional, Any, Dict
 import importlib
@@ -21,12 +15,11 @@ from decouple import config
 from battlenet_client.bnet.client import BNetClient
 from battlenet_client.constants import D3
 
-from .constants import MODULES
 from ..misc import localize
 
 
 class D3Client(BNetClient):
-    """Defines the client workflow class for the World of Warcraft
+    """Defines the client workflow class for Diablo III
 
     Args:
         region (str): region abbreviation for use with the s
@@ -64,20 +57,40 @@ class D3Client(BNetClient):
             redirect_uri=redirect_uri,
         )
 
-        # load the  endpoints programmatically
-        for mod_name in MODULES:
-            mod = importlib.import_module(f"battlenet_client.d3.{mod_name}")
-            for cls_name in dir(mod):
-                if not cls_name.startswith("__") and isinstance(
-                    getattr(mod, cls_name), type
-                ):
-                    setattr(
-                        self,
-                        getattr(mod, cls_name).class_name,
-                        getattr(mod, cls_name)(self),
-                    )
+        mod = importlib.import_module(f"battlenet_client.d3.community")
+        if self.tag == "cn":
+            setattr(
+                self,
+                getattr(mod, "CommunityCN").class_name,
+                getattr(mod, "CommunityCN")(self),
+            )
+        else:
+            setattr(
+                self,
+                getattr(mod, "Community").class_name,
+                getattr(mod, "Community")(self),
+            )
+
+        mod = importlib.import_module(f"battlenet_client.d3.game_data")
+        for cls_name in dir(mod):
+            if not cls_name.startswith("__") and isinstance(
+                getattr(mod, cls_name), type
+            ):
+                setattr(
+                    self,
+                    getattr(mod, cls_name).class_name,
+                    getattr(mod, cls_name)(self),
+                )
 
     def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+        """Generates then necessary game data API URI and keyword args for to pasted on to the client get method
+
+        Args:
+            locale (str): the localization to use for the request
+
+        Returns:
+            dict: the resultant JSON decoded dict
+        """
         if args[0].startswith("https"):
             uri = args[0]
         else:
@@ -88,6 +101,14 @@ class D3Client(BNetClient):
         return self._get(uri, **kwargs)
 
     def community(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+        """Generates then necessary community API URI and keyword args for to pasted on to the client get method
+
+        Args:
+            locale (str): the localization to use for the request
+
+        Returns:
+            dict: the resultant JSON decoded dict
+        """
         if args[0].startswith("https"):
             uri = args[0]
         else:
@@ -96,6 +117,14 @@ class D3Client(BNetClient):
         return self._get(uri, **kwargs)
 
     def profile_api(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+        """Generates then necessary profile API URI and keyword args for to pasted on to the client get method
+
+        Args:
+            locale (str): the localization to use for the request
+
+        Returns:
+            dict: the resultant JSON decoded dict
+        """
         if args[0].startswith("https"):
             uri = args[0]
         else:

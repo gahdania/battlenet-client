@@ -2,6 +2,7 @@
 
 Classes:
     BNetOauth
+    BNetOauthCN
 """
 from typing import List, Optional, Any, Dict
 
@@ -47,7 +48,7 @@ class BNetOauth(BNetClient):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
-    def user_info(self, locale: Optional[str] = None) -> Dict[str, Any]:
+    def user_info(self, locale: str) -> Dict[str, Any]:
         """Returns the user info
 
         Args:
@@ -107,7 +108,7 @@ class BNetOauthCN(BNetClient):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
 
-    def user_info(self, locale: Optional[str] = None) -> Dict[str, Any]:
+    def user_info(self, locale: str) -> Dict[str, Any]:
         """Returns the user info
 
         Args:

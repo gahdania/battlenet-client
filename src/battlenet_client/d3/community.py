@@ -1,3 +1,10 @@
+"""Defines the classes that handle the community APIs for Diablo III
+
+Classes:
+    Community
+    CommunityCN
+"""
+
 from typing import Optional, Any, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
@@ -18,31 +25,87 @@ class Community:
         return self.class_name
 
     def act(self, locale: str, act_id: Optional[int] = None) -> Dict[str, Any]:
+        """Returns an index of acts, or the act by ID
 
+        Args:
+            locale (str): localization to use with API
+            act_id (int, optional): the act's ID to retrieve its data
+
+        Returns:
+            dict: the dict containing the list of acts or the details of the specified :act_id:
+        """
         if act_id:
             return self.client.community(locale, "act", act_id)
 
         return self.client.community(locale, "act")
 
-    def artisan(self, locale: str, artisan_name: str) -> Dict[str, Any]:
-        return self.client.community(locale, "artisan", artisan_name)
+    def artisan(self, locale: str, artisan_slug: str) -> Dict[str, Any]:
+        """Returns the artisan by the slug
+
+        Args:
+            locale (str): localization to use with API
+            artisan_slug (str): the slug of the artisan
+
+        Returns:
+            dict: the dict containing data of the artisan
+        """
+        return self.client.community(locale, "artisan", slugify(artisan_slug))
 
     def recipe(
-        self, locale: str, artisan_name: str, recipe_slug: str
+        self, locale: str, artisan_slug: str, recipe_slug: str
     ) -> Dict[str, Any]:
+        """Returns a single recipe by the by slug for the specified artisan
+
+        Args:
+            locale (str): localization to use with API
+            artisan_slug (str): the slug of the artisan
+            recipe_slug (str): the slug of the recipe
+
+        Returns:
+            dict: the dict containing for the recipe
+        """
         return self.client.community(
-            locale, "artisan", artisan_name, "recipe", slugify(recipe_slug)
+            locale, "artisan", slugify(artisan_slug), "recipe", slugify(recipe_slug)
         )
 
     def follower(self, locale: str, follower_slug: str) -> Dict[str, Any]:
+        """Returns the follower by slug
+
+        Args:
+            locale (str): localization to use with API
+            follower_slug (str): the slug of a follower
+
+        Returns:
+            dict: the dict containing for the follower
+        """
         return self.client.community(locale, "follower", slugify(follower_slug))
 
     def character_class(self, locale: str, class_slug: str) -> Dict[str, Any]:
+        """Returns a single character class by slug
+
+        Args:
+            locale (str): localization to use with API
+            class_slug (str): the slug of a character class
+
+        Returns:
+            dict: the dict containing for the character class
+        """
         return self.client.community(locale, "hero", slugify(class_slug))
 
     def api_skill(
         self, locale: str, class_slug: str, skill_slug: str
     ) -> Dict[str, Any]:
+        """Returns a single skill by the by slug for the specified character class
+
+        Args:
+            locale (str): localization to use with API
+            class_slug (str): the slug of a character class
+            skill_slug (str):
+
+        Returns:
+            dict: the dict containing for the skill
+        """
+
         return self.client.community(
             locale,
             "hero",
@@ -52,28 +115,229 @@ class Community:
         )
 
     def item_type(self, locale: str, item_slug: Optional[str] = None) -> Dict[str, Any]:
+        """Returns the index of item types, or a specific item type
+
+        Args:
+            locale (str): localization to use with API
+            item_slug (str, optional): the slug of an item type
+
+        Returns:
+            dict: the dict containing for the item type
+        """
+
         if item_slug:
             return self.client.community(locale, "item-type", slugify(item_slug))
 
         return self.client.community(locale, "item-type")
 
     def item(self, locale: str, item_slug: str) -> Dict[str, Any]:
+        """Returns the item by slug
+
+        Args:
+            locale (str): localization to use with API
+            item_slug (str): the slug of the item
+
+        Returns:
+            dict: the dict containing for the item
+        """
         return self.client.community(locale, "item", item_slug)
 
-    def api_account(self, locale: str, b_tag: str) -> Dict[str, Any]:
-        return self.client.profile_api(locale, f"{quote(b_tag)}/")
+    def api_account(self, locale: str, bnet_tag: str) -> Dict[str, Any]:
+        """Returns the specified account profile
+
+        Args:
+            locale (str): localization to use with API
+            bnet_tag (str): bnet tag of the user
+
+        Returns:
+            dict: the dict containing for the account
+        """
+        return self.client.profile_api(locale, f"{quote(bnet_tag)}/")
 
     def api_hero(
-        self, locale: str, b_tag: str, hero_id: str, category: Optional[str] = None
+        self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
     ) -> Dict[str, Any]:
+        """Returns the follower by slug
+
+        Args:
+            locale (str): localization to use with API
+            bnet_tag (str): BNet tag for the account
+            hero_id (str):  Hero's ID
+            category (str): category to retrieve if specified ('items', 'follower-items')
+
+        Returns:
+            dict: the dict containing for the hero, items, or follower's items
+        """
         if category:
             if category in ("items", "follower-items"):
                 return self.client.profile_api(
-                    locale, quote(b_tag), "hero", hero_id, category
+                    locale, quote(bnet_tag), "hero", hero_id, category
+                )
+            else:
+                raise ValueError(
+                    "Invalid category;  Valid categories are 'items' and 'follower-items'"
+                )
+        else:
+            return self.client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
+
+
+class CommunityCN:
+    def __init__(self, client: "D3Client") -> None:
+        self.client = client
+
+    class_name = "community"
+
+    def act(self, locale: str, act_id: Optional[int] = None) -> Dict[str, Any]:
+        """Returns an index of acts, or the act by ID
+
+        Args:
+            locale (str): localization to use with API
+            act_id (int, optional): the act's ID to retrieve its data
+
+        Returns:
+            dict: the dict containing the list of acts or the details of the specified :act_id:
+        """
+
+        if act_id:
+            return self.client.community(locale, "act", act_id)
+
+        return self.client.community(locale, "act")
+
+    def artisan(self, locale: str, artisan_slug: str) -> Dict[str, Any]:
+        """Returns the artisan by the slug
+
+        Args:
+            locale (str): localization to use with API
+            artisan_slug (str): the slug of the artisan
+
+        Returns:
+            dict: the dict containing data of the artisan
+        """
+        return self.client.community(locale, "artisan", artisan_slug)
+
+    def recipe(
+        self, locale: str, artisan_slug: str, recipe_slug: str
+    ) -> Dict[str, Any]:
+        """Returns a single recipe by the by slug for the specified artisan
+
+        Args:
+            locale (str): localization to use with API
+            artisan_slug (str): the slug of the artisan
+            recipe_slug (str): the slug of the recipe
+
+        Returns:
+            dict: the dict containing for the recipe
+        """
+        return self.client.community(
+            locale, "artisan", artisan_slug, "recipe", slugify(recipe_slug)
+        )
+
+    def follower(self, locale: str, follower_slug: str) -> Dict[str, Any]:
+        """Returns the follower by slug
+
+        Args:
+            locale (str): localization to use with API
+            follower_slug (str): the slug of a follower
+
+        Returns:
+            dict: the dict containing for the follower
+        """
+        return self.client.community(locale, "follower", slugify(follower_slug))
+
+    def character_class(self, locale: str, class_slug: str) -> Dict[str, Any]:
+        """Returns a single character class by slug
+
+        Args:
+            locale (str): localization to use with API
+            class_slug (str): the slug of a character class
+
+        Returns:
+            dict: the dict containing for the character class
+        """
+        return self.client.community(locale, "hero", slugify(class_slug))
+
+    def api_skill(
+        self, locale: str, class_slug: str, skill_slug: str
+    ) -> Dict[str, Any]:
+        """Returns a single skill by the by slug for the specified character class
+
+        Args:
+            locale (str): localization to use with API
+            class_slug (str): the slug of a character class
+            skill_slug (str):
+
+        Returns:
+            dict: the dict containing for the skill
+        """
+        return self.client.community(
+            locale,
+            "hero",
+            slugify(class_slug),
+            "skill",
+            slugify(skill_slug),
+        )
+
+    def item_type(self, locale: str, item_slug: Optional[str] = None) -> Dict[str, Any]:
+        """Returns the index of item types, or a specific item type
+
+        Args:
+            locale (str): localization to use with API
+            item_slug (str, optional): the slug of an item type
+
+        Returns:
+            dict: the dict containing for the item type
+        """
+        if item_slug:
+            return self.client.community(locale, "item-type", slugify(item_slug))
+
+        return self.client.community(locale, "item-type")
+
+    def item(self, locale: str, item_slug: str) -> Dict[str, Any]:
+        """Returns the item by slug
+
+        Args:
+            locale (str): localization to use with API
+            item_slug (str): the slug of the item
+
+        Returns:
+            dict: the dict containing for the item
+        """
+        return self.client.community(locale, "item", item_slug)
+
+    def api_account(self, locale: str, bnet_tag: str) -> Dict[str, Any]:
+        """Returns the specified account profile
+
+        Args:
+            locale (str): localization to use with API
+            bnet_tag (str): bnet tag of the user
+
+        Returns:
+            dict: the dict containing for the account
+        """
+        return self.client.profile_api(locale, f"{quote(bnet_tag)}/")
+
+    def api_hero(
+        self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Returns the follower by slug
+
+        Args:
+            locale (str): localization to use with API
+            bnet_tag (str): BNet tag for the account
+            hero_id (str):  Hero's ID
+            category (str): category to retrieve if specified ('items', 'follower-items')
+
+        Returns:
+            dict: the dict containing for the hero, items, or follower's items
+        """
+        if category:
+            if category in ("items", "follower-items"):
+                return self.client.profile_api(
+                    locale, quote(bnet_tag), "hero", hero_id, category
                 )
             else:
                 raise ValueError(
                     "Invalid category;  Valid catgories are 'items' and 'follower-items'"
                 )
         else:
-            return self.client.profile_api(locale, quote(b_tag), "hero", hero_id)
+            return self.client.profile_api(locale, quote(bnet_tag), "hero", hero_id)

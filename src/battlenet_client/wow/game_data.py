@@ -2,7 +2,7 @@
 
 This module contains the classes for accessing game data related APIs
 
-.. moduleauthor:: David Couples <gahdania@gahd.io>
+class_name
 """
 from typing import Optional, Any, TYPE_CHECKING, Dict, List
 

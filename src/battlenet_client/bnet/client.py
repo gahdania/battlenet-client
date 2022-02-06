@@ -95,7 +95,7 @@ class BNetClient(OAuth2Session):
             if self.tag == "cn":
                 setattr(
                     self,
-                    getattr(mod, "BNetOauthCN").__class__name__,
+                    getattr(mod, "BNetOauthCN").class_name,
                     getattr(mod, "BNetOauthCN")(self),
                 )
             else:
@@ -232,7 +232,7 @@ class BNetClient(OAuth2Session):
         return unquote(authorization_url)
 
     def fetch_token(self, **kwargs) -> None:
-        """Retrieves the OAUTH token from API
+        """Retrieves the OAUTH token
 
         Returns:
             None

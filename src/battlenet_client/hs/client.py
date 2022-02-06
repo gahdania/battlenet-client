@@ -12,7 +12,7 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
 
-.. moduleauthor:: David "Gahd" Couples <gahdania@gahd.io>
+class_name
 """
 import importlib
 from typing import Optional, Any, Dict, List
