@@ -1,8 +1,11 @@
-"""Generates the final Battle.net REST API requests
-
+"""the final Battle.net REST API requests
 
 Classes:
     BNetClient
+
+Disclaimer:
+    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    retrieved from this API.
 """
 import importlib
 from typing import Optional, Any, Dict, Tuple, List, Union
@@ -44,7 +47,6 @@ class BNetClient(OAuth2Session):
     def __init__(
         self,
         region: str,
-        game: Dict[str, str],
         *,
         client_id: Optional[str] = None,
         client_secret: Optional[str] = None,
@@ -68,8 +70,6 @@ class BNetClient(OAuth2Session):
             else:
                 raise exceptions.BNetRegionNotFoundError("Region not available")
 
-        self.game = game
-
         self._client_secret = client_secret
 
         if self.tag == "cn":
@@ -90,32 +90,20 @@ class BNetClient(OAuth2Session):
             super().__init__(
                 client_id=client_id, scope=scope, redirect_uri=redirect_uri
             )
-
-            mod = importlib.import_module("battlenet_client.oauth")
-            if self.tag == "cn":
-                setattr(
-                    self,
-                    getattr(mod, "BNetOauthCN").class_name,
-                    getattr(mod, "BNetOauthCN")(self),
-                )
-            else:
-                setattr(
-                    self,
-                    getattr(mod, "BNetOauth").__class__name,
-                    getattr(mod, "BNetOauth")(self),
-                )
-
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
             # set the mode indicator of the client to "Backend Application Flow"
             self.fetch_token()
             self.auth_flow = False
 
+    name = "Battle.net"
+    abbrev = "BNET"
+
     def __str__(self) -> str:
-        return f"{self.game['name']} API Client"
+        return f"{self.name} API Client"
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__} Instance: {self.game['abbrev']}"
+        return f"{self.__class__.__name__} Instance: {self.abbrev}"
 
     def _get(self, uri: str, **kwargs) -> Dict[str, Any]:
         """Convenience function for the GET method
@@ -244,3 +232,21 @@ class BNetClient(OAuth2Session):
             client_secret=self._client_secret,
             **kwargs,
         )
+
+    def user_info(self, locale: str) -> Dict[str, Any]:
+        """Returns the user info
+
+        Args:
+            locale (str): localization to use
+
+        Returns:
+            dict: the json decoded information for the user (user # and battle tag ID)
+
+        Notes:
+            this function requires the BattleNet Client to be use OAuth (Authentication Workflow)
+        """
+        if not self.auth_flow:
+            raise exceptions.BNetClientError("Requires Authorization Code Workflow")
+
+        url = f"{self.auth_host}/oauth/userinfo"
+        return self._get(url, params={"locale": locale})
