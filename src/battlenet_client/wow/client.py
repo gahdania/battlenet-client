@@ -5,27 +5,32 @@ There are two flavors of client, one implements the client credential workflow, 
 to be the most common.  The other implements the user authorization workflow
 
 Examples:
-    > from battlenet_client.wow import WoWClient
-    > client = Client(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
+    > # for credential work flows (most of the APIs)
+    > from battlenet_client import wow
+    > client = wow.WoWClient(<region>, release=<release>, client_id='<client ID>', client_secret='<client secret>')
+    > wow.Achievement(client).achievement_category('en_US', 81)
+    {'_links': {'self': {'href': 'https://us.api.blizzard.com/data/wow/achievement-category/81? ...
+
+    > # for authorization work flows (wow.Account) (requires a web server for the redirect)
+    > from battlenet_client import wow
+    > client = wow.WoWClient(<region>, scope=['wow.profile',], redirect_uri='https://localhost/redirect',
+                             client_id='<client ID>', client_secret='<client secret>')
+    # after authenticating with Blizzard.
+    > wow.Account(client).account_profile_summary('en_US')
 
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
 
-class_name
 """
 from typing import List, Optional, Any, Dict, Union, Tuple
 
 from io import BytesIO
 
-from importlib import import_module
-
-from battlenet_client.bnet.client import BNetClient
-from battlenet_client.constants import WOW
+from ..bnet.client import BNetClient
+from ..misc import slugify
 
 from .exceptions import WoWClientError
-from .constants import MODULES
-from ..misc import slugify
 
 
 class WoWClient(BNetClient):
@@ -55,7 +60,7 @@ class WoWClient(BNetClient):
         self,
         region: str,
         *,
-        release: str = "retail",
+        release: Optional[str] = "retail",
         scope: Optional[List[str]] = None,
         redirect_uri: Optional[str] = None,
         client_id: Optional[str] = None,
@@ -64,7 +69,6 @@ class WoWClient(BNetClient):
 
         super().__init__(
             region,
-            WOW,
             client_id=client_id,
             client_secret=client_secret,
             scope=scope,
@@ -83,18 +87,14 @@ class WoWClient(BNetClient):
             self.static = f"static-{self.release}-{self.tag}"
             self.profile = f"profile-{self.release}-{self.tag}"
 
-        # load the API endpoints programmatically
-        mod = import_module(f"battlenet_client.wow.game_data")
-        for cls in MODULES[self.release]["game_data"]:
-            setattr(self, getattr(mod, cls).class_name, getattr(mod, cls)(self))
+    name = "World of Warcraft"
+    abbrev = "WOW"
 
-        if self.auth_flow:
-            mod = import_module(f"battlenet_client.wow.profile")
-            for cls in MODULES[self.release]["profile"]:
-                setattr(self, getattr(mod, cls).class_name, getattr(mod, cls)(self))
+    def __str__(self) -> str:
+        return f"{self.name} API Client"
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.release} {self.tag}"
+        return f"{self.__class__.__name__} Instance: {self.abbrev} {self.release} {self.tag}"
 
     def game_data(
         self, locale: str, namespace: str, *args: Union[str, int]

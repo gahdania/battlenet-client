@@ -1,8 +1,39 @@
-"""Game Data APIs
+"""This module contains the classes for accessing game data related APIs
 
-This module contains the classes for accessing game data related APIs
-
-class_name
+Class:
+    Achievement
+    Auction
+    Azerite
+    ConnectedRealm
+    Covenant
+    Creature
+    GuildCrest
+    Item
+    Journal
+    Media
+    ModifiedCrafting
+    Mount
+    MythicKeystoneAffix
+    MythicKeystoneDungeon
+    MythicKeystoneLeaderboard
+    MythicRaid
+    Pet
+    PlayableClass
+    PlayableRace
+    PlayableSpec
+    Power
+    Profession
+    PvPSeason
+    PvPTier
+    Quest
+    Realm
+    Region
+    Reputation
+    Spell
+    Talent
+    TechTalent
+    Title
+    WoWToken
 """
 from typing import Optional, Any, TYPE_CHECKING, Dict, List
 
@@ -10,14 +41,12 @@ if TYPE_CHECKING:
     from client import WoWClient
 
 from .exceptions import WoWReleaseError
-from ..misc import slugify
+from ..misc import slugify, localize
 
 
 class Achievement:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "achievement"
+        self.__client = client
 
     def achievement_category(
         self, locale: str, category_id: Optional[int] = None
@@ -35,12 +64,12 @@ class Achievement:
             dict: json decoded data for the index/individual achievement categories
         """
         if category_id:
-            return self.client.game_data(
-                locale, "static", "achievement-category", "index"
+            return self.__client.game_data(
+                localize(locale), "static", "achievement-category", category_id
             )
 
-        return self.client.game_data(
-            locale, "static", "achievement-category", category_id
+        return self.__client.game_data(
+            localize(locale), "static", "achievement-category", "index"
         )
 
     def achievement(
@@ -56,11 +85,13 @@ class Achievement:
             dict: json decoded data for the index/individual achievements
         """
         if achievement_id:
-            return self.client.game_data(
-                locale, "static", "achievement", achievement_id
+            return self.__client.game_data(
+                localize(locale), "static", "achievement", achievement_id
             )
 
-        return self.client.game_data(locale, "static", "achievement", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "achievement", "index"
+        )
 
     def achievement_media(self, locale: str, achievement_id: int) -> Dict[str, Any]:
         """Returns media for an achievement's icon.
@@ -72,14 +103,14 @@ class Achievement:
         Returns:
             dict: json decoded media data for the achievement
         """
-        return self.client.media_data(locale, "static", "achievement", achievement_id)
+        return self.__client.media_data(
+            localize(locale), "static", "achievement", achievement_id
+        )
 
 
 class Auction:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "auction"
+        self.__client = client
 
     def auction(
         self,
@@ -111,18 +142,21 @@ class Auction:
         Raises:
             ClientError: when a client other than Client is used.
             WoWReleaseError: when an AH ID is used for the retail client
-
         Notes:
             Auction house functionality is not available for WoW 1.x (Vanilla Classic)
         """
-        if self.client.release == "retail" and auction_house_id is None:
-            return self.client.game_data(
-                locale, "dynamic", "connected-realm", connected_realm_id, "auctions"
+        if self.__client.release == "retail" and auction_house_id is None:
+            return self.__client.game_data(
+                localize(locale),
+                "dynamic",
+                "connected-realm",
+                connected_realm_id,
+                "auctions",
             )
 
-        if self.client.release != "retail" and auction_house_id is None:
-            return self.client.game_data(
-                locale,
+        if self.__client.release != "retail" and auction_house_id is None:
+            return self.__client.game_data(
+                localize(locale),
                 "dynamic",
                 "connected-realm",
                 connected_realm_id,
@@ -130,10 +164,10 @@ class Auction:
                 "index",
             )
 
-        if self.client.release != "retail" and auction_house_id is not None:
+        if self.__client.release != "retail" and auction_house_id is not None:
 
-            return self.client.game_data(
-                locale,
+            return self.__client.game_data(
+                localize(locale),
                 "dynamic",
                 "connected-realm",
                 connected_realm_id,
@@ -141,15 +175,13 @@ class Auction:
                 auction_house_id,
             )
 
-        if self.client.release == "retail" and auction_house_id is not None:
+        if self.__client.release == "retail" and auction_house_id is not None:
             raise WoWReleaseError("Auction House ID provided for retail")
 
 
 class Azerite:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "azerite"
+        self.__client = client
 
     def azerite_essence(
         self, locale: str, essence_id: Optional[int] = None
@@ -164,11 +196,13 @@ class Azerite:
             dict: json decoded data for the index/individual azerite essence(s)
         """
         if essence_id:
-            return self.client.game_data(
-                locale, "static", "azerite-essence", essence_id
+            return self.__client.game_data(
+                localize(locale), "static", "azerite-essence", essence_id
             )
 
-        return self.client.game_data(locale, "static", "azerite-essence", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "azerite-essence", "index"
+        )
 
     def azerite_essence_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -182,7 +216,9 @@ class Azerite:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "azerite-essence", field_values)
+        return self.__client.search(
+            localize(locale), "static", "azerite-essence", field_values
+        )
 
     def azerite_essence_media(self, locale: str, essence_id: int) -> Dict[str, Any]:
         """Returns media data for an azerite essence.
@@ -194,14 +230,14 @@ class Azerite:
         Returns:
             dict: json decoded media data for the azerite essence
         """
-        return self.client.media_data(locale, "static", "azerite-essence", essence_id)
+        return self.__client.media_data(
+            localize(locale), "static", "azerite-essence", essence_id
+        )
 
 
 class ConnectedRealm:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "connected_realm"
+        self.__client = client
 
     def connected_realm(
         self, locale: str, connected_realm_id: Optional[int] = None
@@ -217,11 +253,13 @@ class ConnectedRealm:
             dict: json decoded data for the index/individual connected realms
         """
         if connected_realm_id:
-            return self.client.game_data(
-                locale, "dynamic", "connected-realm", connected_realm_id
+            return self.__client.game_data(
+                localize(locale), "dynamic", "connected-realm", connected_realm_id
             )
 
-        return self.client.game_data(locale, "dynamic", "connected-realm", "index")
+        return self.__client.game_data(
+            localize(locale), "dynamic", "connected-realm", "index"
+        )
 
     def connected_realm_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -235,16 +273,14 @@ class ConnectedRealm:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(
-            locale, "dynamic", "connected-realm", fields=field_values
+        return self.__client.search(
+            localize(locale), "dynamic", "connected-realm", fields=field_values
         )
 
 
 class Covenant:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "covennant"
+        self.__client = client
 
     def covenant(
         self, locale: str, covenant_id: Optional[int] = None
@@ -259,8 +295,8 @@ class Covenant:
             dict: json decoded data for the index/individual covenant
         """
         if covenant_id:
-            self.client.game_data(locale, "static", "covenant", covenant_id)
-        return self.client.game_data(locale, "static", "covenant", "index")
+            self.__client.game_data(localize(locale), "static", "covenant", covenant_id)
+        return self.__client.game_data(localize(locale), "static", "covenant", "index")
 
     def covenant_media(self, locale: str, covenant_id: int) -> Dict[str, Any]:
         """Returns media for a covenant.
@@ -272,7 +308,9 @@ class Covenant:
         Returns:
             dict: json decoded media data for the covenant
         """
-        return self.client.media_data(locale, "static", "covenant", covenant_id)
+        return self.__client.media_data(
+            localize(locale), "static", "covenant", covenant_id
+        )
 
     def soulbind(
         self, locale: str, soulbind_id: Optional[int] = None
@@ -287,11 +325,13 @@ class Covenant:
             dict: json decoded data for the index/individual soulbind
         """
         if soulbind_id:
-            return self.client.game_data(
-                locale, "static", "covenant", "soulbind", soulbind_id
+            return self.__client.game_data(
+                localize(locale), "static", "covenant", "soulbind", soulbind_id
             )
 
-        return self.client.game_data(locale, "static", "covenant", "soulbind", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "covenant", "soulbind", "index"
+        )
 
     def conduit(self, locale: str, conduit_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of conduits, or a specific conduit
@@ -304,18 +344,18 @@ class Covenant:
             dict: json decoded data for the index/individual conduit
         """
         if conduit_id:
-            return self.client.game_data(
-                locale, "static", "covenant", "conduit", conduit_id
+            return self.__client.game_data(
+                localize(locale), "static", "covenant", "conduit", conduit_id
             )
 
-        return self.client.game_data(locale, "static", "covenant", "conduit", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "covenant", "conduit", "index"
+        )
 
 
 class Creature:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "creature"
+        self.__client = client
 
     def creature_family(
         self, locale: str, family_id: Optional[int] = None
@@ -330,9 +370,13 @@ class Creature:
             dict: json decoded data for the index/individual creature family/families
         """
         if family_id:
-            return self.client.game_data(locale, "static", "creature-family", family_id)
+            return self.__client.game_data(
+                localize(locale), "static", "creature-family", family_id
+            )
 
-        return self.client.game_data(locale, "static", "creature-family", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "creature-family", "index"
+        )
 
     def creature_type(
         self, locale: str, type_id: Optional[int] = None
@@ -347,9 +391,13 @@ class Creature:
             dict: json decoded data for the index/individual creature type(s)
         """
         if type_id:
-            return self.client.game_data(locale, "static", "creature-type", type_id)
+            return self.__client.game_data(
+                localize(locale), "static", "creature-type", type_id
+            )
 
-        return self.client.game_data(locale, "static", "creature-type", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "creature-type", "index"
+        )
 
     def creature(self, locale: str, creature_id: int) -> Dict[str, Any]:
         """Returns an index of creatures, or a specific creature
@@ -361,7 +409,9 @@ class Creature:
         Returns:
             dict: json decoded data for the index/individual creature(s)
         """
-        return self.client.game_data(locale, "static", "creature", creature_id)
+        return self.__client.game_data(
+            localize(locale), "static", "creature", creature_id
+        )
 
     def creature_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -375,7 +425,9 @@ class Creature:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "creature", field_values)
+        return self.__client.search(
+            localize(locale), "static", "creature", field_values
+        )
 
     def creature_display_media(self, locale: str, display_id: int) -> Dict[str, Any]:
         """Returns media for a creature display.
@@ -387,7 +439,9 @@ class Creature:
         Returns:
             dict: json decoded media data for the creature display
         """
-        return self.client.media_data(locale, "static", "creature-display", display_id)
+        return self.__client.media_data(
+            localize(locale), "static", "creature-display", display_id
+        )
 
     def creature_family_media(self, locale: str, family_id: int) -> Dict[str, Any]:
         """Returns media for a creature family.
@@ -399,14 +453,14 @@ class Creature:
         Returns:
             dict: json decoded media data for the creature family
         """
-        return self.client.media_data(locale, "static", "creature-family", family_id)
+        return self.__client.media_data(
+            localize(locale), "static", "creature-family", family_id
+        )
 
 
 class GuildCrest:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "guild_crest"
+        self.__client = client
 
     def guild_crest_components_index(self, locale: str) -> Dict[str, Any]:
         """Returns an index of guild crest components.
@@ -417,7 +471,9 @@ class GuildCrest:
         Returns:
             dict: json decoded data for the index of guild crest components
         """
-        return self.client.game_data(locale, "static", "guild-crest", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "guild-crest", "index"
+        )
 
     def guild_crest_border_media(self, locale: str, border_id: int) -> Dict[str, Any]:
         """Returns media for a specific guild crest border.
@@ -429,8 +485,8 @@ class GuildCrest:
         Returns:
             dict: json decoded media data for the guild border
         """
-        return self.client.media_data(
-            locale, "static", "guild-crest", "border", border_id
+        return self.__client.media_data(
+            localize(locale), "static", "guild-crest", "border", border_id
         )
 
     def guild_crest_emblem_media(self, locale: str, crest_id: int) -> Dict[str, Any]:
@@ -443,16 +499,14 @@ class GuildCrest:
         Returns:
             dict: json decoded media data for the guild crest
         """
-        return self.client.media_data(
-            locale, "static", "guild-crest", "emblem", crest_id
+        return self.__client.media_data(
+            localize(locale), "static", "guild-crest", "emblem", crest_id
         )
 
 
 class Item:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "item"
+        self.__client = client
 
     def item_class(self, locale: str, class_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of item classes, or a specific item class
@@ -465,9 +519,13 @@ class Item:
             dict: json decoded data for the index/individual item class(es)
         """
         if class_id:
-            return self.client.game_data(locale, "static", "item-class", class_id)
+            return self.__client.game_data(
+                localize(locale), "static", "item-class", class_id
+            )
 
-        return self.client.game_data(locale, "static", "item-class", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "item-class", "index"
+        )
 
     def item_set(self, locale: str, set_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of item sets, or a specific item set
@@ -480,9 +538,11 @@ class Item:
             dict: json decoded data for the index/individual item set(s)
         """
         if set_id:
-            return self.client.game_data(locale, "static", "item-set", set_id)
+            return self.__client.game_data(
+                localize(locale), "static", "item-set", set_id
+            )
 
-        return self.client.game_data(locale, "static", "item-set", "index")
+        return self.__client.game_data(localize(locale), "static", "item-set", "index")
 
     def item_subclass(
         self, locale: str, class_id: int, subclass_id: int
@@ -497,8 +557,13 @@ class Item:
         Returns:
             dict: json decoded data for the item's subclass
         """
-        return self.client.game_data(
-            locale, "static", "item-class", class_id, "item-subclass", subclass_id
+        return self.__client.game_data(
+            localize(locale),
+            "static",
+            "item-class",
+            class_id,
+            "item-subclass",
+            subclass_id,
         )
 
     def item(self, locale: str, item_id: int) -> Dict[str, Any]:
@@ -511,7 +576,7 @@ class Item:
         Returns:
             dict: json decoded data for the individual item
         """
-        return self.client.game_data(locale, "static", "item", item_id)
+        return self.__client.game_data(localize(locale), "static", "item", item_id)
 
     def item_media(self, locale: str, item_id: int) -> Dict[str, Any]:
         """Returns media for an item.
@@ -523,7 +588,7 @@ class Item:
         Returns:
             dict: json decoded media data for the item
         """
-        return self.client.media_data(locale, "static", "item", item_id)
+        return self.__client.media_data(localize(locale), "static", "item", item_id)
 
     def item_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -537,14 +602,12 @@ class Item:
         Returns:
              dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "item", field_values)
+        return self.__client.search(localize(locale), "static", "item", field_values)
 
 
 class Journal:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "journal"
+        self.__client = client
 
     def journal_expansion(
         self, locale: str, expansion_id: Optional[int] = None
@@ -559,11 +622,13 @@ class Journal:
             dict: json decoded data for the index/individual journal expansion(s)
         """
         if expansion_id:
-            return self.client.game_data(
-                locale, "static", "journal-expansion", expansion_id
+            return self.__client.game_data(
+                localize(locale), "static", "journal-expansion", expansion_id
             )
 
-        return self.client.game_data(locale, "static", "journal-expansion", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "journal-expansion", "index"
+        )
 
     def journal_encounter(
         self, locale: str, encounter_id: Optional[int] = None
@@ -582,11 +647,13 @@ class Journal:
             dict: json decoded data for the index/individual journal encounter(s)
         """
         if encounter_id:
-            return self.client.game_data(
-                locale, "static", "journal-encounter", encounter_id
+            return self.__client.game_data(
+                localize(locale), "static", "journal-encounter", encounter_id
             )
 
-        return self.client.game_data(locale, "static", "journal-encounter", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "journal-encounter", "index"
+        )
 
     def journal_encounter_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -600,7 +667,9 @@ class Journal:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "journal-encounter", field_values)
+        return self.__client.search(
+            localize(locale), "static", "journal-encounter", field_values
+        )
 
     def journal_instance(
         self, locale: str, instance_id: Optional[int] = None
@@ -615,10 +684,12 @@ class Journal:
             dict: json decoded data for the index/individual journal instance(s)
         """
         if instance_id:
-            return self.client.game_data(
-                locale, "static", "journal-instance", instance_id
+            return self.__client.game_data(
+                localize(locale), "static", "journal-instance", instance_id
             )
-        return self.client.game_data(locale, "static", "journal-instance", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "journal-instance", "index"
+        )
 
     def journal_instance_media(self, locale: str, instance_id: int) -> Dict[str, Any]:
         """Returns media for an instance.
@@ -630,14 +701,14 @@ class Journal:
         Returns:
             dict: json decoded media data for the instance
         """
-        return self.client.media_data(locale, "static", "journal-instance", instance_id)
+        return self.__client.media_data(
+            localize(locale), "static", "journal-instance", instance_id
+        )
 
 
 class Media:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "media"
+        self.__client = client
 
     def media_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -651,14 +722,12 @@ class Media:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "media", field_values)
+        return self.__client.search(localize(locale), "static", "media", field_values)
 
 
 class ModifiedCrafting:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "modified_crafting"
+        self.__client = client
 
     def modified_crafting(self, locale: str) -> Dict[str, Any]:
         """Returns an index of modified crafting recipes
@@ -669,7 +738,9 @@ class ModifiedCrafting:
         Returns:
             dict: json decoded data for the index of modified crafting
         """
-        return self.client.game_data(locale, "static", "modified-crafting", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "modified-crafting", "index"
+        )
 
     def modified_crafting_category(
         self, locale: str, category_id: Optional[int] = None
@@ -684,12 +755,12 @@ class ModifiedCrafting:
             dict: json decoded data for the index/individual modified crafting category/categories
         """
         if category_id:
-            return self.client.game_data(
-                locale, "static", "modified-crafting", "category", category_id
+            return self.__client.game_data(
+                localize(locale), "static", "modified-crafting", "category", category_id
             )
 
-        return self.client.game_data(
-            locale, "static", "modified-crafting", "category", "index"
+        return self.__client.game_data(
+            localize(locale), "static", "modified-crafting", "category", "index"
         )
 
     def modified_crafting_reagent_slot_type(
@@ -705,20 +776,26 @@ class ModifiedCrafting:
             dict: json decoded data for the index/individual modified crafting reagent slot type(s)
         """
         if slot_type_id:
-            return self.client.game_data(
-                locale, "static", "modified-crafting", "reagent-slot-type", slot_type_id
+            return self.__client.game_data(
+                localize(locale),
+                "static",
+                "modified-crafting",
+                "reagent-slot-type",
+                slot_type_id,
             )
 
-        return self.client.game_data(
-            locale, "static", "modified-crafting", "reagent-slot-type", "index"
+        return self.__client.game_data(
+            localize(locale),
+            "static",
+            "modified-crafting",
+            "reagent-slot-type",
+            "index",
         )
 
 
 class Mount:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "mount"
+        self.__client = client
 
     def mount(self, locale: str, mount_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of mounts, or a specific mount
@@ -731,9 +808,11 @@ class Mount:
             dict: json decoded data for the index/individual mount(s)
         """
         if mount_id:
-            return self.client.game_data(locale, "static", "mount", mount_id)
+            return self.__client.game_data(
+                localize(locale), "static", "mount", mount_id
+            )
 
-        return self.client.game_data(locale, "static", "mount", "index")
+        return self.__client.game_data(localize(locale), "static", "mount", "index")
 
     def mount_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -747,14 +826,12 @@ class Mount:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "mount", field_values)
+        return self.__client.search(localize(locale), "static", "mount", field_values)
 
 
 class MythicKeystoneAffix:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "mk_affix"
+        self.__client = client
 
     def mythic_keystone_affix(
         self, locale: str, affix_id: Optional[int] = None
@@ -769,8 +846,12 @@ class MythicKeystoneAffix:
             dict: json decoded data for the index/individual mythic keystone affix(es)
         """
         if affix_id:
-            return self.client.game_data(locale, "static", "keystone-affix", affix_id)
-        return self.client.game_data(locale, "static", "keystone-affix", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "keystone-affix", affix_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "keystone-affix", "index"
+        )
 
     def mythic_keystone_affix_media(self, locale: str, affix_id: int) -> Dict[str, Any]:
         """Returns media for a mythic keystone affix.
@@ -782,14 +863,14 @@ class MythicKeystoneAffix:
         Returns:
             dict: json decoded media data for the mythic keystone affix(es)
         """
-        return self.client.media_data(locale, "static", "keystone-affix", affix_id)
+        return self.__client.media_data(
+            localize(locale), "static", "keystone-affix", affix_id
+        )
 
 
 class MythicKeystoneDungeon:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "mk_dungeon"
+        self.__client = client
 
     def mythic_keystone_dungeon(
         self, locale: str, dungeon_id: Optional[int] = None
@@ -804,11 +885,11 @@ class MythicKeystoneDungeon:
             dict: json decoded data for the index/individual mythic keystone dungeon(s)
         """
         if dungeon_id:
-            return self.client.game_data(
-                locale, "dynamic", "mythic-keystone", "dungeon", dungeon_id
+            return self.__client.game_data(
+                localize(locale), "dynamic", "mythic-keystone", "dungeon", dungeon_id
             )
-        return self.client.game_data(
-            locale, "dynamic", "mythic-keystone", "dungeon", "index"
+        return self.__client.game_data(
+            localize(locale), "dynamic", "mythic-keystone", "dungeon", "index"
         )
 
     def mythic_keystone_index(self, locale: str) -> Dict[str, Any]:
@@ -820,7 +901,9 @@ class MythicKeystoneDungeon:
         Returns:
             dict: json decoded data for the index of the mythic keystone dungeon documents
         """
-        return self.client.game_data(locale, "dynamic", "mythic-keystone", "index")
+        return self.__client.game_data(
+            localize(locale), "dynamic", "mythic-keystone", "index"
+        )
 
     def mythic_keystone_period(
         self, locale: str, period_id: Optional[int] = None
@@ -835,11 +918,11 @@ class MythicKeystoneDungeon:
             dict: json decoded data for the index/individual for mythic keystone period(s)
         """
         if period_id:
-            return self.client.game_data(
-                locale, "dynamic", "mythic-keystone", "period", period_id
+            return self.__client.game_data(
+                localize(locale), "dynamic", "mythic-keystone", "period", period_id
             )
-        return self.client.game_data(
-            locale, "dynamic", "mythic-keystone", "period", "index"
+        return self.__client.game_data(
+            localize(locale), "dynamic", "mythic-keystone", "period", "index"
         )
 
     def mythic_keystone_season(
@@ -855,20 +938,18 @@ class MythicKeystoneDungeon:
             dict: json decoded data for the index/individual mythic keystone season(s)
         """
         if season_id:
-            return self.client.game_data(
-                locale, "dynamic", "mythic-keystone", "season", season_id
+            return self.__client.game_data(
+                localize(locale), "dynamic", "mythic-keystone", "season", season_id
             )
 
-        return self.client.game_data(
-            locale, "dynamic", "mythic-keystone", "season", "index"
+        return self.__client.game_data(
+            localize(locale), "dynamic", "mythic-keystone", "season", "index"
         )
 
 
 class MythicKeystoneLeaderboard:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "mk_leaderboard"
+        self.__client = client
 
     def mythic_keystone_leader_board(
         self,
@@ -889,8 +970,8 @@ class MythicKeystoneLeaderboard:
             dict: json decoded data for the index/individual mythic keystone leaderboard(s)
         """
         if dungeon_id and period_id:
-            return self.client.game_data(
-                locale,
+            return self.__client.game_data(
+                localize(locale),
                 "dynamic",
                 "connected-realm",
                 connected_realm_id,
@@ -900,8 +981,8 @@ class MythicKeystoneLeaderboard:
                 period_id,
             )
 
-        return self.client.game_data(
-            locale,
+        return self.__client.game_data(
+            localize(locale),
             "dynamic",
             "connected-realm",
             connected_realm_id,
@@ -912,9 +993,7 @@ class MythicKeystoneLeaderboard:
 
 class MythicRaid:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "mythic_raid"
+        self.__client = client
 
     def mythic_raid_leaderboard(
         self, locale: str, raid_name: str, faction: str
@@ -929,8 +1008,8 @@ class MythicRaid:
         Returns:
             dict: json decoded data for the index/individual mythic raid
         """
-        return self.client.game_data(
-            locale,
+        return self.__client.game_data(
+            localize(locale),
             "dynamic",
             "leaderboard",
             "hall-of-fame",
@@ -941,9 +1020,7 @@ class MythicRaid:
 
 class Pet:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "pet"
+        self.__client = client
 
     def pet(self, locale: str, pet_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of pets, or the data about the specified pet
@@ -956,8 +1033,8 @@ class Pet:
             dict: json decoded data for the index/individual pet(s)
         """
         if pet_id:
-            return self.client.game_data(locale, "static", "pet", pet_id)
-        return self.client.game_data(locale, "static", "pet", "index")
+            return self.__client.game_data(localize(locale), "static", "pet", pet_id)
+        return self.__client.game_data(localize(locale), "static", "pet", "index")
 
     def pet_media(self, locale: str, pet_id: int) -> Dict[str, Any]:
         """Returns media for a pet
@@ -969,7 +1046,7 @@ class Pet:
         Returns:
             dict: json decoded media data for the for pet
         """
-        return self.client.media_data(locale, "static", "pet", pet_id)
+        return self.__client.media_data(localize(locale), "static", "pet", pet_id)
 
     def pet_ability(self, locale: str, pet_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of pets, or the data about the specified pet
@@ -982,8 +1059,12 @@ class Pet:
             dict: json decoded data for the index/individual pet ability/abilities
         """
         if pet_id:
-            return self.client.game_data(locale, "static", "pet-ability", pet_id)
-        return self.client.game_data(locale, "static", "pet-ability", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "pet-ability", pet_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "pet-ability", "index"
+        )
 
     def pet_ability_media(self, locale: str, ability_id: int) -> Dict[str, Any]:
         """Returns media for an azerite ability.
@@ -995,14 +1076,14 @@ class Pet:
         Returns:
             dict: json decoded media data for the pet ability
         """
-        return self.client.media_data(locale, "static", "pet-ability", ability_id)
+        return self.__client.media_data(
+            localize(locale), "static", "pet-ability", ability_id
+        )
 
 
 class PlayableClass:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "playable_class"
+        self.__client = client
 
     def playable_class(
         self, locale: str, class_id: Optional[int] = None
@@ -1017,8 +1098,13 @@ class PlayableClass:
             dict: json decoded data for the index/individual playable class(es)
         """
         if class_id:
-            return self.client.game_data(locale, "static", "playable-class", class_id)
-        return self.client.game_data(locale, "static", "playable-class", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "playable-class", class_id
+            )
+
+        return self.__client.game_data(
+            localize(locale), "static", "playable-class", "index"
+        )
 
     def playable_class_media(self, locale: str, class_id: int) -> Dict[str, Any]:
         """Returns media for a playable class by ID.
@@ -1030,7 +1116,9 @@ class PlayableClass:
         Returns:
             dict: json decoded media data for the playable class(es)
         """
-        return self.client.media_data(locale, "static", "playable-class", class_id)
+        return self.__client.media_data(
+            localize(locale), "static", "playable-class", class_id
+        )
 
     def pvp_talent_slots(self, locale: str, class_id: int) -> Dict[str, Any]:
         """Returns the PvP talent slots for a playable class by ID.
@@ -1042,16 +1130,14 @@ class PlayableClass:
         Returns:
             dict: json decoded data for the index of PvP Talent slots
         """
-        return self.client.game_data(
-            locale, "static", "playable-class", class_id, "pvp-talent-slots"
+        return self.__client.game_data(
+            localize(locale), "static", "playable-class", class_id, "pvp-talent-slots"
         )
 
 
 class PlayableRace:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "playable_race"
+        self.__client = client
 
     def playable_race(
         self, locale: str, race_id: Optional[int] = None
@@ -1066,15 +1152,17 @@ class PlayableRace:
             dict: json decoded data for the index/individual playable race(s)
         """
         if race_id:
-            return self.client.game_data(locale, "static", "playable-race", race_id)
-        return self.client.game_data(locale, "static", "playable-race", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "playable-race", race_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "playable-race", "index"
+        )
 
 
 class PlayableSpec:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "playable_spec"
+        self.__client = client
 
     def playable_spec(
         self, locale: str, spec_id: Optional[int] = None
@@ -1089,11 +1177,11 @@ class PlayableSpec:
             dict: json decoded data for the index/individual playable specialization(s)
         """
         if spec_id:
-            return self.client.game_data(
-                locale, "static", "playable-specialization", spec_id
+            return self.__client.game_data(
+                localize(locale), "static", "playable-specialization", spec_id
             )
-        return self.client.game_data(
-            locale, "static", "playable-specialization", "index"
+        return self.__client.game_data(
+            localize(locale), "static", "playable-specialization", "index"
         )
 
     def playable_spec_media(self, locale: str, spec_id: int) -> Dict[str, Any]:
@@ -1106,16 +1194,14 @@ class PlayableSpec:
         Returns:
             dict: json decoded media data for the playable specialization
         """
-        return self.client.media_data(
-            locale, "static", "playable-specialization", spec_id
+        return self.__client.media_data(
+            localize(locale), "static", "playable-specialization", spec_id
         )
 
 
 class Power:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "power"
+        self.__client = client
 
     def power_type(self, locale: str, power_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of power types, or a specific power type
@@ -1128,15 +1214,17 @@ class Power:
             dict: json decoded data for the index/individual power types
         """
         if power_id:
-            return self.client.game_data(locale, "static", "power-type", power_id)
-        return self.client.game_data(locale, "static", "power-type", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "power-type", power_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "power-type", "index"
+        )
 
 
 class Profession:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "profession"
+        self.__client = client
 
     def profession(
         self, locale: str, profession_id: Optional[int] = None
@@ -1151,8 +1239,12 @@ class Profession:
             dict: json decoded dict for the profession or the index of the achievements
         """
         if profession_id:
-            return self.client.game_data(locale, "static", "profession", profession_id)
-        return self.client.game_data(locale, "static", "profession", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "profession", profession_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "profession", "index"
+        )
 
     def profession_media(self, locale: str, profession_id: int) -> Dict[str, Any]:
         """Returns media for a creature display.
@@ -1164,7 +1256,9 @@ class Profession:
         Returns:
             dict: the media assets for the given creature display ID
         """
-        return self.client.media_data(locale, "static", "profession", profession_id)
+        return self.__client.media_data(
+            localize(locale), "static", "profession", profession_id
+        )
 
     def profession_skill_tier(
         self, locale: str, profession_id: int, skill_tier_id: int
@@ -1179,8 +1273,13 @@ class Profession:
         Returns:
             dict: json decoded dict for the profession or the index of the achievements
         """
-        return self.client.game_data(
-            locale, "static", "profession", profession_id, "skill-tier", skill_tier_id
+        return self.__client.game_data(
+            localize(locale),
+            "static",
+            "profession",
+            profession_id,
+            "skill-tier",
+            skill_tier_id,
         )
 
     def recipe(self, locale: str, recipe_id: int):
@@ -1193,7 +1292,7 @@ class Profession:
         Returns:
             dict: json decoded dict for the profession or the index of the achievements
         """
-        return self.client.game_data(locale, "static", "recipe", recipe_id)
+        return self.__client.game_data(localize(locale), "static", "recipe", recipe_id)
 
     def recipe_media(self, locale: str, recipe_id: int) -> Dict[str, Any]:
         """Returns media for a creature display.
@@ -1205,14 +1304,12 @@ class Profession:
         Returns:
             dict: the media assets for the given creature display ID
         """
-        return self.client.media_data(locale, "static", "recipe", recipe_id)
+        return self.__client.media_data(localize(locale), "static", "recipe", recipe_id)
 
 
 class PvPSeason:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "pvp_season"
+        self.__client = client
 
     def pvp_season(
         self, locale: str, season_id: Optional[int] = None
@@ -1227,8 +1324,12 @@ class PvPSeason:
             dict: json decoded data for the index/individual PvP season(s)
         """
         if season_id:
-            return self.client.game_data(locale, "dynamic", "pvp-season", season_id)
-        return self.client.game_data(locale, "dynamic", "pvp-season", "index")
+            return self.__client.game_data(
+                localize(locale), "dynamic", "pvp-season", season_id
+            )
+        return self.__client.game_data(
+            localize(locale), "dynamic", "pvp-season", "index"
+        )
 
     def pvp_leader_board(
         self, locale: str, season_id: int, pvp_bracket: Optional[str] = None
@@ -1244,16 +1345,21 @@ class PvPSeason:
             dict: json decoded data for the index of the PvP leader board
         """
         if pvp_bracket:
-            return self.client.game_data(
-                locale,
+            return self.__client.game_data(
+                localize(locale),
                 "dynamic",
                 "pvp-season",
                 season_id,
                 "pvp-leaderboard",
                 pvp_bracket,
             )
-        return self.client.game_data(
-            locale, "dynamic", "pvp-season", season_id, "pvp-leaderboard", "index"
+        return self.__client.game_data(
+            localize(locale),
+            "dynamic",
+            "pvp-season",
+            season_id,
+            "pvp-leaderboard",
+            "index",
         )
 
     def pvp_rewards_index(self, locale: str, season_id: int) -> Dict[str, Any]:
@@ -1266,16 +1372,14 @@ class PvPSeason:
         Returns:
             dict: json decoded data for the index of PvP rewards
         """
-        return self.client.game_data(
-            locale, "dynamic", "pvp-season", season_id, "pvp-reward", "index"
+        return self.__client.game_data(
+            localize(locale), "dynamic", "pvp-season", season_id, "pvp-reward", "index"
         )
 
 
 class PvPTier:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "pvp_tier"
+        self.__client = client
 
     def pvp_tier(self, locale: str, tier_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of pvp tier, or a specific pvp tier
@@ -1288,8 +1392,10 @@ class PvPTier:
             dict: the index or data for the pvp tier
         """
         if tier_id:
-            return self.client.game_data(locale, "static", "pvp-tier", tier_id)
-        return self.client.game_data(locale, "static", "pvp-tier", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "pvp-tier", tier_id
+            )
+        return self.__client.game_data(localize(locale), "static", "pvp-tier", "index")
 
     def pvp_tier_media(self, locale: str, tier_id: int) -> Dict[str, Any]:
         """Returns media for a PvP tier by ID.
@@ -1301,14 +1407,12 @@ class PvPTier:
         Returns:
             dict: json decoded media data for the PvP tier
         """
-        return self.client.media_data(locale, "static", "pvp-tier", tier_id)
+        return self.__client.media_data(localize(locale), "static", "pvp-tier", tier_id)
 
 
 class Quest:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "quest"
+        self.__client = client
 
     def quest(self, locale: str, quest_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of quests, or a specific quest
@@ -1321,8 +1425,10 @@ class Quest:
             dict: json decoded data for the index/individual quest(s)
         """
         if quest_id:
-            return self.client.game_data(locale, "static", "quest", quest_id)
-        return self.client.game_data(locale, "static", "quest", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "quest", quest_id
+            )
+        return self.__client.game_data(localize(locale), "static", "quest", "index")
 
     def quest_area(
         self, locale: str, quest_area_id: Optional[int] = None
@@ -1337,10 +1443,12 @@ class Quest:
             dict: json decoded data for the index/individual quest area(s)
         """
         if quest_area_id:
-            return self.client.game_data(
-                locale, "static", "quest", "area", quest_area_id
+            return self.__client.game_data(
+                localize(locale), "static", "quest", "area", quest_area_id
             )
-        return self.client.game_data(locale, "static", "quest", "area", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "quest", "area", "index"
+        )
 
     def quest_category(
         self, locale: str, quest_category_id: Optional[int] = None
@@ -1355,10 +1463,12 @@ class Quest:
             dict: json decoded data for the index/individual quest category/categories)
         """
         if quest_category_id:
-            return self.client.game_data(
-                locale, "static", "quest", "category", quest_category_id
+            return self.__client.game_data(
+                localize(locale), "static", "quest", "category", quest_category_id
             )
-        return self.client.game_data(locale, "static", "quest", "category", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "quest", "category", "index"
+        )
 
     def quest_type(
         self, locale: str, quest_type_id: Optional[int] = None
@@ -1373,17 +1483,17 @@ class Quest:
             dict: json decoded data for the index/individual quest type(s)
         """
         if quest_type_id:
-            return self.client.game_data(
-                locale, "static", "quest", "type", quest_type_id
+            return self.__client.game_data(
+                localize(locale), "static", "quest", "type", quest_type_id
             )
-        return self.client.game_data(locale, "static", "quest", "type", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "quest", "type", "index"
+        )
 
 
 class Realm:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "realm"
+        self.__client = client
 
     def realm(self, locale: str, realm_name: Optional[str] = None) -> Dict[str, Any]:
         """Returns an index of realms, or a specific realm
@@ -1396,10 +1506,10 @@ class Realm:
             dict: json decoded data for the index/individual realm(s)
         """
         if realm_name:
-            return self.client.game_data(
-                locale, "dynamic", "realm", slugify(realm_name)
+            return self.__client.game_data(
+                localize(locale), "dynamic", "realm", slugify(realm_name)
             )
-        return self.client.game_data(locale, "dynamic", "realm", "index")
+        return self.__client.game_data(localize(locale), "dynamic", "realm", "index")
 
     def realm_search(
         self, locale: str, field_values: List[Dict[str, Any]]
@@ -1413,14 +1523,12 @@ class Realm:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "dynamic", "realm", field_values)
+        return self.__client.search(localize(locale), "dynamic", "realm", field_values)
 
 
 class Region:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "region"
+        self.__client = client
 
     def region(self, locale: str, region_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of regions, or a specific region
@@ -1433,15 +1541,15 @@ class Region:
             dict: json decoded data for the index/individual region(s)
         """
         if region_id:
-            return self.client.game_data(locale, "dynamic", "region", region_id)
-        return self.client.game_data(locale, "dynamic", "region", "index")
+            return self.__client.game_data(
+                localize(locale), "dynamic", "region", region_id
+            )
+        return self.__client.game_data(localize(locale), "dynamic", "region", "index")
 
 
 class Reputation:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "reputation"
+        self.__client = client
 
     def reputation_faction(
         self, locale: str, faction_id: Optional[int] = None
@@ -1456,10 +1564,12 @@ class Reputation:
             dict: json decoded data for the index/individual reputation faction(s)
         """
         if faction_id:
-            return self.client.game_data(
-                locale, "static", "reputation-faction", faction_id
+            return self.__client.game_data(
+                localize(locale), "static", "reputation-faction", faction_id
             )
-        return self.client.game_data(locale, "static", "reputation-faction", "index")
+        return self.__client.game_data(
+            localize(locale), "static", "reputation-faction", "index"
+        )
 
     def reputation_tier(
         self, locale: str, tier_id: Optional[int] = None
@@ -1474,15 +1584,17 @@ class Reputation:
             dict: json decoded data for the index/individual reputation tier(s)
         """
         if tier_id:
-            return self.client.game_data(locale, "static", "reputation-tiers", tier_id)
-        return self.client.game_data(locale, "static", "reputation-tiers", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "reputation-tiers", tier_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "reputation-tiers", "index"
+        )
 
 
 class Spell:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "spell"
+        self.__client = client
 
     def spell(self, locale: str, spell_id: int) -> Dict[str, Any]:
         """Returns an index of spells, or a specific spell
@@ -1494,7 +1606,7 @@ class Spell:
         Returns:
             dict: json decoded data for the index/individual spell(s)
         """
-        return self.client.game_data(locale, "static", "spell", spell_id)
+        return self.__client.game_data(localize(locale), "static", "spell", spell_id)
 
     def spell_media(self, locale: str, spell_id: int) -> Dict[str, Any]:
         """Returns media for a spell by ID.
@@ -1506,10 +1618,10 @@ class Spell:
         Returns:
             dict: json decoded media data for the spell
         """
-        return self.client.media_data(locale, "static", "spell", spell_id)
+        return self.__client.media_data(localize(locale), "static", "spell", spell_id)
 
     def spell_search(
-        self, locale, field_values: List[Dict[str, Any]] = None
+        self, locale: str, field_values: List[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """Searches the creature API for items that match the criteria
 
@@ -1520,14 +1632,12 @@ class Spell:
         Returns:
             dict: json decoded search results that match `field_values`
         """
-        return self.client.search(locale, "static", "spell", field_values)
+        return self.__client.search(localize(locale), "static", "spell", field_values)
 
 
 class Talent:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "talent"
+        self.__client = client
 
     def talent(self, locale: str, talent_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of spells, or a specific spell
@@ -1540,8 +1650,10 @@ class Talent:
             dict: json decoded data for the index/individual talent(s)
         """
         if talent_id:
-            return self.client.game_data(locale, "static", "talent", talent_id)
-        return self.client.game_data(locale, "static", "talent", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "talent", talent_id
+            )
+        return self.__client.game_data(localize(locale), "static", "talent", "index")
 
     def pvp_talent(
         self, locale: str, pvp_talent_id: Optional[int] = None
@@ -1556,15 +1668,17 @@ class Talent:
             dict: json decoded data for the index/individual Talent talent(s)
         """
         if pvp_talent_id:
-            return self.client.game_data(locale, "static", "pvp-talent", pvp_talent_id)
-        return self.client.game_data(locale, "static", "pvp-talent", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "pvp-talent", pvp_talent_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "pvp-talent", "index"
+        )
 
 
 class TechTalent:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "tech_talent"
+        self.__client = client
 
     def tech_talent_tree(
         self, locale: str, tree_id: Optional[int] = None
@@ -1579,10 +1693,16 @@ class TechTalent:
             dict: json decoded data for the index/individual tech talent tree(s)
         """
         if tree_id:
-            return self.client.game_data(locale, "static", "tech-talent-tree", tree_id)
-        return self.client.game_data(locale, "static", "tech-talent-tree", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "tech-talent-tree", tree_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "tech-talent-tree", "index"
+        )
 
-    def tech_talent(self, locale, talent_id: Optional[int] = None) -> Dict[str, Any]:
+    def tech_talent(
+        self, locale: str, talent_id: Optional[int] = None
+    ) -> Dict[str, Any]:
         """Returns an index of tech talents or a tech talent by ID
 
         Args:
@@ -1593,8 +1713,12 @@ class TechTalent:
             dict: json decoded data for the index/individual tech talent(s)
         """
         if talent_id:
-            return self.client.game_data(locale, "static", "tech-talent", talent_id)
-        return self.client.game_data(locale, "static", "tech-talent", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "tech-talent", talent_id
+            )
+        return self.__client.game_data(
+            localize(locale), "static", "tech-talent", "index"
+        )
 
     def tech_talent_media(self, locale: str, talent_id: int) -> Dict[str, Any]:
         """Returns media for a spell by ID.
@@ -1606,14 +1730,14 @@ class TechTalent:
         Returns:
             dict: json decoded media data for the tech talent
         """
-        return self.client.media_data(locale, "static", "tech-talent", talent_id)
+        return self.__client.media_data(
+            localize(locale), "static", "tech-talent", talent_id
+        )
 
 
 class Title:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "title"
+        self.__client = client
 
     def title(self, locale: str, title_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of spells, or a specific spell
@@ -1626,15 +1750,15 @@ class Title:
             dict: json decoded data for the index/individual title(s)
         """
         if title_id:
-            return self.client.game_data(locale, "static", "title", title_id)
-        return self.client.game_data(locale, "static", "title", "index")
+            return self.__client.game_data(
+                localize(locale), "static", "title", title_id
+            )
+        return self.__client.game_data(localize(locale), "static", "title", "index")
 
 
 class WoWToken:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "wow_token"
+        self.__client = client
 
     def wow_token_index(self, locale: str) -> Dict[str, Any]:
         """Returns the WoW Token index.
@@ -1645,9 +1769,12 @@ class WoWToken:
         Returns:
             dict: json decoded data for the index/individual wow token
         """
-        if self.client.release in ("classic1x", "classic") and self.client.tag != "cn":
+        if (
+            self.__client.release in ("classic1x", "classic")
+            and self.__client.tag != "cn"
+        ):
             raise WoWReleaseError(
                 "WoW Token API only available on retail, and CN classic markets"
             )
 
-        return self.client.game_data(locale, "dynamic", "token", "index")
+        return self.__client.game_data(localize(locale), "dynamic", "token", "index")

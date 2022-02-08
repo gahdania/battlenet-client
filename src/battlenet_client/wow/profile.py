@@ -1,16 +1,42 @@
+"""This module contains the classes for accessing profile related APIs
+
+Classes:
+    Account
+    CharacterAchievements
+    CharacterAppearance
+    CharacterCollections
+    CharacterEncounters
+    CharacterEquipment
+    CharacterHunterPets
+    CharacterMedia
+    CharacterMythicKeystone
+    CharacterProfession
+    CharacterProfile
+    CharacterPvP
+    CharacterQuests
+    CharacterReputations
+    CharacterSoulBinds
+    CharacterSpecializations
+    CharacterStatistics
+    CharacterTitles
+    Guild
+"""
+
 from typing import Optional, Any, TYPE_CHECKING, Dict
 
 if TYPE_CHECKING:
     from client import WoWClient
 
-from .exceptions import WoWReleaseError
+from ..misc import slugify
+from .exceptions import WoWReleaseError, WoWClientError
 
 
 class Account:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "account"
+        if client.auth_flow:
+            self.__client = client
+        else:
+            raise WoWClientError("Requires authorization client")
 
     def account_profile_summary(self, locale: str) -> Dict[str, Any]:
         """Accesses a summary of the account
@@ -21,7 +47,7 @@ class Account:
         Returns:
             dict: JSON decoded data that contains the profile summary
         """
-        return self.client.protected_data(locale, "profile")
+        return self.__client.protected_data(locale, "profile")
 
     def protected_character_profile_summary(
         self, locale: str, realm_id: int, character_id: int
@@ -38,7 +64,7 @@ class Account:
             dict: JSON decoded data that contains the protected character
                 profile summary
         """
-        return self.client.protected_data(
+        return self.__client.protected_data(
             locale, "profile", "protected-character", realm_id, character_id
         )
 
@@ -58,17 +84,15 @@ class Account:
             dict: JSON decoded data for the index/individual collections
         """
         if category is not None:
-            return self.client.protected_data(
-                locale, "profile", "collections", self.client.slugify(category)
+            return self.__client.protected_data(
+                locale, "profile", "collections", slugify(category)
             )
-        return self.client.protected_data(locale, "profile", "collections")
+        return self.__client.protected_data(locale, "profile", "collections")
 
 
 class CharacterAchievements:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_achievement"
+        self.__client = client
 
     def achievement_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -84,12 +108,12 @@ class CharacterAchievements:
         Returns:
             dict: JSON decoded data that contains requested achievement summary
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "achievements",
         )
 
@@ -107,12 +131,12 @@ class CharacterAchievements:
         Returns:
             dict: JSON decoded data that contains the requested achievement statistics
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "achievements",
             "statistics",
         )
@@ -120,9 +144,7 @@ class CharacterAchievements:
 
 class CharacterAppearance:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_appearance"
+        self.__client = client
 
     def appearance_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -138,21 +160,19 @@ class CharacterAppearance:
         Returns:
             dict: JSON decoded data that contains requested appearance summary
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "appearance",
         )
 
 
 class CharacterCollections:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_collections"
+        self.__client = client
 
     def collections(
         self,
@@ -179,30 +199,28 @@ class CharacterCollections:
             if category.lower() not in ("pets", "mounts"):
                 raise ValueError("Category needs to pets or mounts")
 
-            return self.client.profile_data(
+            return self.__client.profile_data(
                 locale,
                 "profile",
                 "character",
-                self.client.slugify(realm_name),
-                self.client.slugify(character_name),
+                slugify(realm_name),
+                slugify(character_name),
                 "collections",
                 category.lower(),
             )
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "collections",
         )
 
 
 class CharacterEncounters:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_encounters"
+        self.__client = client
 
     def encounters(
         self,
@@ -229,30 +247,28 @@ class CharacterEncounters:
         if category:
             if category.lower() not in ("dungeons", "raids"):
                 raise ValueError("Available Categories: None, dungeons and raids")
-            return self.client.profile_data(
+            return self.__client.profile_data(
                 locale,
                 "profile",
                 "character",
-                self.client.slugify(realm_name),
-                self.client.slugify(character_name),
+                slugify(realm_name),
+                slugify(character_name),
                 "encounters",
-                self.client.slugify(category),
+                slugify(category),
             )
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "encounters",
         )
 
 
 class CharacterEquipment:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_equipment"
+        self.__client = client
 
     def equipment_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -268,21 +284,19 @@ class CharacterEquipment:
         Returns:
             dict: JSON decoded dict that contains requested equipment summary
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "equipment",
         )
 
 
 class CharacterHunterPets:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_hunter_pets"
+        self.__client = client
 
     def hunter_pets_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -298,21 +312,19 @@ class CharacterHunterPets:
         Returns:
             dict: JSON decoded data of the hunter's pets
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "hunter-pets",
         )
 
 
 class CharacterMedia:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_media"
+        self.__client = client
 
     def media_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -328,21 +340,19 @@ class CharacterMedia:
         Returns:
             dict: JSON decoded data that contains requested media assets
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "character-media",
         )
 
 
 class CharacterMythicKeystone:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_mythic_keystone"
+        self.__client = client
 
     def mythic_keystone(
         self,
@@ -366,31 +376,29 @@ class CharacterMythicKeystone:
             dict: JSON decoded data of requested mythic keystone details
         """
         if season_id:
-            return self.client.profile_data(
+            return self.__client.profile_data(
                 locale,
                 "profile",
                 "character",
-                self.client.slugify(realm_name),
-                self.client.slugify(character_name),
+                slugify(realm_name),
+                slugify(character_name),
                 "mythic-keystone-profile",
                 "season",
                 season_id,
             )
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "mythic-keystone-profile",
         )
 
 
 class CharacterProfessions:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_profession"
+        self.__client = client
 
     def professions_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -406,21 +414,19 @@ class CharacterProfessions:
         Returns:
             dict: JSON decoded data of the character's professions
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "professions",
         )
 
 
 class CharacterProfile:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_profile"
+        self.__client = client
 
     def profile(
         self, locale: str, realm_name: str, character_name: str, status: bool = False
@@ -460,28 +466,26 @@ class CharacterProfile:
         """
 
         if status:
-            return self.client.profile_data(
+            return self.__client.profile_data(
                 locale,
                 "profile",
                 "character",
-                self.client.slugify(realm_name),
-                self.client.slugify(character_name),
+                slugify(realm_name),
+                slugify(character_name),
                 "status",
             )
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
         )
 
 
 class CharacterPVP:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_pvp"
+        self.__client = client
 
     def pvp(
         self,
@@ -505,30 +509,28 @@ class CharacterPVP:
         """
 
         if pvp_bracket:
-            return self.client.profile_data(
+            return self.__client.profile_data(
                 locale,
                 "profile",
                 "character",
-                self.client.slugify(realm_name),
-                self.client.slugify(character_name),
+                slugify(realm_name),
+                slugify(character_name),
                 "pvp-bracket",
                 pvp_bracket,
             )
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "pvp-summary",
         )
 
 
 class CharacterQuests:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_quests"
+        self.__client = client
 
     def quests(
         self, locale: str, realm_name: str, character_name: str, completed: bool = False
@@ -548,30 +550,28 @@ class CharacterQuests:
         """
 
         if completed:
-            return self.client.profile_data(
+            return self.__client.profile_data(
                 locale,
                 "profile",
                 "character",
-                self.client.slugify(realm_name),
-                self.client.slugify(character_name),
+                slugify(realm_name),
+                slugify(character_name),
                 "quests",
                 "completed",
             )
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "quests",
         )
 
 
 class CharacterReputations:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_reputation"
+        self.__client = client
 
     def reputations_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -587,21 +587,19 @@ class CharacterReputations:
         Returns:
             dict: JSON decoded data of the character's reputations
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "reputations",
         )
 
 
 class CharacterSoulBinds:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_soul_binds"
+        self.__client = client
 
     def soulbinds(
         self, locale: str, realm_name: str, character_name: str
@@ -617,21 +615,19 @@ class CharacterSoulBinds:
         Returns:
             dict: JSON decoded data of the character's soulbinds
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "soulbinds",
         )
 
 
 class CharacterSpecializations:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_specialization"
+        self.__client = client
 
     def specializations_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -647,21 +643,19 @@ class CharacterSpecializations:
         Returns:
             dict: JSON decoded data of the character's specializations
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "specializations",
         )
 
 
 class CharacterStatistics:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_statistics"
+        self.__client = client
 
     def statistics_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -677,21 +671,19 @@ class CharacterStatistics:
         Returns:
             dict: JSON decoded data of the character's statistics
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "statistics",
         )
 
 
 class CharacterTitles:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "character_titles"
+        self.__client = client
 
     def title_summary(
         self, locale: str, realm_name: str, character_name: str
@@ -707,21 +699,19 @@ class CharacterTitles:
         Returns:
             dict: JSON decoded data the titles the player has earned
         """
-        return self.client.profile_data(
+        return self.__client.profile_data(
             locale,
             "profile",
             "character",
-            self.client.slugify(realm_name),
-            self.client.slugify(character_name),
+            slugify(realm_name),
+            slugify(character_name),
             "titles",
         )
 
 
 class Guild:
     def __init__(self, client: "WoWClient") -> None:
-        self.client = client
-
-    class_name = "guild"
+        self.__client = client
 
     def guild(self, locale: str, realm_name: str, guild_name: str) -> Dict[str, Any]:
         """Returns a single guild by its name and realm.
@@ -734,17 +724,17 @@ class Guild:
         Returns:
             dict: json decoded data of the guild
         """
-        if self.client.release != "retail":
+        if self.__client.release != "retail":
             raise WoWReleaseError(
-                f"{self.client.release} does not support the Guild Data API"
+                f"{self.__client.release} does not support the Guild Data API"
             )
 
-        return self.client.game_data(
+        return self.__client.game_data(
             locale,
             "profile",
             "guild",
-            self.client.slugify(realm_name),
-            self.client.slugify(guild_name),
+            slugify(realm_name),
+            slugify(guild_name),
         )
 
     def guild_activities(
@@ -760,17 +750,17 @@ class Guild:
         Returns:
             dict: json decoded data of the guild activities
         """
-        if self.client.release != "retail":
+        if self.__client.release != "retail":
             raise WoWReleaseError(
-                f"{self.client.release} does not support the Guild Data API"
+                f"{self.__client.release} does not support the Guild Data API"
             )
 
-        return self.client.game_data(
+        return self.__client.game_data(
             locale,
             "profile",
             "guild",
-            self.client.slugify(realm_name),
-            self.client.slugify(guild_name),
+            slugify(realm_name),
+            slugify(guild_name),
             "activity",
         )
 
@@ -787,17 +777,17 @@ class Guild:
         Returns:
             dict: json decoded data of the guild achievements
         """
-        if self.client.release != "retail":
+        if self.__client.release != "retail":
             raise WoWReleaseError(
-                f"{self.client.release} does not support the Guild Data API"
+                f"{self.__client.release} does not support the Guild Data API"
             )
 
-        return self.client.game_data(
+        return self.__client.game_data(
             locale,
             "profile",
             "guild",
-            self.client.slugify(realm_name),
-            self.client.slugify(guild_name),
+            slugify(realm_name),
+            slugify(guild_name),
             "achievements",
         )
 
@@ -814,17 +804,17 @@ class Guild:
         Returns:
             dict: json decoded data of the guild's achievement summary
         """
-        if self.client.release != "retail":
+        if self.__client.release != "retail":
             raise WoWReleaseError(
-                f"{self.client.release} does not support the Guild Data API"
+                f"{self.__client.release} does not support the Guild Data API"
             )
 
-        return self.client.game_data(
+        return self.__client.game_data(
             locale,
             "profile",
             "guild",
-            self.client.slugify(realm_name),
-            self.client.slugify(guild_name),
+            slugify(realm_name),
+            slugify(guild_name),
             "roster",
         )
 
@@ -837,7 +827,7 @@ class Guild:
         Returns:
             dict: json decoded data for the index of guild crest components
         """
-        return self.client.game_data(locale, "static", "guild-crest", "index")
+        return self.__client.game_data(locale, "static", "guild-crest", "index")
 
     def guild_crest_border_media(self, locale: str, border_id: int) -> Dict[str, Any]:
         """Returns media for a specific guild crest border.
@@ -849,7 +839,7 @@ class Guild:
         Returns:
             dict: json decoded media data for the guild border
         """
-        return self.client.media_data(
+        return self.__client.media_data(
             locale, "static", "guild-crest", "border", border_id
         )
 
@@ -863,6 +853,6 @@ class Guild:
         Returns:
             dict: json decoded media data for the guild crest
         """
-        return self.client.media_data(
+        return self.__client.media_data(
             locale, "static", "guild-crest", "emblem", crest_id
         )
