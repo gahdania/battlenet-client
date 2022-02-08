@@ -17,8 +17,6 @@ class GameData:
     def __init__(self, client: "D3Client") -> None:
         self.client = client
 
-    class_name = "game_data"
-
     def season(self, locale: str, season_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of seasons, or a leaderboard of the specified season
 

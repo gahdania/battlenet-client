@@ -23,8 +23,6 @@ class Community:
     def __init__(self, client: "D3Client") -> None:
         self.__client = client
 
-    class_name = "community"
-
     def __repr__(self):
         return self.class_name
 
@@ -188,8 +186,6 @@ class Community:
 class CommunityCN:
     def __init__(self, client: "D3Client") -> None:
         self.__client = client
-
-    class_name = "community"
 
     def act(self, locale: str, act_id: Optional[int] = None) -> Dict[str, Any]:
         """Returns an index of acts, or the act by ID
