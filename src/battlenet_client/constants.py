@@ -6,10 +6,10 @@ Constants:
     TAIWAN
     KOREA
     CHINA
-    WOW
-    D3
-    SC2
-    BNET
+
+Disclaimer:
+    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    retrieved from this API.
 """
 
 NORTH_AMERICA = "us"
@@ -17,9 +17,3 @@ EUROPE = "eu"
 TAIWAN = "tw"
 KOREA = "kr"
 CHINA = "cn"
-
-WOW = {"abbrev": "wow", "name": "World of Warcraft"}
-D3 = {"abbrev": "d3", "name": "Diablo III"}
-SC2 = {"abbrev": "sc2", "name": "Starcraft II"}
-HS = {"abbrev": "hs", "name": "Heartsthone"}
-BNET = {"abbrev": "bnet", "name": "Battle.net Data"}

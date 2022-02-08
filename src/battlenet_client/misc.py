@@ -4,6 +4,10 @@ Functions:
     currency_convertor
     slugify
     localize
+
+Disclaimer:
+    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    retrieved from this API.
 """
 from typing import Tuple
 
