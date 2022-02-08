@@ -1,26 +1,21 @@
-"""Defines the client for connected to the World of Warcraft/Classic/TBC Classic
+"""Defines the client for connected to Hearthstone
 
-This module contains the client class definitions for accessing World of Warcraft API data.
-There are two flavors of client, one implements the client credential workflow, which happens
-to be the most common.  The other implements the user authorization workflow
+Classes:
+    HSClient
 
 Examples:
-    > from battlenet_client.wow import WoWClient
-    > client = WoWClient(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
+    > from battlenet_client import hs
+    > client = hs.HSClient(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
 
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
 
-class_name
 """
-import importlib
 from typing import Optional, Any, Dict, List
 
-from battlenet_client.bnet.client import BNetClient
-from battlenet_client.constants import HS
-
-from .constants import MODULES
+from ..bnet.client import BNetClient
+from ..misc import localize, slugify
 
 
 class HSClient(BNetClient):
@@ -32,7 +27,6 @@ class HSClient(BNetClient):
     Keyword Args:
         client_id (str, optional): the client ID from the developer portal
         client_secret (str, optional): the client secret from the developer portal
-
     """
 
     def __init__(
@@ -43,23 +37,10 @@ class HSClient(BNetClient):
         client_secret: Optional[str] = None,
     ) -> None:
 
-        super().__init__(region, HS, client_id=client_id, client_secret=client_secret)
-
-        # load the API endpoints programmatically
-        for mod_name in MODULES:
-            mod = importlib.import_module(f"battlenet_client.hs.{mod_name}")
-            for cls_name in dir(mod):
-                if not cls_name.startswith("__") and isinstance(
-                    getattr(mod, cls_name), type
-                ):
-                    setattr(
-                        self,
-                        getattr(mod, cls_name).class_name,
-                        getattr(mod, cls_name)(self),
-                    )
+        super().__init__(region, client_id=client_id, client_secret=client_secret)
 
     def __repr__(self):
-        return f"{self.__class__.__name__} Instance: {self.game['abbrev']} {self.tag}"
+        return f"{self.__class__.__name__} Instance: HS {self.tag}"
 
     def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
         """Used to retrieve data from the source data APIs
@@ -71,9 +52,9 @@ class HSClient(BNetClient):
         Returns:
             dict: data returned by the API
         """
-        uri = f"{self.api_host}/hearthstone/{'/'.join([self.slugify(arg) for arg in args])}"
+        uri = f"{self.api_host}/hearthstone/{'/'.join([slugify(arg) for arg in args])}"
 
-        kwargs["params"]["locale"] = self.localize(locale)
+        kwargs["params"]["locale"] = localize(locale)
 
         return self._get(uri, **kwargs)
 
@@ -94,8 +75,8 @@ class HSClient(BNetClient):
         Returns:
             dict: data returned by the API
         """
-        uri = f"{self.api_host}/hearthstone/{self.slugify(document)}"
-        kwargs["params"]["locale"] = self.localize(locale)
+        uri = f"{self.api_host}/hearthstone/{slugify(document)}"
+        kwargs["params"]["locale"] = localize(locale)
         kwargs["fields"] = fields
 
         return self._get(uri, **kwargs)

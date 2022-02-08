@@ -1,4 +1,12 @@
-"""Provides access to the cards API endpoint, allowing the searching of cards"""
+"""Generates the URI/querystring and headers for the Hearthsone API endpoints
+
+Classes:
+    Hearthstone
+
+Disclaimer:
+    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    retrieved from this API.
+"""
 
 from typing import Optional, Any, TYPE_CHECKING, Dict, List
 
@@ -8,9 +16,7 @@ if TYPE_CHECKING:
 
 class Hearthstone:
     def __init__(self, client: "HSClient") -> None:
-        self.client = client
-
-    class_name = "game"
+        self.__client = client
 
     def card_search(
         self,
@@ -35,11 +41,11 @@ class Hearthstone:
         """
 
         if field_values:
-            return self.client.search(
+            return self.__client.search(
                 locale, "cards", fields=field_values, params={"gameMode": game_mode}
             )
 
-        return self.client.search(locale, "cards", params={"gameMode": game_mode})
+        return self.__client.search(locale, "cards", params={"gameMode": game_mode})
 
     def card(
         self, locale: str, card_id: str, game_mode: Optional[str] = "constructed"
@@ -62,7 +68,7 @@ class Hearthstone:
         if game_mode not in ("constructed", "battlegrounds", "mercenaries"):
             raise ValueError("Invalid game mode specified")
 
-        return self.client.game_data(
+        return self.__client.game_data(
             locale, "cards", card_id, params={"gameMode": game_mode}
         )
 
@@ -84,9 +90,9 @@ class Hearthstone:
             HSClientError: when a client other than HSClient is used.
         """
         if field_values:
-            return self.client.search(locale, "cardbacks", fields=field_values)
+            return self.__client.search(locale, "cardbacks", fields=field_values)
 
-        return self.client.search(locale, "cardbacks")
+        return self.__client.search(locale, "cardbacks")
 
     def card_back(self, locale: str, card_back_id: str) -> Dict[str, Any]:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
@@ -101,7 +107,7 @@ class Hearthstone:
         Raises:
             HSClientError: when a client other than HSClient is used.
         """
-        return self.client.game_data(locale, "cardbacks", card_back_id)
+        return self.__client.game_data(locale, "cardbacks", card_back_id)
 
     def card_deck(
         self, locale, field_values: Optional[List[Dict[str, Any]]]
@@ -120,7 +126,7 @@ class Hearthstone:
         Raises:
             HSClientError: when a client other than HSClient is used.
         """
-        return self.client.search(locale, "deck", field_values)
+        return self.__client.search(locale, "deck", field_values)
 
     def metadata(self, locale: str, meta_data: Optional[str] = None) -> Dict[str, Any]:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
@@ -140,6 +146,6 @@ class Hearthstone:
             HSClientError: when a client other than HSClient is used.
         """
         if meta_data:
-            return self.client.game_data(locale, "metadata", meta_data)
+            return self.__client.game_data(locale, "metadata", meta_data)
 
-        return self.client.game_data(locale, "metadata")
+        return self.__client.game_data(locale, "metadata")
