@@ -4,6 +4,9 @@ Examples:
     > from battlenet_client import d3
     > client = d3.D3Client(<region>, client_id='<client ID>', client_secret='<client secret>')
 
+Classes:
+    D3Client
+
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
@@ -13,7 +16,6 @@ import importlib
 from decouple import config
 
 from battlenet_client.bnet.client import BNetClient
-from battlenet_client.constants import D3
 
 from ..misc import localize
 
@@ -42,45 +44,13 @@ class D3Client(BNetClient):
         client_secret: Optional[str] = None,
     ) -> None:
 
-        if not client_id:
-            client_id = config("CLIENT_ID")
-
-        if not client_secret:
-            client_secret = config("CLIENT_SECRET")
-
         super().__init__(
             region,
-            D3,
             client_id=client_id,
             client_secret=client_secret,
             scope=scope,
             redirect_uri=redirect_uri,
         )
-
-        mod = importlib.import_module(f"battlenet_client.d3.community")
-        if self.tag == "cn":
-            setattr(
-                self,
-                getattr(mod, "CommunityCN").class_name,
-                getattr(mod, "CommunityCN")(self),
-            )
-        else:
-            setattr(
-                self,
-                getattr(mod, "Community").class_name,
-                getattr(mod, "Community")(self),
-            )
-
-        mod = importlib.import_module(f"battlenet_client.d3.game_data")
-        for cls_name in dir(mod):
-            if not cls_name.startswith("__") and isinstance(
-                getattr(mod, cls_name), type
-            ):
-                setattr(
-                    self,
-                    getattr(mod, cls_name).class_name,
-                    getattr(mod, cls_name)(self),
-                )
 
     def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
         """Generates then necessary game data API URI and keyword args for to pasted on to the client get method

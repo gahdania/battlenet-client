@@ -3,6 +3,10 @@
 Classes:
     Community
     CommunityCN
+
+Disclaimer:
+    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    retrieved from this API.
 """
 
 from typing import Optional, Any, TYPE_CHECKING, Dict
@@ -17,7 +21,7 @@ from ..misc import slugify
 
 class Community:
     def __init__(self, client: "D3Client") -> None:
-        self.client = client
+        self.__client = client
 
     class_name = "community"
 
@@ -35,9 +39,9 @@ class Community:
             dict: the dict containing the list of acts or the details of the specified :act_id:
         """
         if act_id:
-            return self.client.community(locale, "act", act_id)
+            return self.__client.community(locale, "act", act_id)
 
-        return self.client.community(locale, "act")
+        return self.__client.community(locale, "act")
 
     def artisan(self, locale: str, artisan_slug: str) -> Dict[str, Any]:
         """Returns the artisan by the slug
@@ -49,7 +53,7 @@ class Community:
         Returns:
             dict: the dict containing data of the artisan
         """
-        return self.client.community(locale, "artisan", slugify(artisan_slug))
+        return self.__client.community(locale, "artisan", slugify(artisan_slug))
 
     def recipe(
         self, locale: str, artisan_slug: str, recipe_slug: str
@@ -64,7 +68,7 @@ class Community:
         Returns:
             dict: the dict containing for the recipe
         """
-        return self.client.community(
+        return self.__client.community(
             locale, "artisan", slugify(artisan_slug), "recipe", slugify(recipe_slug)
         )
 
@@ -78,7 +82,7 @@ class Community:
         Returns:
             dict: the dict containing for the follower
         """
-        return self.client.community(locale, "follower", slugify(follower_slug))
+        return self.__client.community(locale, "follower", slugify(follower_slug))
 
     def character_class(self, locale: str, class_slug: str) -> Dict[str, Any]:
         """Returns a single character class by slug
@@ -90,7 +94,7 @@ class Community:
         Returns:
             dict: the dict containing for the character class
         """
-        return self.client.community(locale, "hero", slugify(class_slug))
+        return self.__client.community(locale, "hero", slugify(class_slug))
 
     def api_skill(
         self, locale: str, class_slug: str, skill_slug: str
@@ -106,7 +110,7 @@ class Community:
             dict: the dict containing for the skill
         """
 
-        return self.client.community(
+        return self.__client.community(
             locale,
             "hero",
             slugify(class_slug),
@@ -126,9 +130,9 @@ class Community:
         """
 
         if item_slug:
-            return self.client.community(locale, "item-type", slugify(item_slug))
+            return self.__client.community(locale, "item-type", slugify(item_slug))
 
-        return self.client.community(locale, "item-type")
+        return self.__client.community(locale, "item-type")
 
     def item(self, locale: str, item_slug: str) -> Dict[str, Any]:
         """Returns the item by slug
@@ -140,7 +144,7 @@ class Community:
         Returns:
             dict: the dict containing for the item
         """
-        return self.client.community(locale, "item", item_slug)
+        return self.__client.community(locale, "item", item_slug)
 
     def api_account(self, locale: str, bnet_tag: str) -> Dict[str, Any]:
         """Returns the specified account profile
@@ -152,7 +156,7 @@ class Community:
         Returns:
             dict: the dict containing for the account
         """
-        return self.client.profile_api(locale, f"{quote(bnet_tag)}/")
+        return self.__client.profile_api(locale, f"{quote(bnet_tag)}/")
 
     def api_hero(
         self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
@@ -170,7 +174,7 @@ class Community:
         """
         if category:
             if category in ("items", "follower-items"):
-                return self.client.profile_api(
+                return self.__client.profile_api(
                     locale, quote(bnet_tag), "hero", hero_id, category
                 )
             else:
@@ -178,12 +182,12 @@ class Community:
                     "Invalid category;  Valid categories are 'items' and 'follower-items'"
                 )
         else:
-            return self.client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
+            return self.__client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
 
 
 class CommunityCN:
     def __init__(self, client: "D3Client") -> None:
-        self.client = client
+        self.__client = client
 
     class_name = "community"
 
@@ -199,9 +203,9 @@ class CommunityCN:
         """
 
         if act_id:
-            return self.client.community(locale, "act", act_id)
+            return self.__client.community(locale, "act", act_id)
 
-        return self.client.community(locale, "act")
+        return self.__client.community(locale, "act")
 
     def artisan(self, locale: str, artisan_slug: str) -> Dict[str, Any]:
         """Returns the artisan by the slug
@@ -213,7 +217,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing data of the artisan
         """
-        return self.client.community(locale, "artisan", artisan_slug)
+        return self.__client.community(locale, "artisan", artisan_slug)
 
     def recipe(
         self, locale: str, artisan_slug: str, recipe_slug: str
@@ -228,7 +232,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing for the recipe
         """
-        return self.client.community(
+        return self.__client.community(
             locale, "artisan", artisan_slug, "recipe", slugify(recipe_slug)
         )
 
@@ -242,7 +246,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing for the follower
         """
-        return self.client.community(locale, "follower", slugify(follower_slug))
+        return self.__client.community(locale, "follower", slugify(follower_slug))
 
     def character_class(self, locale: str, class_slug: str) -> Dict[str, Any]:
         """Returns a single character class by slug
@@ -254,7 +258,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing for the character class
         """
-        return self.client.community(locale, "hero", slugify(class_slug))
+        return self.__client.community(locale, "hero", slugify(class_slug))
 
     def api_skill(
         self, locale: str, class_slug: str, skill_slug: str
@@ -269,7 +273,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing for the skill
         """
-        return self.client.community(
+        return self.__client.community(
             locale,
             "hero",
             slugify(class_slug),
@@ -288,9 +292,9 @@ class CommunityCN:
             dict: the dict containing for the item type
         """
         if item_slug:
-            return self.client.community(locale, "item-type", slugify(item_slug))
+            return self.__client.community(locale, "item-type", slugify(item_slug))
 
-        return self.client.community(locale, "item-type")
+        return self.__client.community(locale, "item-type")
 
     def item(self, locale: str, item_slug: str) -> Dict[str, Any]:
         """Returns the item by slug
@@ -302,7 +306,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing for the item
         """
-        return self.client.community(locale, "item", item_slug)
+        return self.__client.community(locale, "item", item_slug)
 
     def api_account(self, locale: str, bnet_tag: str) -> Dict[str, Any]:
         """Returns the specified account profile
@@ -314,7 +318,7 @@ class CommunityCN:
         Returns:
             dict: the dict containing for the account
         """
-        return self.client.profile_api(locale, f"{quote(bnet_tag)}/")
+        return self.__client.profile_api(locale, f"{quote(bnet_tag)}/")
 
     def api_hero(
         self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
@@ -332,7 +336,7 @@ class CommunityCN:
         """
         if category:
             if category in ("items", "follower-items"):
-                return self.client.profile_api(
+                return self.__client.profile_api(
                     locale, quote(bnet_tag), "hero", hero_id, category
                 )
             else:
@@ -340,4 +344,4 @@ class CommunityCN:
                     "Invalid category;  Valid catgories are 'items' and 'follower-items'"
                 )
         else:
-            return self.client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
+            return self.__client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
