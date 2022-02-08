@@ -1,3 +1,17 @@
+"""Defines exceptions related to the Starcraft 2 API wrappers
+
+Classes:
+    SC2Error
+    SC2ClientError
+    SC2RegionError
+
+Disclaimer:
+    All rights reserved, Blizzard is the intellectual property owner of Starcraft 2 and any data
+    retrieved from this API.
+
+"""
+
+
 class SC2Error(Exception):
     """Base Exception class for Starcraft 2"""
 

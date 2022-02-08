@@ -1,18 +1,15 @@
-"""Defines the client for connected to the World of Warcraft/Classic/TBC Classic
+"""Defines the client for connected to Starcraft 2
 
-This module contains the client class definitions for accessing World of Warcraft API data.
-There are two flavors of client, one implements the client credential workflow, which happens
-to be the most common.  The other implements the user authorization workflow
+Classes:
+    SC2Client
 
 Examples:
-    > from wow_api import WoWCredentialClient
-    > client = WoWCredentialClient(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
+    > from battlnet_client import sc2
+    > client = sc2.SC2Client(<region>, client_id='<client ID>', client_secret='<client secret>')
 
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
-
-class_name
 """
 import importlib
 from decouple import config
@@ -20,9 +17,7 @@ from decouple import config
 from typing import Optional, List, Dict, Any
 
 from battlenet_client.bnet.client import BNetClient
-from battlenet_client.constants import SC2
 
-from .constants import MODULES
 from ..misc import localize
 
 
@@ -58,26 +53,21 @@ class SC2Client(BNetClient):
 
         super().__init__(
             region,
-            SC2,
             client_id=client_id,
             client_secret=client_secret,
             scope=scope,
             redirect_uri=redirect_uri,
         )
 
-        # load the API endpoints programmatically
-        if self.tag == "cn":
-            mod_group = "cn"
-        else:
-            mod_group = "noncn"
-
-        for mod_name, classes in MODULES[mod_group].items():
-            mod = importlib.import_module(f"battlenet_client.sc2.{mod_name}")
-            for cls in classes:
-                setattr(self, getattr(mod, cls).class_name, getattr(mod, cls)(self))
-
     def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+        """Generates then necessary game data API URI and keyword args for to pasted on to the client get method
 
+        Args:
+            locale (str): the localization to use for the request
+
+        Returns:
+            dict: the resultant JSON decoded dict
+        """
         kwargs["params"]["locale"] = localize(locale)
 
         if args[0].startswith("https"):
@@ -88,7 +78,14 @@ class SC2Client(BNetClient):
         return self._get(uri, **kwargs)
 
     def community(self, locale: str, *args, **kwargs):
+        """Generates then necessary community API URI and keyword args for to pasted on to the client get method
 
+        Args:
+            locale (str): the localization to use for the request
+
+        Returns:
+            dict: the resultant JSON decoded dict
+        """
         kwargs["params"]["locale"] = localize(locale)
 
         if args[0].startswith("https"):
