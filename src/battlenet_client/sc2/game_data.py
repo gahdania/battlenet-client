@@ -1,7 +1,9 @@
-from typing import Any, TYPE_CHECKING, Dict
+from requests import Response
+
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from client import SC2Client
+    from .client import SC2Client
 
 
 class LeagueData:
@@ -10,7 +12,7 @@ class LeagueData:
 
     def league_data(
         self, locale: str, season_id: str, queue_id: str, team_type: str, league_id: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns data for the specified season, queue, team, and league.
 
         queueId: the standard available queueIds are: 1=WoL 1v1, 2=WoL 2v2, 3=WoL 3v3, 4=WoL 4v4, 101=HotS 1v1,

@@ -3,7 +3,7 @@ try:
 except ImportError:
     import unittest
 
-from battlenet_client.constants import UNITED_STATES
+from battlenet_client.bnet.constants import UNITED_STATES
 
 from src.d3_api import D3Client
 

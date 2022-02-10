@@ -9,14 +9,15 @@ Disclaimer:
     retrieved from this API.
 """
 
-from typing import Optional, Any, TYPE_CHECKING, Dict
+from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from requests import Response
     from client import D3Client
 
 from urllib.parse import quote
 
-from ..misc import slugify
+from battlenet_client.bnet.misc import slugify
 
 
 class Community:
@@ -24,9 +25,9 @@ class Community:
         self.__client = client
 
     def __repr__(self):
-        return self.class_name
+        return self.__name__
 
-    def act(self, locale: str, act_id: Optional[int] = None) -> Dict[str, Any]:
+    def act(self, locale: str, act_id: Optional[int] = None) -> Response:
         """Returns an index of acts, or the act by ID
 
         Args:
@@ -41,7 +42,7 @@ class Community:
 
         return self.__client.community(locale, "act")
 
-    def artisan(self, locale: str, artisan_slug: str) -> Dict[str, Any]:
+    def artisan(self, locale: str, artisan_slug: str) -> Response:
         """Returns the artisan by the slug
 
         Args:
@@ -53,9 +54,7 @@ class Community:
         """
         return self.__client.community(locale, "artisan", slugify(artisan_slug))
 
-    def recipe(
-        self, locale: str, artisan_slug: str, recipe_slug: str
-    ) -> Dict[str, Any]:
+    def recipe(self, locale: str, artisan_slug: str, recipe_slug: str) -> Response:
         """Returns a single recipe by the by slug for the specified artisan
 
         Args:
@@ -70,7 +69,7 @@ class Community:
             locale, "artisan", slugify(artisan_slug), "recipe", slugify(recipe_slug)
         )
 
-    def follower(self, locale: str, follower_slug: str) -> Dict[str, Any]:
+    def follower(self, locale: str, follower_slug: str) -> Response:
         """Returns the follower by slug
 
         Args:
@@ -82,7 +81,7 @@ class Community:
         """
         return self.__client.community(locale, "follower", slugify(follower_slug))
 
-    def character_class(self, locale: str, class_slug: str) -> Dict[str, Any]:
+    def character_class(self, locale: str, class_slug: str) -> Response:
         """Returns a single character class by slug
 
         Args:
@@ -94,9 +93,7 @@ class Community:
         """
         return self.__client.community(locale, "hero", slugify(class_slug))
 
-    def api_skill(
-        self, locale: str, class_slug: str, skill_slug: str
-    ) -> Dict[str, Any]:
+    def api_skill(self, locale: str, class_slug: str, skill_slug: str) -> Response:
         """Returns a single skill by the by slug for the specified character class
 
         Args:
@@ -116,7 +113,7 @@ class Community:
             slugify(skill_slug),
         )
 
-    def item_type(self, locale: str, item_slug: Optional[str] = None) -> Dict[str, Any]:
+    def item_type(self, locale: str, item_slug: Optional[str] = None) -> Response:
         """Returns the index of item types, or a specific item type
 
         Args:
@@ -132,7 +129,7 @@ class Community:
 
         return self.__client.community(locale, "item-type")
 
-    def item(self, locale: str, item_slug: str) -> Dict[str, Any]:
+    def item(self, locale: str, item_slug: str) -> Response:
         """Returns the item by slug
 
         Args:
@@ -144,7 +141,7 @@ class Community:
         """
         return self.__client.community(locale, "item", item_slug)
 
-    def api_account(self, locale: str, bnet_tag: str) -> Dict[str, Any]:
+    def api_account(self, locale: str, bnet_tag: str) -> Response:
         """Returns the specified account profile
 
         Args:
@@ -158,7 +155,7 @@ class Community:
 
     def api_hero(
         self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns the follower by slug
 
         Args:
@@ -187,7 +184,7 @@ class CommunityCN:
     def __init__(self, client: "D3Client") -> None:
         self.__client = client
 
-    def act(self, locale: str, act_id: Optional[int] = None) -> Dict[str, Any]:
+    def act(self, locale: str, act_id: Optional[int] = None) -> Response:
         """Returns an index of acts, or the act by ID
 
         Args:
@@ -203,7 +200,7 @@ class CommunityCN:
 
         return self.__client.community(locale, "act")
 
-    def artisan(self, locale: str, artisan_slug: str) -> Dict[str, Any]:
+    def artisan(self, locale: str, artisan_slug: str) -> Response:
         """Returns the artisan by the slug
 
         Args:
@@ -215,9 +212,7 @@ class CommunityCN:
         """
         return self.__client.community(locale, "artisan", artisan_slug)
 
-    def recipe(
-        self, locale: str, artisan_slug: str, recipe_slug: str
-    ) -> Dict[str, Any]:
+    def recipe(self, locale: str, artisan_slug: str, recipe_slug: str) -> Response:
         """Returns a single recipe by the by slug for the specified artisan
 
         Args:
@@ -232,7 +227,7 @@ class CommunityCN:
             locale, "artisan", artisan_slug, "recipe", slugify(recipe_slug)
         )
 
-    def follower(self, locale: str, follower_slug: str) -> Dict[str, Any]:
+    def follower(self, locale: str, follower_slug: str) -> Response:
         """Returns the follower by slug
 
         Args:
@@ -244,7 +239,7 @@ class CommunityCN:
         """
         return self.__client.community(locale, "follower", slugify(follower_slug))
 
-    def character_class(self, locale: str, class_slug: str) -> Dict[str, Any]:
+    def character_class(self, locale: str, class_slug: str) -> Response:
         """Returns a single character class by slug
 
         Args:
@@ -256,9 +251,7 @@ class CommunityCN:
         """
         return self.__client.community(locale, "hero", slugify(class_slug))
 
-    def api_skill(
-        self, locale: str, class_slug: str, skill_slug: str
-    ) -> Dict[str, Any]:
+    def api_skill(self, locale: str, class_slug: str, skill_slug: str) -> Response:
         """Returns a single skill by the by slug for the specified character class
 
         Args:
@@ -277,7 +270,7 @@ class CommunityCN:
             slugify(skill_slug),
         )
 
-    def item_type(self, locale: str, item_slug: Optional[str] = None) -> Dict[str, Any]:
+    def item_type(self, locale: str, item_slug: Optional[str] = None) -> Response:
         """Returns the index of item types, or a specific item type
 
         Args:
@@ -292,7 +285,7 @@ class CommunityCN:
 
         return self.__client.community(locale, "item-type")
 
-    def item(self, locale: str, item_slug: str) -> Dict[str, Any]:
+    def item(self, locale: str, item_slug: str) -> Response:
         """Returns the item by slug
 
         Args:
@@ -304,7 +297,7 @@ class CommunityCN:
         """
         return self.__client.community(locale, "item", item_slug)
 
-    def api_account(self, locale: str, bnet_tag: str) -> Dict[str, Any]:
+    def api_account(self, locale: str, bnet_tag: str) -> Response:
         """Returns the specified account profile
 
         Args:
@@ -318,7 +311,7 @@ class CommunityCN:
 
     def api_hero(
         self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns the follower by slug
 
         Args:

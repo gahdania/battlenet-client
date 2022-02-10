@@ -12,10 +12,13 @@ Disclaimer:
     and any data pertaining thereto
 
 """
-from typing import Optional, Any, Dict, List
+from typing import Optional, Any, Dict
+
+from requests import exceptions, Response
+from time import sleep
 
 from ..bnet.client import BNetClient
-from ..misc import localize, slugify
+from ..bnet.misc import localize, slugify
 
 
 class HSClient(BNetClient):
@@ -42,7 +45,7 @@ class HSClient(BNetClient):
     def __repr__(self):
         return f"{self.__class__.__name__} Instance: HS {self.tag}"
 
-    def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+    def game_data(self, locale: str, *args, **kwargs) -> Response:
         """Used to retrieve data from the source data APIs
 
         Args:
@@ -54,29 +57,62 @@ class HSClient(BNetClient):
         """
         uri = f"{self.api_host}/hearthstone/{'/'.join([slugify(arg) for arg in args])}"
 
+        retries = 0
+
         kwargs["params"]["locale"] = localize(locale)
 
-        return self._get(uri, **kwargs)
+        while retries < 5:
+            try:
+                response = self.get(uri, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
 
     def search(
         self,
         locale: str,
         document: str,
-        fields: Optional[List[Dict[str, Any]]] = None,
-        **kwargs,
-    ) -> Dict[str, Any]:
+        fields: Dict[str, Any],
+        game_mode: Optional[str] = "constructed",
+    ) -> Response:
         """Used to perform searches where available
 
         Args:
             locale (str): the locale to use, example: en_US
             document (str): the document tree to be searched
             fields (dict): the criteria to search
+            game_mode (str): the game mode to search through
 
         Returns:
             dict: data returned by the API
         """
         uri = f"{self.api_host}/hearthstone/{slugify(document)}"
-        kwargs["params"]["locale"] = localize(locale)
-        kwargs["fields"] = fields
 
-        return self._get(uri, **kwargs)
+        retries = 0
+        params = {"locale": localize(locale)}
+
+        if document == "cards" and game_mode.lower() in (
+            "constructed",
+            "battlegrounds",
+            "mercenaries",
+        ):
+            params.update({"gameMode": game_mode})
+        else:
+            raise ValueError("Invalid Game Mode")
+
+        params.update(fields)
+
+        while retries < 5:
+            try:
+                response = self.get(uri, params=params)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()

@@ -1,6 +1,6 @@
 import pytest
 
-from battlenet_client.constants import HS
+from battlenet_client.bnet.constants import HS
 
 from hs_client.client import HSClient
 

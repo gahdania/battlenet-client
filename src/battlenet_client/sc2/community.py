@@ -9,19 +9,21 @@ Disclaimer:
     retrieved from this API.
 """
 
-from typing import Any, TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Optional
+
+from requests import Response
 
 if TYPE_CHECKING:
-    from client import SC2Client
+    from .client import SC2Client
 
-from exceptions import SC2ClientError, SC2RegionError
+from .exceptions import SC2ClientError, SC2RegionError
 
 
 class Profile:
     def __init__(self, client: "SC2Client") -> None:
         self.__client = client
 
-    def static(self, locale: str, region_id: int) -> Dict[str, Any]:
+    def static(self, locale: str, region_id: int) -> Response:
         """Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
 
         Args:
@@ -36,7 +38,7 @@ class Profile:
 
     def metadata(
         self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns metadata for an individual's profile.
 
         Args:
@@ -54,7 +56,7 @@ class Profile:
 
     def profile(
         self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns data about an individual SC2 profile.
 
         Args:
@@ -77,7 +79,7 @@ class Profile:
         realm_id: int,
         profile_id: int,
         ladder_id: Optional[int] = None,
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns a ladder summary, or specific ladder for an individual SC2 profile.
 
         Args:
@@ -104,7 +106,7 @@ class Ladder:
     def __init__(self, client: "SC2Client") -> None:
         self.__client = client
 
-    def grandmaster(self, locale: str, region_id: int) -> Dict[str, Any]:
+    def grandmaster(self, locale: str, region_id: int) -> Response:
         """Returns ladder data for the current season's grandmaster leaderboard.
 
         Args:
@@ -116,7 +118,7 @@ class Ladder:
         """
         return self.__client.community(locale, "ladder", "grandmaster", region_id)
 
-    def season(self, locale: str, region_id: int) -> Dict[str, Any]:
+    def season(self, locale: str, region_id: int) -> Response:
         """Returns data about the current season.
 
         Args:
@@ -133,7 +135,7 @@ class Account:
     def __init__(self, client: "SC2Client") -> None:
         self.__client = client
 
-    def player(self, locale: str, account_id: str) -> Dict[str, Any]:
+    def player(self, locale: str, account_id: str) -> Response:
         """Returns the player data for the provided `account_id`.
 
         Args:
@@ -155,7 +157,7 @@ class Legacy:
 
     def profile(
         self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Retrieves data about an individual SC2 profile.
 
         Args:
@@ -173,7 +175,7 @@ class Legacy:
 
     def ladders(
         self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Retrieves data about an individual SC2 profile's ladders.
 
         Args:
@@ -191,7 +193,7 @@ class Legacy:
 
     def match_history(
         self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns data about an individual SC2 profile's match history.
 
         Args:
@@ -207,7 +209,7 @@ class Legacy:
             locale, "legacy", "profile", region_id, realm_id, profile_id, "matches"
         )
 
-    def ladder(self, locale: str, region_id: int, ladder_id: int) -> Dict[str, Any]:
+    def ladder(self, locale: str, region_id: int, ladder_id: int) -> Response:
         """Returns data about an individual SC2 profile's match history.
 
         Args:
@@ -220,7 +222,7 @@ class Legacy:
         """
         return self.__client.community(locale, "legacy", "ladder", region_id, ladder_id)
 
-    def achievements(self, locale: str, region_id: int) -> Dict[str, Any]:
+    def achievements(self, locale: str, region_id: int) -> Response:
         """Returns the player data for the provided `account_id`.
 
         Args:
@@ -234,7 +236,7 @@ class Legacy:
             locale, "legacy", "data", "achievements", region_id
         )
 
-    def rewards(self, locale: str, region_id: int) -> Dict[str, Any]:
+    def rewards(self, locale: str, region_id: int) -> Response:
         """Returns the player data for the provided `account_id`.
 
         Args:
@@ -254,9 +256,7 @@ class ProfileCN:
 
         self.__client = client
 
-    def profile(
-        self, locale: str, profile_id: str, region: str, name: str
-    ) -> Dict[str, Any]:
+    def profile(self, locale: str, profile_id: str, region: str, name: str) -> Response:
         """Retrieves data about an individual SC2 profile.
 
         Args:
@@ -273,9 +273,7 @@ class ProfileCN:
 
         return self.__client.community(locale, "profile", profile_id, region, name)
 
-    def ladders(
-        self, locale: str, profile_id: str, region: str, name: str
-    ) -> Dict[str, Any]:
+    def ladders(self, locale: str, profile_id: str, region: str, name: str) -> Response:
         """Returns data about an individual SC2 profile's ladders.
 
         Args:
@@ -297,7 +295,7 @@ class ProfileCN:
 
     def match_history(
         self, locale: str, profile_id: str, region: str, name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns data about an individual SC2 profile's match history.
 
         Args:
@@ -324,7 +322,7 @@ class LadderCN:
 
         self.__client = client
 
-    def ladder(self, locale: str, ladder_id: str) -> Dict[str, Any]:
+    def ladder(self, locale: str, ladder_id: str) -> Response:
         """Returns data about an SC2 ladder.
 
         Args:
@@ -344,7 +342,7 @@ class DataResourceCN:
 
         self.__client = client
 
-    def achievements(self, locale: str) -> Dict[str, Any]:
+    def achievements(self, locale: str) -> Response:
         """Returns the achievements for Starcraft II
 
         Args:
@@ -355,8 +353,8 @@ class DataResourceCN:
         """
         return self.__client.community(locale, "data", "achievements")
 
-    def rewards(self, locale: str) -> Dict[str, Any]:
-        """Returns the rewards of the achievements in Starcrft II
+    def rewards(self, locale: str) -> Response:
+        """Returns the rewards of the achievements in Starcraft II
 
         Args:
             locale (str): which locale to use for the request

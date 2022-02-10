@@ -7,9 +7,10 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
 """
-from typing import Optional, Any, TYPE_CHECKING, Dict
+from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from requests import Response
     from client import D3Client
 
 
@@ -17,7 +18,7 @@ class GameData:
     def __init__(self, client: "D3Client") -> None:
         self.client = client
 
-    def season(self, locale: str, season_id: Optional[int] = None) -> Dict[str, Any]:
+    def season(self, locale: str, season_id: Optional[int] = None) -> Response:
         """Returns an index of seasons, or a leaderboard of the specified season
 
         Args:
@@ -35,7 +36,7 @@ class GameData:
 
     def season_leaderboard(
         self, locale: str, season_id: int, leaderboard_id: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns the leaderboard for the specified season by slug
 
         Args:
@@ -50,7 +51,7 @@ class GameData:
             locale, "season", season_id, "leaderboard", leaderboard_id
         )
 
-    def era(self, locale: str, era_id: Optional[int] = None) -> Dict[str, Any]:
+    def era(self, locale: str, era_id: Optional[int] = None) -> Response:
         """Returns an index of eras, or index of leaderboards for the era
 
         Args:
@@ -68,7 +69,7 @@ class GameData:
 
     def era_leaderboard(
         self, locale: str, era_id: int, leaderboard_id: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns the leaderboard for the specified era by slug
 
         Args:

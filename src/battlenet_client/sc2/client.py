@@ -4,21 +4,21 @@ Classes:
     SC2Client
 
 Examples:
-    > from battlnet_client import sc2
+    > from battlenet_client import sc2
     > client = sc2.SC2Client(<region>, client_id='<client ID>', client_secret='<client secret>')
 
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
 """
-import importlib
-from decouple import config
+from time import sleep
+from requests import exceptions, Response
 
-from typing import Optional, List, Dict, Any
+from typing import Optional, List
 
 from battlenet_client.bnet.client import BNetClient
 
-from ..misc import localize
+from battlenet_client.bnet.misc import localize
 
 
 class SC2Client(BNetClient):
@@ -44,13 +44,6 @@ class SC2Client(BNetClient):
         client_id: Optional[str] = None,
         client_secret: Optional[str] = None,
     ):
-
-        if not client_id:
-            client_id = config("CLIENT_ID")
-
-        if not client_secret:
-            client_secret = config("CLIENT_SECRET")
-
         super().__init__(
             region,
             client_id=client_id,
@@ -59,7 +52,7 @@ class SC2Client(BNetClient):
             redirect_uri=redirect_uri,
         )
 
-    def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+    def game_data(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary game data API URI and keyword args for to pasted on to the client get method
 
         Args:
@@ -75,9 +68,22 @@ class SC2Client(BNetClient):
         else:
             uri = f"{self.api_host}/data/sc2/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        return self._get(uri, **kwargs)
+        retries = 0
 
-    def community(self, locale: str, *args, **kwargs):
+        kwargs["params"]["locale"] = localize(locale)
+
+        while retries < 5:
+            try:
+                response = self.get(uri, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
+
+    def community(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary community API URI and keyword args for to pasted on to the client get method
 
         Args:
@@ -93,4 +99,15 @@ class SC2Client(BNetClient):
         else:
             uri = f"{self.api_host}/sc2/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        return self._get(uri, **kwargs)
+        retries = 0
+
+        while retries < 5:
+            try:
+                response = self.get(uri, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()

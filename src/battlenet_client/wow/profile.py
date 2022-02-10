@@ -22,12 +22,14 @@ Classes:
     Guild
 """
 
-from typing import Optional, Any, TYPE_CHECKING, Dict
+from typing import Optional, TYPE_CHECKING
+
+from requests import Response
 
 if TYPE_CHECKING:
-    from client import WoWClient
+    from .client import WoWClient
 
-from ..misc import slugify
+from battlenet_client.bnet.misc import slugify
 from .exceptions import WoWReleaseError, WoWClientError
 
 
@@ -38,7 +40,7 @@ class Account:
         else:
             raise WoWClientError("Requires authorization client")
 
-    def account_profile_summary(self, locale: str) -> Dict[str, Any]:
+    def account_profile_summary(self, locale: str) -> Response:
         """Accesses a summary of the account
 
         Args:
@@ -51,7 +53,7 @@ class Account:
 
     def protected_character_profile_summary(
         self, locale: str, realm_id: int, character_id: int
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses a summary of protected account information for the
         character identified by :realm_id: and :character_id:
 
@@ -70,7 +72,7 @@ class Account:
 
     def account_collections(
         self, locale: str, category: Optional[str] = None
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Access the collection of battle pets and/or mounts of an account as
         provided by :category:
 
@@ -96,7 +98,7 @@ class CharacterAchievements:
 
     def achievement_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the achievement summary of the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -119,7 +121,7 @@ class CharacterAchievements:
 
     def achievement_statistics(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the achievement statistics for the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -148,7 +150,7 @@ class CharacterAppearance:
 
     def appearance_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the appearance summary for the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -180,7 +182,7 @@ class CharacterCollections:
         realm_name: str,
         character_name: str,
         category: Optional[str] = None,
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the battle pet and/or mount collections for the requested
         character identified by :character_name: on realm :realm_name: of the
         given :category:.
@@ -189,7 +191,7 @@ class CharacterCollections:
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
-            category (str): cateogry to retrieve. options are pets or mounts, or None (default).  None will
+            category (str): category to retrieve. options are pets or mounts, or None (default).  None will
                 provide both
 
         Returns:
@@ -228,7 +230,7 @@ class CharacterEncounters:
         realm_name: str,
         character_name: str,
         category: Optional[str] = None,
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the encounters for the requested character identified by
         :character_name: on realm :realm_name:.  The encounters can be limited
         by :category:
@@ -272,7 +274,7 @@ class CharacterEquipment:
 
     def equipment_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the equipped items of the requested character identified by
         :character_name: on realm :realm_name:
 
@@ -300,7 +302,7 @@ class CharacterHunterPets:
 
     def hunter_pets_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Access the list of hunter pets of the requested character identified
         by :character_name: on realm :realm_name:
 
@@ -328,7 +330,7 @@ class CharacterMedia:
 
     def media_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the media assets, such as avatar render, of the requested
         character identified by :character_name: on realm :realm_name:
 
@@ -360,7 +362,7 @@ class CharacterMythicKeystone:
         realm_name: str,
         character_name: str,
         season_id: Optional[int] = None,
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the mythic keystone (M+ or Mythic+) information of the
         requested character identified by :character_name: on realm
         :realm_name:
@@ -402,7 +404,7 @@ class CharacterProfessions:
 
     def professions_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the profession information of the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -430,8 +432,8 @@ class CharacterProfile:
 
     def profile(
         self, locale: str, realm_name: str, character_name: str, status: bool = False
-    ) -> Dict[str, Any]:
-        """Acceses the profile status of the requested character identified by
+    ) -> Response:
+        """Access the profile status of the requested character identified by
         :character_name: on realm :realm_name:
 
         When requesting the character profile status, a note from Blizzard:
@@ -483,7 +485,7 @@ class CharacterProfile:
         )
 
 
-class CharacterPVP:
+class CharacterPvP:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
@@ -493,7 +495,7 @@ class CharacterPVP:
         realm_name: str,
         character_name: str,
         pvp_bracket: Optional[str] = None,
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the Player versus Player (PvP) information of the requested
         character identified by :character_name: on realm :realm_name:
 
@@ -534,7 +536,7 @@ class CharacterQuests:
 
     def quests(
         self, locale: str, realm_name: str, character_name: str, completed: bool = False
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the all or just completed quest information of the
         requested character identified by :character_name: on realm
         :realm_name:.
@@ -575,7 +577,7 @@ class CharacterReputations:
 
     def reputations_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the reputation data of the requested character identified
         by :character_name: on realm :realm_name:
 
@@ -601,9 +603,7 @@ class CharacterSoulBinds:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def soulbinds(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    def soulbinds(self, locale: str, realm_name: str, character_name: str) -> Response:
         """Accesses the available soulbinds of the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -631,8 +631,8 @@ class CharacterSpecializations:
 
     def specializations_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
-        """Access the avaiable specializations of the requested character
+    ) -> Response:
+        """Access the available specializations of the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
@@ -659,7 +659,7 @@ class CharacterStatistics:
 
     def statistics_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the statistics of the requested character identified by
         :character_name: on realm :realm_name:
 
@@ -687,7 +687,7 @@ class CharacterTitles:
 
     def title_summary(
         self, locale: str, realm_name: str, character_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Accesses the list of titles earned by the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -713,7 +713,7 @@ class Guild:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def guild(self, locale: str, realm_name: str, guild_name: str) -> Dict[str, Any]:
+    def guild(self, locale: str, realm_name: str, guild_name: str) -> Response:
         """Returns a single guild by its name and realm.
 
         Args:
@@ -739,7 +739,7 @@ class Guild:
 
     def guild_activities(
         self, locale: str, realm_name: str, guild_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns a single guild's activity by name and realm.
 
         Args:
@@ -766,7 +766,7 @@ class Guild:
 
     def guild_achievements(
         self, locale: str, realm_name: str, guild_name: str
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns a single guild's achievements by name and realm.
 
         Args:
@@ -791,9 +791,7 @@ class Guild:
             "achievements",
         )
 
-    def guild_roster(
-        self, locale: str, realm_name: str, guild_name: str
-    ) -> Dict[str, Any]:
+    def guild_roster(self, locale: str, realm_name: str, guild_name: str) -> Response:
         """Returns a single guild's roster by its name and realm.
 
         Args:
@@ -818,7 +816,7 @@ class Guild:
             "roster",
         )
 
-    def guild_crest_components_index(self, locale: str) -> Dict[str, Any]:
+    def guild_crest_components_index(self, locale: str) -> Response:
         """Returns an index of guild crest components.
 
         Args:
@@ -829,7 +827,7 @@ class Guild:
         """
         return self.__client.game_data(locale, "static", "guild-crest", "index")
 
-    def guild_crest_border_media(self, locale: str, border_id: int) -> Dict[str, Any]:
+    def guild_crest_border_media(self, locale: str, border_id: int) -> Response:
         """Returns media for a specific guild crest border.
 
         Args:
@@ -843,7 +841,7 @@ class Guild:
             locale, "static", "guild-crest", "border", border_id
         )
 
-    def guild_crest_emblem_media(self, locale: str, crest_id: int) -> Dict[str, Any]:
+    def guild_crest_emblem_media(self, locale: str, crest_id: int) -> Response:
         """Returns media for a specific guild crest emblem.
 
         Args:

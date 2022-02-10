@@ -9,7 +9,7 @@ Examples:
     > from battlenet_client import wow
     > client = wow.WoWClient(<region>, release=<release>, client_id='<client ID>', client_secret='<client secret>')
     > wow.Achievement(client).achievement_category('en_US', 81)
-    {'_links': {'self': {'href': 'https://us.api.blizzard.com/data/wow/achievement-category/81? ...
+    {'_links': {'self': {'href': 'https://us.api.blizzard.com/data/wow/achievement-category/81? ... }}}
 
     > # for authorization work flows (wow.Account) (requires a web server for the redirect)
     > from battlenet_client import wow
@@ -23,14 +23,17 @@ Disclaimer:
     and any data pertaining thereto
 
 """
-from typing import List, Optional, Any, Dict, Union, Tuple
+from typing import List, Optional, Any, Dict, Union
 
-from io import BytesIO
+from requests import exceptions, Response
+from time import sleep
+from importlib import import_module
 
 from ..bnet.client import BNetClient
-from ..misc import slugify
+from ..bnet.misc import slugify
 
 from .exceptions import WoWClientError
+from .constants import MODULES
 
 
 class WoWClient(BNetClient):
@@ -87,8 +90,19 @@ class WoWClient(BNetClient):
             self.static = f"static-{self.release}-{self.tag}"
             self.profile = f"profile-{self.release}-{self.tag}"
 
+        # load the base API programmatically
+        for module_name in ("game_data", "profile"):
+            mod = import_module(f"battlenet_client.wow.{module_name}")
+            for name, cls_name in MODULES[module_name]:
+                setattr(self, name, getattr(mod, cls_name)(self))
+
+        if self.auth_flow:
+            mod = import_module("profile", f"battlenet_client.wow")
+            for name, cls_name in MODULES["auth"]:
+                setattr(self, name, getattr(mod, cls_name)(self))
+
     name = "World of Warcraft"
-    abbrev = "WOW"
+    abbrev = "WoW"
 
     def __str__(self) -> str:
         return f"{self.name} API Client"
@@ -98,7 +112,7 @@ class WoWClient(BNetClient):
 
     def game_data(
         self, locale: str, namespace: str, *args: Union[str, int]
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Used to retrieve data from the source data APIs
 
         Args:
@@ -113,13 +127,26 @@ class WoWClient(BNetClient):
         else:
             uri = f"{self.api_host}/data/wow/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        return self._get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
+        retries = 0
 
-    def profile_data(self, locale: str, namespace: str, *args: Union[str, int]) -> Any:
+        while retries < 5:
+            try:
+                response = self.get(
+                    uri,
+                    params={"locale": locale},
+                    headers={"Battlenet-Namespace": getattr(self, namespace)},
+                )
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
+
+    def profile_data(
+        self, locale: str, namespace: str, *args: Union[str, int]
+    ) -> Response:
         """Used to retrieve data from the profile APIs which do not require authentication from the user
 
         Args:
@@ -134,15 +161,26 @@ class WoWClient(BNetClient):
         else:
             uri = f"{self.api_host}/profile/wow/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        return self._get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
+        retries = 0
+
+        while retries < 5:
+            try:
+                response = self.get(
+                    uri,
+                    params={"locale": locale},
+                    headers={"Battlenet-Namespace": getattr(self, namespace)},
+                )
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
 
     def protected_data(
         self, locale: str, namespace: str, *args: Union[str, int]
-    ) -> Any:
+    ) -> Response:
         """Used to retrieve data from the profile APIs which do require authentication from the user
 
         Args:
@@ -160,13 +198,24 @@ class WoWClient(BNetClient):
         else:
             uri = f"{self.api_host}/profile/user/wow{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        return self._post(
-            uri, params={"namespace": getattr(self, namespace), "locale": locale}
-        )
+        retries = 0
 
-    def media_data(
-        self, locale: str, namespace: str, *args: Union[str, int]
-    ) -> Union[Dict[str, Any], BytesIO]:
+        while retries < 5:
+            try:
+                response = self.post(
+                    uri,
+                    params={"locale": locale},
+                    headers={"Battlenet-Namespace": getattr(self, namespace)},
+                )
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
+
+    def media_data(self, locale: str, namespace: str, *args) -> Response:
         """Used to retrieve media data including URLs for them
 
         Args:
@@ -176,17 +225,29 @@ class WoWClient(BNetClient):
         Returns:
             dict: data returned by the API
         """
-        join_args = [slugify(str(arg)) for arg in args if arg is not None]
-        uri = f"{self.api_host}/data/wow/media/{'/'.join(join_args)}"
-        return self._get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
+
+        uri = f"{self.api_host}/data/wow/media/{'/'.join([slugify(str(arg)) for arg in args if arg is not None])}"
+
+        retries = 0
+
+        while retries < 5:
+            try:
+                response = self.get(
+                    uri,
+                    params={"locale": locale},
+                    headers={"Battlenet-Namespace": getattr(self, namespace)},
+                )
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
 
     def search(
-        self, locale: str, namespace: str, document: str, fields: List[Dict[str, Any]]
-    ) -> Any:
+        self, locale: str, namespace: str, document: str, fields: Dict[str, Any]
+    ) -> Response:
         """Used to perform searches where available
 
         Args:
@@ -199,26 +260,22 @@ class WoWClient(BNetClient):
             dict: data returned by the API
         """
         uri = f"{self.api_host}/data/wow/search/{slugify(document)}"
-        return self._get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-            fields=fields,
-        )
+        params = {"locale": locale}
+        params.update(fields)
 
-    @staticmethod
-    def currency_convertor(value: int) -> Tuple[int, int, int]:
-        """Returns the value into gold, silver and copper
+        retries = 0
 
-        Args:
-            value (int/str): the value to be converted
-
-        Returns:
-            tuple: gold, silver and copper values
-        """
-        value = int(value)
-
-        if value < 0:
-            raise ValueError("Value cannot be negative")
-
-        return value // 10000, (value % 10000) // 100, value % 100
+        while retries < 5:
+            try:
+                response = self.get(
+                    uri,
+                    params={"locale": locale},
+                    headers={"Battlenet-Namespace": getattr(self, namespace)},
+                )
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()

@@ -7,20 +7,15 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
 """
-import importlib
-from typing import Optional, Any, Dict, Tuple, List, Union
+from typing import Optional, Any, Dict, List
 
 from decouple import config
-from io import BytesIO
-from time import sleep
 from urllib.parse import unquote
 
-import requests
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from .. import constants
-from . import exceptions
+from . import exceptions, constants
 
 
 class BNetClient(OAuth2Session):
@@ -96,95 +91,11 @@ class BNetClient(OAuth2Session):
             self.fetch_token()
             self.auth_flow = False
 
-    name = "Battle.net"
-    abbrev = "BNET"
-
     def __str__(self) -> str:
         return f"{self.name} API Client"
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__} Instance: {self.abbrev}"
-
-    def _get(self, uri: str, **kwargs) -> Dict[str, Any]:
-        """Convenience function for the GET method
-
-        Args:
-            uri (str): the URI to request
-
-        Keyword Args:
-            params (dict): query string parameters for the API
-            headers (dict, optional): the headers to add to the request
-            fields (dict, optional): the fields and values for searches
-
-        Returns:
-              dict:  The response from the Battle.net API
-        """
-        return self.__endpoint("get", uri, **kwargs)
-
-    def _post(self, uri: str, **kwargs) -> Dict[str, Any]:
-        """Convenience function for the POST method
-
-        Args:
-            uri (str): the URI to request
-
-        Keyword Args:
-            params (dict): query string parameters for the API
-            headers (dict, optional): the headers to add to the request
-            fields (dict, optional): the fields and values for searches
-
-        Returns:
-              dict:  The response from the Battle.net API
-        """
-        return self.__endpoint("post", uri, **kwargs)
-
-    def __endpoint(
-        self,
-        method: str,
-        uri: str,
-        *,
-        retries: Optional[int] = 5,
-        params: Dict[str, Any] = None,
-        headers: Optional[Dict[str, Any]] = None,
-        fields: Optional[Dict[str, Any]] = None,
-    ) -> Union[Dict[str, Any], BytesIO]:
-        """Processes the API request into the appropriate headers and parameters
-
-        Args:
-            method (str): the HTTP method to use
-            uri (str): the URI for the API endpoint
-
-        Keyword Args:
-            retries (int, optional): the number of retries at getting to the API endpoint (default is 5)
-            params (dict): dict of the parameters to be passed via query string to the endpoint
-            headers (dict, optional):  Additional headers to sent with the request
-            fields (dict, optional): search parameters to form
-
-        Returns:
-          dict:  The response from the Battle.net API
-        """
-
-        if not params:
-            params = {}
-
-        if fields:
-            params.update({key: value for key, value in fields.items()})
-
-        for _ in range(retries):
-            try:
-                raw_data = super().request(method, uri, params=params, headers=headers)
-                raw_data.raise_for_status()
-            except requests.exceptions.Timeout:
-                sleep(2.5)
-            except requests.exceptions.HTTPError as error:
-                if error.response.status_code == 429:
-                    sleep(1.0)
-                else:
-                    raise error
-            else:
-                if raw_data.headers["content-type"].startswith("application/json"):
-                    return raw_data.json()
-                else:
-                    return BytesIO(raw_data.content)
 
     def validate_token(self) -> bool:
         """Checks with the API if the token is good or not.
@@ -194,7 +105,7 @@ class BNetClient(OAuth2Session):
         """
 
         url = f"{self.auth_host}/oauth/check_token"
-        data = super().post(
+        data = self.post(
             url,
             params={"token": self.access_token},
             headers={"Battlenet-Namespace": None},
@@ -214,9 +125,7 @@ class BNetClient(OAuth2Session):
             raise ValueError("Requires Authorization Workflow")
 
         auth_url = f"{self.auth_host}/oauth/authorize"
-        authorization_url, self._state = super().authorization_url(
-            url=auth_url, **kwargs
-        )
+        authorization_url, self._state = self.authorization_url(url=auth_url, **kwargs)
         return unquote(authorization_url)
 
     def fetch_token(self, **kwargs) -> None:
@@ -249,4 +158,4 @@ class BNetClient(OAuth2Session):
             raise exceptions.BNetClientError("Requires Authorization Code Workflow")
 
         url = f"{self.auth_host}/oauth/userinfo"
-        return self._get(url, params={"locale": locale})
+        return self.get(url, params={"locale": locale})

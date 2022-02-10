@@ -10,6 +10,8 @@ Disclaimer:
 
 from typing import Optional, Any, TYPE_CHECKING, Dict, List
 
+from requests import Response
+
 if TYPE_CHECKING:
     from client import HSClient
 
@@ -21,9 +23,9 @@ class Hearthstone:
     def card_search(
         self,
         locale: str,
+        field_values: Dict[str, Any],
         game_mode: Optional[str] = "constructed",
-        field_values: Optional[List[Dict[str, Any]]] = None,
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Searches for cards that match `field_values'
 
         Args:
@@ -40,16 +42,11 @@ class Hearthstone:
             HSClientError: when a client other than HSClient is used.
         """
 
-        if field_values:
-            return self.__client.search(
-                locale, "cards", fields=field_values, params={"gameMode": game_mode}
-            )
-
-        return self.__client.search(locale, "cards", params={"gameMode": game_mode})
+        return self.__client.search(locale, "cards", game_mode, fields=field_values)
 
     def card(
         self, locale: str, card_id: str, game_mode: Optional[str] = "constructed"
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Returns the card provided by `card_id'
 
         Args:
@@ -72,9 +69,7 @@ class Hearthstone:
             locale, "cards", card_id, params={"gameMode": game_mode}
         )
 
-    def card_back_search(
-        self, locale: str, field_values: Optional[List[Dict[str, Any]]] = None
-    ) -> Dict[str, Any]:
+    def card_back_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
         """Searches for cards that match `field_values'
 
         Args:
@@ -89,12 +84,10 @@ class Hearthstone:
         Raises:
             HSClientError: when a client other than HSClient is used.
         """
-        if field_values:
-            return self.__client.search(locale, "cardbacks", fields=field_values)
 
-        return self.__client.search(locale, "cardbacks")
+        return self.__client.search(locale, "cardbacks", field_values)
 
-    def card_back(self, locale: str, card_back_id: str) -> Dict[str, Any]:
+    def card_back(self, locale: str, card_back_id: str) -> Response:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
         Args:
@@ -111,7 +104,7 @@ class Hearthstone:
 
     def card_deck(
         self, locale, field_values: Optional[List[Dict[str, Any]]]
-    ) -> Dict[str, Any]:
+    ) -> Response:
         """Searches for cards that match `field_values'
 
         Args:
@@ -128,7 +121,7 @@ class Hearthstone:
         """
         return self.__client.search(locale, "deck", field_values)
 
-    def metadata(self, locale: str, meta_data: Optional[str] = None) -> Dict[str, Any]:
+    def metadata(self, locale: str, meta_data: Optional[str] = None) -> Response:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
         Args:

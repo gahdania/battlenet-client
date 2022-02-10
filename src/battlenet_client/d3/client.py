@@ -11,13 +11,14 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
 """
-from typing import List, Optional, Any, Dict
 import importlib
-from decouple import config
+from typing import List, Optional
 
-from battlenet_client.bnet.client import BNetClient
+from requests import exceptions, Response
+from time import sleep
 
-from ..misc import localize
+from ..bnet.misc import localize
+from ..bnet.client import BNetClient
 
 
 class D3Client(BNetClient):
@@ -52,7 +53,16 @@ class D3Client(BNetClient):
             redirect_uri=redirect_uri,
         )
 
-    def game_data(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+        mod = importlib.import_module("battlenet_client.d3.community")
+        if self.tag == "cn":
+            self.community_api = getattr(mod, "CommunityCN")(self)
+        else:
+            self.community_api = getattr(mod, "Community")(self)
+
+        mod = importlib.import_module("battlenet_client.d3.game_data")
+        self.game_data_api = getattr(mod, "GameData")(self)
+
+    def game_data(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary game data API URI and keyword args for to pasted on to the client get method
 
         Args:
@@ -66,11 +76,22 @@ class D3Client(BNetClient):
         else:
             uri = f"{self.api_host}/data/d3/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
+        retries = 0
+
         kwargs["params"]["locale"] = localize(locale)
 
-        return self._get(uri, **kwargs)
+        while retries < 5:
+            try:
+                response = self.get(uri, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
 
-    def community(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+    def community(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary community API URI and keyword args for to pasted on to the client get method
 
         Args:
@@ -83,10 +104,22 @@ class D3Client(BNetClient):
             uri = args[0]
         else:
             uri = f"{self.api_host}/d3/data/{'/'.join([str(arg) for arg in args if arg is not None])}"
-        kwargs["params"]["locale"] = localize(locale)
-        return self._get(uri, **kwargs)
+        retries = 0
 
-    def profile_api(self, locale: str, *args, **kwargs) -> Dict[str, Any]:
+        kwargs["params"]["locale"] = localize(locale)
+
+        while retries < 5:
+            try:
+                response = self.get(uri, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
+
+    def profile_api(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary profile API URI and keyword args for to pasted on to the client get method
 
         Args:
@@ -100,5 +133,17 @@ class D3Client(BNetClient):
         else:
             uri = f"{self.api_host}/d3/profile/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
+        retries = 0
+
         kwargs["params"]["locale"] = localize(locale)
-        return self._get(uri, **kwargs)
+
+        while retries < 5:
+            try:
+                response = self.get(uri, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                return response.json()
