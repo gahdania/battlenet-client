@@ -1,4 +1,1 @@
-__all__ = ['bnet', ]
-
-
-from . import *
+from .client import BNetClient

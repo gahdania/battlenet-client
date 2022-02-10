@@ -1,6 +1,6 @@
 # BattleNet Clients
 BattleNet Clients provide a uniform interface for Blizzard's Battle.net Developer Rest Application Programming
-Interface (BNET Rest API) 
+Interface (BNET Rest API)
 
 ## Installation
 
@@ -12,7 +12,7 @@ Windows, OS X & Linux:
 Clone the latest version: https://gitlab.com/battlenet1/battlenet-client.git
 
 ## Usage Example
-    # client_id and client_secret found in your battle.net developer account 
+    # client_id and client_secret found in your battle.net developer account
     from battlenet_client.client import BattleNetClient
     from battlenet_client.constants import UNITED_STATES, WOW
     client = BattleNetClient(UNITED_STATES, WOW, <client_id>, <client_secret>)

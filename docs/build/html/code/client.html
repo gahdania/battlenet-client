@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battle.net Client &#8212; BattleNet Client 0.0.3a5 documentation</title>
+
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Battle.net API" href="bnet.html" />
+    <link rel="prev" title="Modules" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+
+    <div class="container-fluid" id="banner"></div>
+
+
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+
+
+<a class="navbar-brand" href="../index.html">
+<p class="title">BattleNet Client</p>
+</a>
+
+
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../intro.html">
+  Introduction
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Modules
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../references.html">
+  References
+ </a>
+</li>
+
+
+</ul>
+      </div>
+
+    </div>
+
+    <div id="navbar-end">
+
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+    </nav>
+
+
+    <div class="container-xl">
+      <div class="row">
+
+
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Battle.net Client
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bnet.html">
+   Battle.net API
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exceptions.html">
+   Battle.net Exceptions
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+
+
+
+
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+
+
+              <div class="toc-item">
+
+
+<nav id="bd-toc-nav">
+
+</nav>
+              </div>
+
+              <div class="toc-item">
+
+              </div>
+
+
+          </div>
+
+
+
+
+
+
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+
+              <div>
+
+  <p><a class="reference internal" href="../index.html#root"><span class="std std-ref">Home</span></a> / <a class="reference internal" href="index.html#code-index"><span class="std std-ref">Code Home</span></a></p>
+<div class="section" id="battle-net-client">
+<h1>Battle.net Client<a class="headerlink" href="#battle-net-client" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="clients-code"></span><dl class="py class">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">battlenet_client.client.</span></span><span class="sig-name descname"><span class="pre">BattleNetClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">game</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the communication using OAuth v2 client to the Battle.net REST API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>str</em>) – region abbreviation for use with the APIs</p></li>
+<li><p><strong>game</strong> (<em>dict</em>) – the game for the request</p></li>
+<li><p><strong>client_id</strong> (<em>str</em>) – the client ID from the developer portal</p></li>
+<li><p><strong>client_secret</strong> (<em>str</em>) – the client secret from the developer portal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>scope</strong> (<em>list</em><em>, </em><em>optional</em>) – the scope or scopes to use during the endpoints that require the Web Application Flow</p></li>
+<li><p><strong>redirect_uri</strong> (<em>str</em><em>, </em><em>optional</em>) – the URI to return after a successful authentication between the user and Blizzard</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.tag">
+<span class="sig-name descname"><span class="pre">tag</span></span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>the region tag (abbreviation) of the client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.api_host">
+<span class="sig-name descname"><span class="pre">api_host</span></span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.api_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>the host to use for accessing the API endpoints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.auth_host">
+<span class="sig-name descname"><span class="pre">auth_host</span></span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.auth_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>the host to use for authentication</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.render_host">
+<span class="sig-name descname"><span class="pre">render_host</span></span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.render_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>the hose to use for images</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.game">
+<span class="sig-name descname"><span class="pre">game</span></span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.game" title="Permalink to this definition">¶</a></dt>
+<dd><p>holds basic info about the game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.api_get">
+<span class="sig-name descname"><span class="pre">api_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.api_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function for the GET method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.api_post">
+<span class="sig-name descname"><span class="pre">api_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.api_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function for the POST method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.authorization_url">
+<span class="sig-name descname"><span class="pre">authorization_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.authorization_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares and returns the authorization URL to the Battle.net authorization servers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the URL to the Battle.net authorization server</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.currency_convertor">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">currency_convertor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.currency_convertor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value into gold, silver and copper</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>int</em>) – the value to be converted</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>gold, silver and copper values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.fetch_token">
+<span class="sig-name descname"><span class="pre">fetch_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.fetch_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic method for fetching an access token from the token endpoint.</p>
+<p>If you are using the MobileApplicationClient you will want to use
+<cite>token_from_fragment</cite> instead of <cite>fetch_token</cite>.</p>
+<p>The current implementation enforces the RFC guidelines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token_url</strong> – Token endpoint URL, must use HTTPS.</p></li>
+<li><p><strong>code</strong> – Authorization code (used by WebApplicationClients).</p></li>
+<li><p><strong>authorization_response</strong> – Authorization response URL, the callback
+URL of the request back to you. Used by
+WebApplicationClients instead of code.</p></li>
+<li><p><strong>body</strong> – Optional application/x-www-form-urlencoded body to add the
+include in the token request. Prefer kwargs over body.</p></li>
+<li><p><strong>auth</strong> – An auth tuple or method as accepted by <cite>requests</cite>.</p></li>
+<li><p><strong>username</strong> – Username required by LegacyApplicationClients to appear
+in the request body.</p></li>
+<li><p><strong>password</strong> – Password required by LegacyApplicationClients to appear
+in the request body.</p></li>
+<li><p><strong>method</strong> – The HTTP method used to make the request. Defaults
+to POST, but may also be GET. Other methods should
+be added as needed.</p></li>
+<li><p><strong>force_querystring</strong> – If True, force the request body to be sent
+in the querystring instead.</p></li>
+<li><p><strong>timeout</strong> – Timeout of the request in seconds.</p></li>
+<li><p><strong>headers</strong> – Dict to default request headers with.</p></li>
+<li><p><strong>verify</strong> – Verify SSL certificate.</p></li>
+<li><p><strong>proxies</strong> – The <cite>proxies</cite> argument is passed onto <cite>requests</cite>.</p></li>
+<li><p><strong>include_client_id</strong> – Should the request body include the
+<cite>client_id</cite> parameter. Default is <cite>None</cite>,
+which will attempt to autodetect. This can be
+forced to always include (True) or never
+include (False).</p></li>
+<li><p><strong>client_secret</strong> – The <cite>client_secret</cite> paired to the <cite>client_id</cite>.
+This is generally required unless provided in the
+<cite>auth</cite> tuple. If the value is <cite>None</cite>, it will be
+omitted from the request, however if the value is
+an empty string, an empty string will be sent.</p></li>
+<li><p><strong>kwargs</strong> – Extra parameters to include in the token request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A token dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.localize">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">localize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.localize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the standardized locale</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locale</strong> (<em>str</em>) – the locality to be standardized</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the locale in the format of “&lt;lang&gt;_&lt;COUNTRY&gt;”</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(str)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – when locale is not a string</p></li>
+<li><p><strong>ValueError</strong> – when the lang and country are not in the given lists</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.slugify">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">slugify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.slugify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the ‘slugified’ string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string to be converted into a slug</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the slug of :value:</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.client.BattleNetClient.validate_token">
+<span class="sig-name descname"><span class="pre">validate_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#battlenet_client.client.BattleNetClient.validate_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks with the API if the token is good or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True of the token is valid, false otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference internal" href="../index.html#root"><span class="std std-ref">Home</span></a> / <a class="reference internal" href="index.html#code-index"><span class="std std-ref">Code Home</span></a></p>
+<a class="reference internal image-reference" href="../_images/gahd_logo.png"><img alt="Logo of Gahd" class="align-right" src="../_images/gahd_logo.png" style="width: 100px; height: 100px;" /></a>
+</div>
+
+
+              </div>
+
+
+              <div class='prev-next-bottom'>
+
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">Modules</a>
+    <a class='right-next' id="next-link" href="bnet.html" title="next page">Battle.net API</a>
+
+              </div>
+
+          </main>
+
+
+      </div>
+    </div>
+
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2020, David &#34;Gahd&#34; Couples.<br/>
+</p>
+    </div>
+
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+</p>
+    </div>
+
+  </div>
+</footer>
+  </body>
+</html>

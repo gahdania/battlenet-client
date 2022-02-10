@@ -1,0 +1,25 @@
+"""Defines exceptions related to the Battle.net OAuth API wrappers
+
+Classes:
+    BNetError
+    BNetRegionNotFoundError
+    BNetClientError
+"""
+
+
+class BNetError(Exception):
+    """Base Error class for BattleNet Client"""
+
+    pass
+
+
+class BNetRegionNotFoundError(BNetError):
+    """Error raised when an invalid region code is detected"""
+
+    pass
+
+
+class BNetClientError(BNetError):
+    """Error raised if there is a mismatch with the client and API endpoints"""
+
+    pass

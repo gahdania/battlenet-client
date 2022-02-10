@@ -7,8 +7,8 @@ __pycache__/
 *.komodoproject
 **/.buildinfo
 **/objects.inv
-/docs/build/
-/build/
+/build
+/docs/build/doctrees
 /public/
 battlenet_client.egg-info
 .coverage
