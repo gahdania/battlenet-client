@@ -6,6 +6,6 @@ Constants
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: wow_api.constants
+.. automodule:: battlenet_client.wow.constants
    :inherited-members:
    :members:
