@@ -28,7 +28,7 @@ Please change log for complete history
 
 ## Meta
 
-David "Gahd" Couples – [@gahdania][twitter] – gahdania@gahd.io
+David "Gahd" Couples – [@gahdania][twitter] [Twitch][twitch] – gahdania@gahd.io
 
 Distributed under the GPL v3+ license. See ``LICENSE`` for more information.
 
@@ -45,6 +45,6 @@ Distributed under the GPL v3+ license. See ``LICENSE`` for more information.
 <!-- Markdown link & img dfn's -->
 [wiki]: https://gitlab.com/battlenet1/battlenet-client/-/wikis/home
 [twitter]: https://twitter.com/gahdania
+[twitch]: https://www.twitch.tv/gahd
 [gitlab]: https://gitlab.com/battlenet1/battlenet-client
 [fork]: https://gitlab.com/battlenet1/battlenet-client/-/forks/new
-[header]: https://gilab.com/
