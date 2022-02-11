@@ -9,8 +9,10 @@ Disclaimer:
 """
 from typing import Optional, TYPE_CHECKING
 
+from requests import Response
+
 if TYPE_CHECKING:
-    from requests import Response
+
     from client import D3Client
 
 

@@ -13,8 +13,7 @@ Examples:
 
     > # for authorization work flows (wow.Account) (requires a web server for the redirect)
     > from battlenet_client import wow
-    > client = wow.WoWClient(<region>, scope=['wow.profile',], redirect_uri='https://localhost/redirect',
-                             client_id='<client ID>', client_secret='<client secret>')
+    > client = wow.WoWClient(<region>, scope=['wow.profile',], redirect_uri='https://localhost/redirect', client_id='<client ID>', client_secret='<client secret>')
     # after authenticating with Blizzard.
     > wow.Account(client).account_profile_summary('en_US')
 

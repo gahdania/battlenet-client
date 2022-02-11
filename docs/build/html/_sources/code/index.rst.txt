@@ -1,17 +1,9 @@
-:ref:`Home <root>`
-
-Modules
-=======
-
-.. _code-index:
-
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
-   client
-   bnet
-   exceptions
-
-:ref:`Home <root>`
-
-.. include:: ../footer.rst
+   bnet/index
+   d3/index
+   hs/index
+   sc2/index
+   wow/index

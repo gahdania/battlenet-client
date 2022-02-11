@@ -25,6 +25,8 @@ Using GIT
 
    git clone https://gitlab.com/battlenet1/wow_api.git
 
+.. _usage-summary:
+
 Usage
 =====
 
@@ -60,3 +62,7 @@ Oauth Authorization Code Flow Example:
 .. note::
    The Oauth authorization code flow will also work for the API endpoints that works with the credential code flow
    without the need to create a credential code flow client instance.
+
+.. note::
+   The are some caveats that are covered in the tutorials for `Credential Code Flow <cred-code-flow>`_ and
+   `Authorization Code Flow <auth-code-flow>`_.

@@ -4,8 +4,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tutorials &#8212; BattleNet Client 0.0.3a5 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tutorials &#8212; Battle.net API 2.1.0a0 documentation</title>
 
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -33,7 +34,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Credential Authorization Workflow" href="clientauth.html" />
+    <link rel="next" title="Credential Authorization Workflow" href="cred_client.html" />
     <link rel="prev" title="Introduction" href="../intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -50,7 +51,7 @@
 
 
 <a class="navbar-brand" href="../index.html">
-<p class="title">BattleNet Client</p>
+<p class="title">Battle.net API</p>
 </a>
 
 
@@ -79,8 +80,32 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../code/index.html">
-  Modules
+ <a class="reference internal nav-link" href="../code/bnet/index.html">
+  Battle.net Code
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../code/d3/index.html">
+  Diablo III Code
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../code/hs/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../code/sc2/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../code/wow/index.html">
+  Source
  </a>
 </li>
 
@@ -119,20 +144,30 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="nav bd-sidenav">
+    <p class="caption" role="heading">
+ <span class="caption-text">
+  Contents:
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="clientauth.html">
+  <a class="reference internal" href="cred_client.html">
    Credential Authorization Workflow
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="userauth.html">
-   User Authentication Workflow
+  <a class="reference internal" href="auth_client.html">
+   Using the Authorization Code Flow
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="devportal.html">
+  <a class="reference internal" href="dev_portal.html">
    Developer Portal Instructions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="env.html">
+   Using Python-Decouple
   </a>
  </li>
 </ul>
@@ -171,25 +206,31 @@
 
               <div>
 
-  <p><a class="reference internal" href="../index.html#root"><span class="std std-ref">Home</span></a></p>
-<div class="section" id="tutorials">
+  <section id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound" id="tutorials-index">
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="clientauth.html">Credential Authorization Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="userauth.html">User Authentication Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devportal.html">Developer Portal Instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="devportal.html#signing-up-for-the-developer-portal">Signing up for the developer portal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="devportal.html#gather-the-necessary-information">Gather the Necessary Information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="devportal.html#fill-in-the-information">Fill in the Information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="devportal.html#get-the-client-id-and-secret">Get the Client ID and Secret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cred_client.html">Credential Authorization Workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cred_client.html#credential-workflow-example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="auth_client.html">Using the Authorization Code Flow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_client.html#the-workflow">The Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_client.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev_portal.html">Developer Portal Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev_portal.html#signing-up-for-the-developer-portal">Signing up for the developer portal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_portal.html#gather-the-necessary-information">Gather the Necessary Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_portal.html#fill-in-the-information">Fill in the Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_portal.html#get-the-client-id-and-secret">Get the Client ID and Secret</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="env.html">Using Python-Decouple</a></li>
 </ul>
 </div>
-<p><a class="reference internal" href="../index.html#root"><span class="std std-ref">Home</span></a></p>
-<a class="reference internal image-reference" href="../_images/gahd_logo.png"><img alt="Logo of Gahd" class="align-right" src="../_images/gahd_logo.png" style="width: 100px; height: 100px;" /></a>
-</div>
+</section>
 
 
               </div>
@@ -198,7 +239,7 @@
               <div class='prev-next-bottom'>
 
     <a class='left-prev' id="prev-link" href="../intro.html" title="previous page">Introduction</a>
-    <a class='right-next' id="next-link" href="clientauth.html" title="next page">Credential Authorization Workflow</a>
+    <a class='right-next' id="next-link" href="cred_client.html" title="next page">Credential Authorization Workflow</a>
 
               </div>
 
@@ -215,13 +256,13 @@
 
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2020, David &#34;Gahd&#34; Couples.<br/>
+    &copy; Copyright 2022, David &#34;Gahd&#34; Couples.<br/>
 </p>
     </div>
 
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br/>
 </p>
     </div>
 

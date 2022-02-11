@@ -1,5 +1,3 @@
-.. _root:
-
 .. include:: header.rst
 
 .. toctree::

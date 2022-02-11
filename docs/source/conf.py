@@ -20,12 +20,12 @@ sys.path.insert(1, os.path.abspath("../../venv/Lib/site-packages"))
 
 # -- Project information -----------------------------------------------------
 
-project = "WoW API"
-copyright = '2020, David "Gahd" Couples'
+project = "Battle.net API"
+copyright = '2022, David "Gahd" Couples'
 author = 'David "Gahd" Couples'
 
 # The full version, including alpha/beta/rc tags
-release = "0.0.1a1"
+release = "2.1.0a0"
 
 
 # -- General configuration ---------------------------------------------------

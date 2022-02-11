@@ -26,21 +26,21 @@ __PATCH__ = 0
 class BNetClient(OAuth2Session):
     """Handles the communication using OAuth v2 client to the Battle.net REST API
 
-        Args:
-            region (str): region abbreviation for use with the APIs
-     =
-        Keyword Args:
-            client_id (str): the client ID from the developer portal
-            client_secret (str): the client secret from the developer portal
-            scope (list, optional): the scope or scopes to use during the endpoints that require the Web Application Flow
-            redirect_uri (str, optional): the URI to return after a successful authentication between the user and Blizzard
+    Args:
+        region (str): region abbreviation for use with the APIs
 
-        Attributes:
-            tag (str): the region tag (abbreviation) of the client
-            api_host (str): the host to use for accessing the API endpoints
-            auth_host (str): the host to use for authentication
-            render_host (str): the hose to use for images
-    ="""
+    Keyword Args:
+        client_id (str): the client ID from the developer portal
+        client_secret (str): the client secret from the developer portal
+        scope (list, optional): the scope or scopes to use during the endpoints that require the Web Application Flow
+        redirect_uri (str, optional): the URI to return after a successful authentication between the user and Blizzard
+
+    Attributes:
+        tag (str): the region tag (abbreviation) of the client
+        api_host (str): the host to use for accessing the API endpoints
+        auth_host (str): the host to use for authentication
+        render_host (str): the hose to use for images
+    """
 
     def __init__(
         self,
