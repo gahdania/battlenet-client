@@ -19,10 +19,6 @@ from requests import Response
 from ..bnet.misc import localize
 from ..bnet.client import BNetClient
 
-__MAJOR__ = 1
-__MINOR__ = 0
-__PATCH__ = 0
-
 
 class D3Client(BNetClient):
     """Defines the client workflow class for Diablo III
@@ -37,6 +33,10 @@ class D3Client(BNetClient):
         client_id (str, optional): the client ID from the developer portal
         client_secret (str, optional): the client secret from the developer portal
     """
+
+    __MAJOR__ = 1
+    __MINOR__ = 0
+    __PATCH__ = 0
 
     def __init__(
         self,

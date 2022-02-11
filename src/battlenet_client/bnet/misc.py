@@ -34,7 +34,7 @@ def slugify(value: str) -> str:
         value (str): the string to be converted into a slug
 
     Returns:
-        (str): the slug of :value:
+        str: the slug of :value:
     """
     return value.lower().replace("'", "").replace(" ", "-")
 
@@ -46,7 +46,7 @@ def localize(locale: str) -> str:
         locale (str): the locality to be standardized
 
     Returns:
-        (str): the locale in the format of "<lang>_<COUNTRY>"
+        str: the locale in the format of "<lang>_<COUNTRY>"
 
     Raise:
         TypeError: when locale is not a string

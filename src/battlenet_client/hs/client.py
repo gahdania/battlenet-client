@@ -19,10 +19,6 @@ from requests import Response
 from ..bnet.client import BNetClient
 from ..bnet.misc import localize, slugify
 
-__MAJOR__ = 1
-__MINOR__ = 0
-__PATCH__ = 0
-
 
 class HSClient(BNetClient):
     """Defines the client workflow class for HearthStone
@@ -35,6 +31,10 @@ class HSClient(BNetClient):
         client_secret (str, optional): the client secret from the developer portal
     """
 
+    __MAJOR__ = 1
+    __MINOR__ = 0
+    __PATCH__ = 0
+
     def __init__(
         self,
         region: str,
@@ -44,9 +44,6 @@ class HSClient(BNetClient):
     ) -> None:
 
         super().__init__(region, client_id=client_id, client_secret=client_secret)
-
-    def __repr__(self):
-        return f"{self.__class__.__name__} Instance: HS {self.tag}"
 
     def game_data(self, locale: str, *args, **kwargs) -> Response:
         """Used to retrieve data from the source data APIs

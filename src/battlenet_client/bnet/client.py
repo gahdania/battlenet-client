@@ -18,10 +18,6 @@ from typing import Optional, List
 
 from . import exceptions, constants
 
-__MAJOR__ = 2
-__MINOR__ = 1
-__PATCH__ = 0
-
 
 class BNetClient(OAuth2Session):
     """Handles the communication using OAuth v2 client to the Battle.net REST API
@@ -41,6 +37,10 @@ class BNetClient(OAuth2Session):
         auth_host (str): the host to use for authentication
         render_host (str): the hose to use for images
     """
+
+    __MAJOR__ = 2
+    __MINOR__ = 1
+    __PATCH__ = 0
 
     def __init__(
         self,
@@ -97,14 +97,15 @@ class BNetClient(OAuth2Session):
             )
             self.auth_flow = False
 
-    name = "World of Warcraft"
-    abbrev = "WoW"
-
     def __str__(self) -> str:
-        return f"{self.name} API Client"
+        return f"{self.__class__.__name__} {self.tag.upper()} {self.version} API Client"
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__} Instance: {self.abbrev}"
+        return f"{self.__str__()} ({'Auth Code Flow' if self.auth_flow else 'Credential Client Flow'})"
+
+    @property
+    def version(self):
+        return f"v{self.__MAJOR__}.{self.__MINOR__}.{self.__PATCH__}"
 
     def validate_token(self) -> bool:
         """Checks with the API if the token is good or not.

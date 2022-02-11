@@ -33,10 +33,6 @@ from ..bnet.misc import slugify, localize
 from .exceptions import WoWClientError
 from .constants import MODULES
 
-__MAJOR__ = 2
-__MINOR__ = 0
-__PATCH__ = 0
-
 
 class WoWClient(BNetClient):
     """Defines the client workflow class for the World of Warcraft API
@@ -60,6 +56,10 @@ class WoWClient(BNetClient):
         static (str): the namespace to use for static elements of the API (ie: realms, connected_realms)
         profile (str): the namespace to use for profile based elements (ie: player info, protected char info)
     """
+
+    __MAJOR__ = 2
+    __MINOR__ = 0
+    __PATCH__ = 0
 
     def __init__(
         self,
@@ -107,15 +107,6 @@ class WoWClient(BNetClient):
             mod = import_module("profile", f"battlenet_client.wow")
             for name, cls_name in MODULES["auth"]:
                 setattr(self, name, getattr(mod, cls_name)(self))
-
-    name = "World of Warcraft"
-    abbrev = "WoW"
-
-    def __str__(self) -> str:
-        return f"{self.name} API Client"
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__} Instance: {self.abbrev} {self.release} {self.tag}"
 
     def game_data(
         self, locale: str, namespace: str, *args: Union[str, int]

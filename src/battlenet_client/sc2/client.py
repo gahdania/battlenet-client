@@ -19,10 +19,6 @@ from battlenet_client.bnet.client import BNetClient
 
 from battlenet_client.bnet.misc import localize
 
-__MAJOR__ = 1
-__MINOR__ = 0
-__PATCH__ = 0
-
 
 class SC2Client(BNetClient):
     """Defines the client workflow class for the World of Warcraft API
@@ -37,6 +33,10 @@ class SC2Client(BNetClient):
         client_id (str, optional): the client ID from the developer portal
         client_secret (str, optional): the client secret from the developer portal
     """
+
+    __MAJOR__ = 1
+    __MINOR__ = 0
+    __PATCH__ = 0
 
     def __init__(
         self,
