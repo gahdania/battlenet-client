@@ -14,11 +14,14 @@ Disclaimer:
 """
 from typing import Optional, Any, Dict
 
-from requests import exceptions, Response
-from time import sleep
+from requests import Response
 
 from ..bnet.client import BNetClient
 from ..bnet.misc import localize, slugify
+
+__MAJOR__ = 1
+__MINOR__ = 0
+__PATCH__ = 0
 
 
 class HSClient(BNetClient):
@@ -57,20 +60,9 @@ class HSClient(BNetClient):
         """
         uri = f"{self.api_host}/hearthstone/{'/'.join([slugify(arg) for arg in args])}"
 
-        retries = 0
-
         kwargs["params"]["locale"] = localize(locale)
 
-        while retries < 5:
-            try:
-                response = self.get(uri, **kwargs)
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(uri, **kwargs)
 
     def search(
         self,
@@ -92,7 +84,6 @@ class HSClient(BNetClient):
         """
         uri = f"{self.api_host}/hearthstone/{slugify(document)}"
 
-        retries = 0
         params = {"locale": localize(locale)}
 
         if document == "cards" and game_mode.lower() in (
@@ -106,13 +97,4 @@ class HSClient(BNetClient):
 
         params.update(fields)
 
-        while retries < 5:
-            try:
-                response = self.get(uri, params=params)
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(uri, params=params)

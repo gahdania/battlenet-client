@@ -14,11 +14,14 @@ Disclaimer:
 import importlib
 from typing import List, Optional
 
-from requests import exceptions, Response
-from time import sleep
+from requests import Response
 
 from ..bnet.misc import localize
 from ..bnet.client import BNetClient
+
+__MAJOR__ = 1
+__MINOR__ = 0
+__PATCH__ = 0
 
 
 class D3Client(BNetClient):
@@ -76,20 +79,9 @@ class D3Client(BNetClient):
         else:
             uri = f"{self.api_host}/data/d3/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        retries = 0
-
         kwargs["params"]["locale"] = localize(locale)
 
-        while retries < 5:
-            try:
-                response = self.get(uri, **kwargs)
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(uri, **kwargs)
 
     def community(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary community API URI and keyword args for to pasted on to the client get method
@@ -104,20 +96,10 @@ class D3Client(BNetClient):
             uri = args[0]
         else:
             uri = f"{self.api_host}/d3/data/{'/'.join([str(arg) for arg in args if arg is not None])}"
-        retries = 0
 
         kwargs["params"]["locale"] = localize(locale)
 
-        while retries < 5:
-            try:
-                response = self.get(uri, **kwargs)
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(uri, **kwargs)
 
     def profile_api(self, locale: str, *args, **kwargs) -> Response:
         """Generates then necessary profile API URI and keyword args for to pasted on to the client get method
@@ -133,17 +115,6 @@ class D3Client(BNetClient):
         else:
             uri = f"{self.api_host}/d3/profile/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        retries = 0
-
         kwargs["params"]["locale"] = localize(locale)
 
-        while retries < 5:
-            try:
-                response = self.get(uri, **kwargs)
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(uri, **kwargs)

@@ -7,37 +7,40 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
 """
-from typing import Optional, Any, Dict, List
-
+from time import sleep
+from requests import Response, exceptions
+from io import BytesIO
 from decouple import config
 from urllib.parse import unquote
-
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
+from typing import Optional, List
 
 from . import exceptions, constants
+
+__MAJOR__ = 2
+__MINOR__ = 1
+__PATCH__ = 0
 
 
 class BNetClient(OAuth2Session):
     """Handles the communication using OAuth v2 client to the Battle.net REST API
 
-    Args:
-        region (str): region abbreviation for use with the APIs
-        game (dict): the game for the request
+        Args:
+            region (str): region abbreviation for use with the APIs
+     =
+        Keyword Args:
+            client_id (str): the client ID from the developer portal
+            client_secret (str): the client secret from the developer portal
+            scope (list, optional): the scope or scopes to use during the endpoints that require the Web Application Flow
+            redirect_uri (str, optional): the URI to return after a successful authentication between the user and Blizzard
 
-    Keyword Args:
-        client_id (str): the client ID from the developer portal
-        client_secret (str): the client secret from the developer portal
-        scope (list, optional): the scope or scopes to use during the endpoints that require the Web Application Flow
-        redirect_uri (str, optional): the URI to return after a successful authentication between the user and Blizzard
-
-    Attributes:
-        tag (str): the region tag (abbreviation) of the client
-        api_host (str): the host to use for accessing the API endpoints
-        auth_host (str): the host to use for authentication
-        render_host (str): the hose to use for images
-        game (dict): holds basic info about the game
-    """
+        Attributes:
+            tag (str): the region tag (abbreviation) of the client
+            api_host (str): the host to use for accessing the API endpoints
+            auth_host (str): the host to use for authentication
+            render_host (str): the hose to use for images
+    ="""
 
     def __init__(
         self,
@@ -87,9 +90,15 @@ class BNetClient(OAuth2Session):
             )
         else:
             super().__init__(client=BackendApplicationClient(client_id=client_id))
-            # set the mode indicator of the client to "Backend Application Flow"
-            self.fetch_token()
+            self.fetch_token(
+                token_url=f"{self.auth_host}/oauth/token",
+                client_id=self.client_id,
+                client_secret=self._client_secret,
+            )
             self.auth_flow = False
+
+    name = "World of Warcraft"
+    abbrev = "WoW"
 
     def __str__(self) -> str:
         return f"{self.name} API Client"
@@ -128,21 +137,7 @@ class BNetClient(OAuth2Session):
         authorization_url, self._state = self.authorization_url(url=auth_url, **kwargs)
         return unquote(authorization_url)
 
-    def fetch_token(self, **kwargs) -> None:
-        """Retrieves the OAUTH token
-
-        Returns:
-            None
-        """
-        token_url = f"{self.auth_host}/oauth/token"
-        super().fetch_token(
-            token_url=token_url,
-            client_id=self.client_id,
-            client_secret=self._client_secret,
-            **kwargs,
-        )
-
-    def user_info(self, locale: str) -> Dict[str, Any]:
+    def user_info(self, locale: str) -> Response:
         """Returns the user info
 
         Args:
@@ -159,3 +154,25 @@ class BNetClient(OAuth2Session):
 
         url = f"{self.auth_host}/oauth/userinfo"
         return self.get(url, params={"locale": locale})
+
+    def request(self, method, url, **kwargs):
+
+        retries = 0
+
+        while retries < 5:
+            try:
+                response = super().request(method, url, **kwargs)
+                response.raise_for_status()
+            except exceptions.HTTPError as err:
+                if err.response.status_code == 429:
+                    retries += 1
+                    sleep(1)
+            else:
+                if response.request.url.startswith(self.api_host):
+                    if response.headers["content-type"].startswith("application/json"):
+                        return response.json()
+
+                    if response.headers["content-type"] in ("image/jpeg", "image/png"):
+                        return BytesIO(response.content)
+
+                return response

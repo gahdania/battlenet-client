@@ -25,15 +25,18 @@ Disclaimer:
 """
 from typing import List, Optional, Any, Dict, Union
 
-from requests import exceptions, Response
-from time import sleep
+from requests import Response
 from importlib import import_module
 
 from ..bnet.client import BNetClient
-from ..bnet.misc import slugify
+from ..bnet.misc import slugify, localize
 
 from .exceptions import WoWClientError
 from .constants import MODULES
+
+__MAJOR__ = 2
+__MINOR__ = 0
+__PATCH__ = 0
 
 
 class WoWClient(BNetClient):
@@ -90,6 +93,11 @@ class WoWClient(BNetClient):
             self.static = f"static-{self.release}-{self.tag}"
             self.profile = f"profile-{self.release}-{self.tag}"
 
+        if self.tag == "cn":
+            self.render_host = "https://render.worldofwarcraft.com.cn"
+        else:
+            self.render_host = f"https://render-{self.tag}.worldofwarcraft.com"
+
         # load the base API programmatically
         for module_name in ("game_data", "profile"):
             mod = import_module(f"battlenet_client.wow.{module_name}")
@@ -127,22 +135,11 @@ class WoWClient(BNetClient):
         else:
             uri = f"{self.api_host}/data/wow/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        retries = 0
-
-        while retries < 5:
-            try:
-                response = self.get(
-                    uri,
-                    params={"locale": locale},
-                    headers={"Battlenet-Namespace": getattr(self, namespace)},
-                )
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(
+            uri,
+            params={"locale": localize(locale)},
+            headers={"Battlenet-Namespace": getattr(self, namespace)},
+        )
 
     def profile_data(
         self, locale: str, namespace: str, *args: Union[str, int]
@@ -161,22 +158,11 @@ class WoWClient(BNetClient):
         else:
             uri = f"{self.api_host}/profile/wow/{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        retries = 0
-
-        while retries < 5:
-            try:
-                response = self.get(
-                    uri,
-                    params={"locale": locale},
-                    headers={"Battlenet-Namespace": getattr(self, namespace)},
-                )
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(
+            uri,
+            params={"locale": locale},
+            headers={"Battlenet-Namespace": getattr(self, namespace)},
+        )
 
     def protected_data(
         self, locale: str, namespace: str, *args: Union[str, int]
@@ -198,22 +184,11 @@ class WoWClient(BNetClient):
         else:
             uri = f"{self.api_host}/profile/user/wow{'/'.join([str(arg) for arg in args if arg is not None])}"
 
-        retries = 0
-
-        while retries < 5:
-            try:
-                response = self.post(
-                    uri,
-                    params={"locale": locale},
-                    headers={"Battlenet-Namespace": getattr(self, namespace)},
-                )
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.post(
+            uri,
+            params={"locale": locale},
+            headers={"Battlenet-Namespace": getattr(self, namespace)},
+        )
 
     def media_data(self, locale: str, namespace: str, *args) -> Response:
         """Used to retrieve media data including URLs for them
@@ -228,22 +203,11 @@ class WoWClient(BNetClient):
 
         uri = f"{self.api_host}/data/wow/media/{'/'.join([slugify(str(arg)) for arg in args if arg is not None])}"
 
-        retries = 0
-
-        while retries < 5:
-            try:
-                response = self.get(
-                    uri,
-                    params={"locale": locale},
-                    headers={"Battlenet-Namespace": getattr(self, namespace)},
-                )
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(
+            uri,
+            params={"locale": locale},
+            headers={"Battlenet-Namespace": getattr(self, namespace)},
+        )
 
     def search(
         self, locale: str, namespace: str, document: str, fields: Dict[str, Any]
@@ -263,19 +227,8 @@ class WoWClient(BNetClient):
         params = {"locale": locale}
         params.update(fields)
 
-        retries = 0
-
-        while retries < 5:
-            try:
-                response = self.get(
-                    uri,
-                    params={"locale": locale},
-                    headers={"Battlenet-Namespace": getattr(self, namespace)},
-                )
-                response.raise_for_status()
-            except exceptions.HTTPError as err:
-                if err.response.status_code == 429:
-                    retries += 1
-                    sleep(1)
-            else:
-                return response.json()
+        return self.get(
+            uri,
+            params={"locale": locale},
+            headers={"Battlenet-Namespace": getattr(self, namespace)},
+        )
