@@ -116,11 +116,11 @@ class TestCardBack(TestBase):
 class TestCardDeck(TestBase):
     def test_code(self):
         fields = {
-            "code": "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA"
+            "bnet": "AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA"
         }
         data = card_deck(self.client, "enus", fields)
         self.assertIn("deckCode", data)
-        self.assertEqual(data["deckCode"], fields["code"])
+        self.assertEqual(data["deckCode"], fields["bnet"])
         self.assertIn("version", data)
         self.assertIn("hero", data)
         self.assertIn("heroPower", data)

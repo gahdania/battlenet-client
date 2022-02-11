@@ -66,7 +66,7 @@ def localize(locale: str) -> str:
         "ko",
         "zh",
     ):
-        raise ValueError("Invalid language code")
+        raise ValueError("Invalid language bnet")
 
     if locale[-2:].lower() not in (
         "us",
@@ -83,6 +83,6 @@ def localize(locale: str) -> str:
         "tw",
         "cn",
     ):
-        raise ValueError("Invalid country code")
+        raise ValueError("Invalid country bnet")
 
     return f"{locale[:2].lower()}_{locale[-2:].upper()}"

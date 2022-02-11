@@ -14,7 +14,7 @@ class BNetError(Exception):
 
 
 class BNetRegionNotFoundError(BNetError):
-    """Error raised when an invalid region code is detected"""
+    """Error raised when an invalid region bnet is detected"""
 
     pass
 
