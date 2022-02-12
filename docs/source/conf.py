@@ -25,7 +25,7 @@ copyright = '2022, David "Gahd" Couples'
 author = 'David "Gahd" Couples'
 
 # The full version, including alpha/beta/rc tags
-release = "2.1.0a0"
+release = "2.1.0a1"
 
 
 # -- General configuration ---------------------------------------------------
