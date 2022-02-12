@@ -1,10 +1,7 @@
 """Generates the URI/querystring and headers for the Hearthsone API endpoints
 
-Classes:
-    Hearthstone
-
 Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    All rights reserved, Blizzard is the intellectual property owner of HearthstoneI and any data
     retrieved from this API.
 """
 
@@ -42,7 +39,7 @@ class Hearthstone:
             HSClientError: when a client other than HSClient is used.
         """
 
-        return self.__client.search(locale, "cards", game_mode, fields=field_values)
+        return self.__client.search(locale, "cards", field_values, game_mode)
 
     def card(
         self, locale: str, card_id: str, game_mode: Optional[str] = "constructed"
@@ -102,9 +99,7 @@ class Hearthstone:
         """
         return self.__client.game_data(locale, "cardbacks", card_back_id)
 
-    def card_deck(
-        self, locale, field_values: Optional[List[Dict[str, Any]]]
-    ) -> Response:
+    def card_deck(self, locale, field_values: Optional[Dict[str, Any]]) -> Response:
         """Searches for cards that match `field_values'
 
         Args:

@@ -1,12 +1,5 @@
 """Defines the client for connected to the Diablo III API
 
-Examples:
-    > from battlenet_client import d3
-    > client = d3.D3Client(<region>, client_id='<client ID>', client_secret='<client secret>')
-
-Classes:
-    D3Client
-
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.

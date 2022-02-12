@@ -1,7 +1,0 @@
-Battle.net Exceptions
-=====================
-
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
-
-.. automodule:: battlenet_client.bnet.exceptions
-   :members:

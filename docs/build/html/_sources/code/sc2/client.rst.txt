@@ -1,7 +1,0 @@
-Starcraft 2 Client
-==================
-
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
-
-.. automodule:: battlenet_client.sc2.client
-   :members:

@@ -1,7 +1,4 @@
-.. _cred-code-flow:
-
-`Home <root>`_ / `Tutorials Home <tutorials-index>`_
-
+=================================
 Credential Authorization Workflow
 =================================
 
@@ -12,8 +9,6 @@ As mentioned in the `usage summary <usage-summary>`_ page, you will need a devel
 
 As you will see in the below `example <credential-workflow-example>`_, you will need to first import the BattleNetClient class, then
 instantiate it.
-
-.. _credential-workflow-example:
 
 Example
 -------
@@ -33,5 +28,3 @@ Example
 That is it. Again, there are other packages that work with this class, allowing you to focus on the more important parts of your project
 
 See Also: `User Authorization Workflow Tutorial <authentication-workflow-tutorial>`_
-
-`Home <root>`_ / `Tutorials Home <tutorials-index>`_

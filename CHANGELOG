@@ -13,9 +13,11 @@ Added missing document nodes
 Game specfic client methods were changed to rely on the requests.get or requests.post methods instead of the
     requests.request
 Updated out of date documentation
+Updated BNetClient.__str__() and .__repr__()
+move version related variables into the respective client classes
 
 ### Removed
-Ga
+Duplicate __str__ and __repr__ methods in the children client classes (D3Client, HSClient, SC2Client, and WoWClient)
 
 ## [2.0.0] - 2022-01-31
 ### Added

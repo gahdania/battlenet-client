@@ -1,5 +1,6 @@
-Tutorials
-=========
+===========
+Hearthstone
+===========
 
 .. toctree::
    :maxdepth: 2

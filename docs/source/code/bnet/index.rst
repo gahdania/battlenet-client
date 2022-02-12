@@ -1,5 +1,6 @@
-Battle.net Code
-===============
+==========
+Battle.net
+==========
 
 .. toctree::
    :maxdepth: 2

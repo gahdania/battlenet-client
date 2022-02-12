@@ -1,16 +1,8 @@
 """Defines the client for connected to Hearthstone
 
-Classes:
-    HSClient
-
-Examples:
-    > from battlenet_client import hs
-    > client = hs.HSClient(<region>, <locale>, client_id='<client ID>', client_secret='<client secret>')
-
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
-
 """
 from typing import Optional, Any, Dict
 

@@ -1,5 +1,4 @@
-.. _auth-code-flow:
-
+=================================
 Using the Authorization Code Flow
 =================================
 

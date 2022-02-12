@@ -1,12 +1,9 @@
+=============================
 Developer Portal Instructions
 =============================
 
-.. _dev-portal:
-
 Here are the instructions for setting up a Developer Portal account, as well as getting things ready for your projects.
 [#]_
-
-.. _dev-portal-signup:
 
 Signing up for the developer portal
 -----------------------------------
@@ -16,8 +13,6 @@ Signing up for the developer portal
 #. Click on "Log In"
 #. Use the same log in username and password you do for the Battle.net Launcher or any of the Blizzard Games
 
-.. _dev-portal-info:
-
 Gather the Necessary Information
 --------------------------------
 
@@ -25,8 +20,6 @@ Gather the Necessary Information
 #. URL of your site where you want the users to return after successfully authenticating.
 #. Base URL for your website
 #. Statement about how you plan on using the data from the Developer Portal
-
-.. _dev-portal-fill:
 
 Fill in the Information
 -----------------------
@@ -38,8 +31,6 @@ Fill in the Information
 #. Under "Intended Use" input the use.
 #. Once everything is satisfactory, the "Save" button will be highlighted.  Click "Save"
 
-.. _dev-portal-id-secret:
-
 Get the Client ID and Secret
 ----------------------------
 #. After you save, you are shown a page with all of the information you filled in.  At the top under "Credentials",
@@ -50,11 +41,7 @@ Get the Client ID and Secret
 
 .. warning:: All data retrieved, and entered in/on the site is the intellectual property of Activision/Blizzard
 
-`Home <root>`_ / `Tutorials Index <tutorials-index>`_
-
 .. [#] The process is current as of 2020-May-03.  The form may change without notice.
 .. [#] If you do not have a service URL yet, then click the check box under "Service URL".
    Remember to return to the portal and add the URL once you have it. Afterward you can click off the check box below
    "Service URL"
-
-.. include:: ../footer.rst

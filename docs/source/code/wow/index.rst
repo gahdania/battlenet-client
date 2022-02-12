@@ -1,7 +1,6 @@
-Source
-======
-
-.. _Source Index:
+=================
+World of Warcraft
+=================
 
 .. toctree::
    :maxdepth: 2

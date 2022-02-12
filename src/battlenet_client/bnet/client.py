@@ -1,10 +1,7 @@
-"""the final Battle.net REST API requests
-
-Classes:
-    BNetClient
+"""Defines the base class "BNetClient"
 
 Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
+    All rights reserved, Blizzard is the intellectual property owner of Battle.net and any data
     retrieved from this API.
 """
 from time import sleep
@@ -35,7 +32,7 @@ class BNetClient(OAuth2Session):
         tag (str): the region tag (abbreviation) of the client
         api_host (str): the host to use for accessing the API endpoints
         auth_host (str): the host to use for authentication
-        render_host (str): the hose to use for images
+        render_host (str): the host to use for images
     """
 
     __MAJOR__ = 2

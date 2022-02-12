@@ -1,7 +1,6 @@
-.. _env:
-
-Using Python-Decouple
-=====================
+==========
+Using .env
+==========
 
 In the packages, I have incorporated the use of Python Decouple.  This module allows the shifting of sensitive data
 away from the scripts, such as the client ID and secret.  To use it, simply copy the env.sample file to the base

@@ -1,5 +1,6 @@
-Diablo III Code
-===============
+==========
+Diablo III
+==========
 
 .. toctree::
    :maxdepth: 2

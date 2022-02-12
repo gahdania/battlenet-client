@@ -1,12 +1,5 @@
 """Contains constants used for Diablo III
 
-
-Constants:
-    US
-    EU
-    APAC
-    CN
-
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.

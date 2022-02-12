@@ -1,7 +1,0 @@
-World of Warcraft Game Data API
-===============================
-
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
-
-.. automodule:: battlenet_client.wow.game_data
-   :members:

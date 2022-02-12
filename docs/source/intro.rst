@@ -1,5 +1,4 @@
-.. _Introduction:
-
+============
 Introduction
 ============
 
@@ -16,14 +15,14 @@ For Windows, OS X, and Linux
 
 .. code-block:: bash
 
-   pip install wow_api
+   pip install battlenet_client
 
 Using GIT
 ---------
 
 .. code-block:: bash
 
-   git clone https://gitlab.com/battlenet1/wow_api.git
+   git clone https://gitlab.com/battlenet1/battlenet-client.git
 
 .. _usage-summary:
 

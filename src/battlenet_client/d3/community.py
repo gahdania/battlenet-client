@@ -1,9 +1,5 @@
 """Defines the classes that handle the community APIs for Diablo III
 
-Classes:
-    Community
-    CommunityCN
-
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
@@ -332,7 +328,7 @@ class CommunityCN:
                 )
             else:
                 raise ValueError(
-                    "Invalid category;  Valid catgories are 'items' and 'follower-items'"
+                    "Invalid category;  Valid categories are 'items' and 'follower-items'"
                 )
         else:
             return self.__client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
