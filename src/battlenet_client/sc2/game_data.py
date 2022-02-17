@@ -1,6 +1,6 @@
 from requests import Response
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from .client import SC2Client
@@ -11,7 +11,12 @@ class LeagueData:
         self.__client = client
 
     def league_data(
-        self, locale: str, season_id: str, queue_id: str, team_type: str, league_id: str
+        self,
+        season_id: str,
+        queue_id: str,
+        team_type: str,
+        league_id: str,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns data for the specified season, queue, team, and league.
 

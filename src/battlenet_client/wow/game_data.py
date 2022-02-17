@@ -52,7 +52,7 @@ class Achievement:
         self.__client = client
 
     def achievement_category(
-        self, locale: str, category_id: Optional[int] = None
+        self, category_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Accesses a list achievement categories or specific achievement
         category if :category_id: is provided
@@ -76,7 +76,7 @@ class Achievement:
         )
 
     def achievement(
-        self, locale: str, achievement_id: Optional[int] = None
+        self, achievement_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of achievements, or a specific achievements
 
@@ -96,7 +96,9 @@ class Achievement:
             localize(locale), "static", "achievement", "index"
         )
 
-    def achievement_media(self, locale: str, achievement_id: int) -> Response:
+    def achievement_media(
+        self, achievement_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for an achievement's icon.
 
         Args:
@@ -117,9 +119,9 @@ class Auction:
 
     def auction(
         self,
-        locale: str,
         connected_realm_id: int,
         auction_house_id: Optional[int] = None,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns auction data.  With retail client, it returns all the auctions for the given connected realm.
         For classic titles, the results can be either the entire list, or the individual auctions
@@ -187,7 +189,7 @@ class Azerite:
         self.__client = client
 
     def azerite_essence(
-        self, locale: str, essence_id: Optional[int] = None
+        self, essence_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
@@ -208,7 +210,7 @@ class Azerite:
         )
 
     def azerite_essence_search(
-        self, locale: str, **field_values: Dict[str, Any]
+        self, locale: Optional[str] = None, **field_values: Dict[str, Any]
     ) -> Response:
         """Searches for azerite essences that match `field_values`
 
@@ -223,7 +225,9 @@ class Azerite:
             localize(locale), "static", "azerite-essence", fields=field_values
         )
 
-    def azerite_essence_media(self, locale: str, essence_id: int) -> Response:
+    def azerite_essence_media(
+        self, essence_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media data for an azerite essence.
 
         Args:
@@ -243,7 +247,7 @@ class ConnectedRealm:
         self.__client = client
 
     def connected_realm(
-        self, locale: str, connected_realm_id: Optional[int] = None
+        self, connected_realm_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of connected realms, or a specific connected realm. Connected realm is a group of standard
         realms that act as one large realm
@@ -265,7 +269,7 @@ class ConnectedRealm:
         )
 
     def connected_realm_search(
-        self, locale: str, field_values: Dict[str, Any]
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
     ) -> Response:
         """Searches the connected realm API for connected realm(s) that match the criteria
 
@@ -285,7 +289,9 @@ class Covenant:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def covenant(self, locale: str, covenant_id: Optional[int] = None) -> Response:
+    def covenant(
+        self, covenant_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of covenants, or a specific covenant
 
         Args:
@@ -299,7 +305,9 @@ class Covenant:
             self.__client.game_data(localize(locale), "static", "covenant", covenant_id)
         return self.__client.game_data(localize(locale), "static", "covenant", "index")
 
-    def covenant_media(self, locale: str, covenant_id: int) -> Response:
+    def covenant_media(
+        self, covenant_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a covenant.
 
         Args:
@@ -313,7 +321,9 @@ class Covenant:
             localize(locale), "static", "covenant", covenant_id
         )
 
-    def soulbind(self, locale: str, soulbind_id: Optional[int] = None) -> Response:
+    def soulbind(
+        self, soulbind_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of soulbinds, or a specific soulbind
 
         Args:
@@ -332,7 +342,9 @@ class Covenant:
             localize(locale), "static", "covenant", "soulbind", "index"
         )
 
-    def conduit(self, locale: str, conduit_id: Optional[int] = None) -> Response:
+    def conduit(
+        self, conduit_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of conduits, or a specific conduit
 
         Args:
@@ -356,7 +368,9 @@ class Creature:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def creature_family(self, locale: str, family_id: Optional[int] = None) -> Response:
+    def creature_family(
+        self, family_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of creature families, or a specific creature family
 
         Args:
@@ -375,7 +389,9 @@ class Creature:
             localize(locale), "static", "creature-family", "index"
         )
 
-    def creature_type(self, locale: str, type_id: Optional[int] = None) -> Response:
+    def creature_type(
+        self, type_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of creature types, or a specific creature type
 
         Args:
@@ -394,7 +410,7 @@ class Creature:
             localize(locale), "static", "creature-type", "index"
         )
 
-    def creature(self, locale: str, creature_id: int) -> Response:
+    def creature(self, creature_id: int, locale: Optional[str] = None) -> Response:
         """Returns an index of creatures, or a specific creature
 
         Args:
@@ -408,7 +424,9 @@ class Creature:
             localize(locale), "static", "creature", creature_id
         )
 
-    def creature_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
+    def creature_search(
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
+    ) -> Response:
         """Searches the creature API for creatures that match the criteria
 
         Args:
@@ -422,7 +440,9 @@ class Creature:
             localize(locale), "static", "creature", fields=field_values
         )
 
-    def creature_display_media(self, locale: str, display_id: int) -> Response:
+    def creature_display_media(
+        self, display_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a creature display.
 
         Args:
@@ -436,7 +456,9 @@ class Creature:
             localize(locale), "static", "creature-display", display_id
         )
 
-    def creature_family_media(self, locale: str, family_id: int) -> Response:
+    def creature_family_media(
+        self, family_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a creature family.
 
         Args:
@@ -455,7 +477,7 @@ class GuildCrest:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def guild_crest_components_index(self, locale: str) -> Response:
+    def guild_crest_components_index(self, locale: Optional[str] = None) -> Response:
         """Returns an index of guild crest components.
 
         Args:
@@ -468,7 +490,9 @@ class GuildCrest:
             localize(locale), "static", "guild-crest", "index"
         )
 
-    def guild_crest_border_media(self, locale: str, border_id: int) -> Response:
+    def guild_crest_border_media(
+        self, border_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a specific guild crest border.
 
         Args:
@@ -482,7 +506,9 @@ class GuildCrest:
             localize(locale), "static", "guild-crest", "border", border_id
         )
 
-    def guild_crest_emblem_media(self, locale: str, crest_id: int) -> Response:
+    def guild_crest_emblem_media(
+        self, crest_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a specific guild crest emblem.
 
         Args:
@@ -501,7 +527,9 @@ class Item:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def item_class(self, locale: str, class_id: Optional[int] = None) -> Response:
+    def item_class(
+        self, class_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of item classes, or a specific item class
 
         Args:
@@ -520,7 +548,9 @@ class Item:
             localize(locale), "static", "item-class", "index"
         )
 
-    def item_set(self, locale: str, set_id: Optional[int] = None) -> Response:
+    def item_set(
+        self, set_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of item sets, or a specific item set
 
         Args:
@@ -537,7 +567,9 @@ class Item:
 
         return self.__client.game_data(localize(locale), "static", "item-set", "index")
 
-    def item_subclass(self, locale: str, class_id: int, subclass_id: int) -> Response:
+    def item_subclass(
+        self, class_id: int, subclass_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of item subclasses, or a specific item subclass
 
         Args:
@@ -557,7 +589,7 @@ class Item:
             subclass_id,
         )
 
-    def item(self, locale: str, item_id: int) -> Response:
+    def item(self, item_id: int, locale: Optional[str] = None) -> Response:
         """Returns an index of items, or a specific item
 
         Args:
@@ -569,7 +601,7 @@ class Item:
         """
         return self.__client.game_data(localize(locale), "static", "item", item_id)
 
-    def item_media(self, locale: str, item_id: int) -> Response:
+    def item_media(self, item_id: int, locale: Optional[str] = None) -> Response:
         """Returns media for an item.
 
         Args:
@@ -581,7 +613,9 @@ class Item:
         """
         return self.__client.media_data(localize(locale), "static", "item", item_id)
 
-    def item_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
+    def item_search(
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
+    ) -> Response:
         """Searches the item API for items that match the criteria
 
         Args:
@@ -601,7 +635,7 @@ class Journal:
         self.__client = client
 
     def journal_expansion(
-        self, locale: str, expansion_id: Optional[int] = None
+        self, expansion_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of journal expansions, or a specific journal expansion
 
@@ -622,7 +656,7 @@ class Journal:
         )
 
     def journal_encounter(
-        self, locale: str, encounter_id: Optional[int] = None
+        self, encounter_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of journal (boss) encounters, or a specific journal (boss) encounters
 
@@ -647,7 +681,7 @@ class Journal:
         )
 
     def journal_encounter_search(
-        self, locale: str, field_values: Dict[str, Any]
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
     ) -> Response:
         """Searches for azerite essences that match `field_values`
 
@@ -663,7 +697,7 @@ class Journal:
         )
 
     def journal_instance(
-        self, locale: str, instance_id: Optional[int] = None
+        self, instance_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of journal instances (dungeons), or a specific journal instance (dungeon)
 
@@ -682,7 +716,9 @@ class Journal:
             localize(locale), "static", "journal-instance", "index"
         )
 
-    def journal_instance_media(self, locale: str, instance_id: int) -> Response:
+    def journal_instance_media(
+        self, instance_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for an instance.
 
         Args:
@@ -701,7 +737,9 @@ class Media:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def media_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
+    def media_search(
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
+    ) -> Response:
         """Searches the media API match the criteria
 
         Args:
@@ -720,7 +758,7 @@ class ModifiedCrafting:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def modified_crafting(self, locale: str) -> Response:
+    def modified_crafting(self, locale: Optional[str] = None) -> Response:
         """Returns an index of modified crafting recipes
 
         Args:
@@ -734,7 +772,7 @@ class ModifiedCrafting:
         )
 
     def modified_crafting_category(
-        self, locale: str, category_id: Optional[int] = None
+        self, category_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of modified crafting category index, or a specific modified crafting category
 
@@ -755,7 +793,7 @@ class ModifiedCrafting:
         )
 
     def modified_crafting_reagent_slot_type(
-        self, locale: str, slot_type_id: Optional[int] = None
+        self, slot_type_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of modified crafting reagent slot type, or a specific reagent slot type
 
@@ -788,7 +826,9 @@ class Mount:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def mount(self, locale: str, mount_id: Optional[int] = None) -> Response:
+    def mount(
+        self, mount_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of mounts, or a specific mount
 
         Args:
@@ -805,7 +845,9 @@ class Mount:
 
         return self.__client.game_data(localize(locale), "static", "mount", "index")
 
-    def mount_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
+    def mount_search(
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
+    ) -> Response:
         """Searches the mount API that match the criteria
 
         Args:
@@ -825,7 +867,7 @@ class MythicKeystoneAffix:
         self.__client = client
 
     def mythic_keystone_affix(
-        self, locale: str, affix_id: Optional[int] = None
+        self, affix_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of mythic keystone affixes, or a specific mythic keystone affix
 
@@ -844,7 +886,9 @@ class MythicKeystoneAffix:
             localize(locale), "static", "keystone-affix", "index"
         )
 
-    def mythic_keystone_affix_media(self, locale: str, affix_id: int) -> Response:
+    def mythic_keystone_affix_media(
+        self, affix_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a mythic keystone affix.
 
         Args:
@@ -864,7 +908,7 @@ class MythicKeystoneDungeon:
         self.__client = client
 
     def mythic_keystone_dungeon(
-        self, locale: str, dungeon_id: Optional[int] = None
+        self, dungeon_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of mythic keystone dungeons, or a specific mythic keystone dungeon
 
@@ -883,7 +927,7 @@ class MythicKeystoneDungeon:
             localize(locale), "dynamic", "mythic-keystone", "dungeon", "index"
         )
 
-    def mythic_keystone_index(self, locale: str) -> Response:
+    def mythic_keystone_index(self, locale: Optional[str] = None) -> Response:
         """Returns an index of links to other documents related to Mythic Keystone dungeons.
 
         Args:
@@ -897,7 +941,7 @@ class MythicKeystoneDungeon:
         )
 
     def mythic_keystone_period(
-        self, locale: str, period_id: Optional[int] = None
+        self, period_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of mythic keystone periods, or a specific mythic keystone period
 
@@ -917,7 +961,7 @@ class MythicKeystoneDungeon:
         )
 
     def mythic_keystone_season(
-        self, locale: str, season_id: Optional[int] = None
+        self, season_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of mythic keystone seasons, or a specific mythic keystone seasons
 
@@ -944,10 +988,10 @@ class MythicKeystoneLeaderboard:
 
     def mythic_keystone_leader_board(
         self,
-        locale: str,
         connected_realm_id: int,
         dungeon_id: Optional[int] = None,
         period_id: Optional[int] = None,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns an index of mythic keystone leader boards, or a specific mythic keystone leader board
 
@@ -987,7 +1031,7 @@ class MythicRaid:
         self.__client = client
 
     def mythic_raid_leaderboard(
-        self, locale: str, raid_name: str, faction: str
+        self, raid_name: str, faction: str, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of mythic keystone affixes, or a specific mythic keystone affix
 
@@ -1013,7 +1057,9 @@ class Pet:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def pet(self, locale: str, pet_id: Optional[int] = None) -> Response:
+    def pet(
+        self, pet_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of pets, or the data about the specified pet
 
         Args:
@@ -1027,7 +1073,7 @@ class Pet:
             return self.__client.game_data(localize(locale), "static", "pet", pet_id)
         return self.__client.game_data(localize(locale), "static", "pet", "index")
 
-    def pet_media(self, locale: str, pet_id: int) -> Response:
+    def pet_media(self, pet_id: int, locale: Optional[str] = None) -> Response:
         """Returns media for a pet
 
         Args:
@@ -1039,7 +1085,9 @@ class Pet:
         """
         return self.__client.media_data(localize(locale), "static", "pet", pet_id)
 
-    def pet_ability(self, locale: str, pet_id: Optional[int] = None) -> Response:
+    def pet_ability(
+        self, pet_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of pets, or the data about the specified pet
 
         Args:
@@ -1057,7 +1105,9 @@ class Pet:
             localize(locale), "static", "pet-ability", "index"
         )
 
-    def pet_ability_media(self, locale: str, ability_id: int) -> Response:
+    def pet_ability_media(
+        self, ability_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for an azerite ability.
 
         Args:
@@ -1076,7 +1126,9 @@ class PlayableClass:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def playable_class(self, locale: str, class_id: Optional[int] = None) -> Response:
+    def playable_class(
+        self, class_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of playable classes, or a specific playable class
 
         Args:
@@ -1095,7 +1147,9 @@ class PlayableClass:
             localize(locale), "static", "playable-class", "index"
         )
 
-    def playable_class_media(self, locale: str, class_id: int) -> Response:
+    def playable_class_media(
+        self, class_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a playable class by ID.
 
         Args:
@@ -1109,7 +1163,7 @@ class PlayableClass:
             localize(locale), "static", "playable-class", class_id
         )
 
-    def pvp_talent_slots(self, locale: str, class_id: int) -> Response:
+    def pvp_talent_slots(self, class_id: int, locale: Optional[str] = None) -> Response:
         """Returns the PvP talent slots for a playable class by ID.
 
         Args:
@@ -1128,7 +1182,9 @@ class PlayableRace:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def playable_race(self, locale: str, race_id: Optional[int] = None) -> Response:
+    def playable_race(
+        self, race_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of playable races, or a specific playable race
 
         Args:
@@ -1151,7 +1207,9 @@ class PlayableSpec:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def playable_spec(self, locale: str, spec_id: Optional[int] = None) -> Response:
+    def playable_spec(
+        self, spec_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of playable specialization, or a specific playable specialization
 
         Args:
@@ -1169,7 +1227,9 @@ class PlayableSpec:
             localize(locale), "static", "playable-specialization", "index"
         )
 
-    def playable_spec_media(self, locale: str, spec_id: int) -> Response:
+    def playable_spec_media(
+        self, spec_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a playable specialization by ID.
 
         Args:
@@ -1188,7 +1248,9 @@ class Power:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def power_type(self, locale: str, power_id: Optional[int] = None) -> Response:
+    def power_type(
+        self, power_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of power types, or a specific power type
 
         Args:
@@ -1211,7 +1273,9 @@ class Profession:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def profession(self, locale: str, profession_id: Optional[int] = None) -> Response:
+    def profession(
+        self, profession_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of achievements, or a specific achievements
 
         Args:
@@ -1229,7 +1293,9 @@ class Profession:
             localize(locale), "static", "profession", "index"
         )
 
-    def profession_media(self, locale: str, profession_id: int) -> Response:
+    def profession_media(
+        self, profession_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a creature display.
 
         Args:
@@ -1244,7 +1310,7 @@ class Profession:
         )
 
     def profession_skill_tier(
-        self, locale: str, profession_id: int, skill_tier_id: int
+        self, profession_id: int, skill_tier_id: int, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of achievements, or a specific achievements
 
@@ -1265,7 +1331,7 @@ class Profession:
             skill_tier_id,
         )
 
-    def recipe(self, locale: str, recipe_id: int):
+    def recipe(self, recipe_id: int, locale: Optional[str] = None):
         """Returns an index of achievements, or a specific achievements
 
         Args:
@@ -1277,7 +1343,7 @@ class Profession:
         """
         return self.__client.game_data(localize(locale), "static", "recipe", recipe_id)
 
-    def recipe_media(self, locale: str, recipe_id: int) -> Response:
+    def recipe_media(self, recipe_id: int, locale: Optional[str] = None) -> Response:
         """Returns media for a creature display.
 
         Args:
@@ -1294,7 +1360,9 @@ class PvPSeason:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def pvp_season(self, locale: str, season_id: Optional[int] = None) -> Response:
+    def pvp_season(
+        self, season_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of pvp seasons, or a specific pvp season
 
         Args:
@@ -1313,7 +1381,10 @@ class PvPSeason:
         )
 
     def pvp_leader_board(
-        self, locale: str, season_id: int, pvp_bracket: Optional[str] = None
+        self,
+        season_id: int,
+        pvp_bracket: Optional[str] = None,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns an index of pvp leader boards, or a specific pvp leader board
 
@@ -1343,7 +1414,9 @@ class PvPSeason:
             "index",
         )
 
-    def pvp_rewards_index(self, locale: str, season_id: int) -> Response:
+    def pvp_rewards_index(
+        self, season_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of pvp rewards, or a specific pvp reward
 
         Args:
@@ -1362,7 +1435,9 @@ class PvPTier:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def pvp_tier(self, locale: str, tier_id: Optional[int] = None) -> Response:
+    def pvp_tier(
+        self, tier_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of pvp tier, or a specific pvp tier
 
         Args:
@@ -1378,7 +1453,7 @@ class PvPTier:
             )
         return self.__client.game_data(localize(locale), "static", "pvp-tier", "index")
 
-    def pvp_tier_media(self, locale: str, tier_id: int) -> Response:
+    def pvp_tier_media(self, tier_id: int, locale: Optional[str] = None) -> Response:
         """Returns media for a PvP tier by ID.
 
         Args:
@@ -1395,7 +1470,9 @@ class Quest:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def quest(self, locale: str, quest_id: Optional[int] = None) -> Response:
+    def quest(
+        self, quest_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of quests, or a specific quest
 
         Args:
@@ -1411,7 +1488,9 @@ class Quest:
             )
         return self.__client.game_data(localize(locale), "static", "quest", "index")
 
-    def quest_area(self, locale: str, quest_area_id: Optional[int] = None) -> Response:
+    def quest_area(
+        self, quest_area_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of quest areas, or a specific quest area
 
         Args:
@@ -1430,7 +1509,7 @@ class Quest:
         )
 
     def quest_category(
-        self, locale: str, quest_category_id: Optional[int] = None
+        self, quest_category_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of quest categories, or a specific quest category
 
@@ -1449,7 +1528,9 @@ class Quest:
             localize(locale), "static", "quest", "category", "index"
         )
 
-    def quest_type(self, locale: str, quest_type_id: Optional[int] = None) -> Response:
+    def quest_type(
+        self, quest_type_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of quest types, or a specific quest type
 
         Args:
@@ -1472,7 +1553,9 @@ class Realm:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def realm(self, locale: str, realm_name: Optional[str] = None) -> Response:
+    def realm(
+        self, realm_name: Optional[str] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of realms, or a specific realm
 
         Args:
@@ -1488,7 +1571,9 @@ class Realm:
             )
         return self.__client.game_data(localize(locale), "dynamic", "realm", "index")
 
-    def realm_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
+    def realm_search(
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
+    ) -> Response:
         """Searches the creature API for connected realm(s) that match the criteria
 
         Args:
@@ -1507,7 +1592,9 @@ class Region:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def region(self, locale: str, region_id: Optional[int] = None) -> Response:
+    def region(
+        self, region_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of regions, or a specific region
 
         Args:
@@ -1529,7 +1616,7 @@ class Reputation:
         self.__client = client
 
     def reputation_faction(
-        self, locale: str, faction_id: Optional[int] = None
+        self, faction_id: Optional[int] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of reputation factions, or a specific reputation fa
 
@@ -1548,7 +1635,9 @@ class Reputation:
             localize(locale), "static", "reputation-faction", "index"
         )
 
-    def reputation_tier(self, locale: str, tier_id: Optional[int] = None) -> Response:
+    def reputation_tier(
+        self, tier_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of reputation factions, or a specific reputation fa
 
         Args:
@@ -1571,7 +1660,7 @@ class Spell:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def spell(self, locale: str, spell_id: int) -> Response:
+    def spell(self, spell_id: int, locale: Optional[str] = None) -> Response:
         """Returns an index of spells, or a specific spell
 
         Args:
@@ -1583,7 +1672,7 @@ class Spell:
         """
         return self.__client.game_data(localize(locale), "static", "spell", spell_id)
 
-    def spell_media(self, locale: str, spell_id: int) -> Response:
+    def spell_media(self, spell_id: int, locale: Optional[str] = None) -> Response:
         """Returns media for a spell by ID.
 
         Args:
@@ -1596,7 +1685,7 @@ class Spell:
         return self.__client.media_data(localize(locale), "static", "spell", spell_id)
 
     def spell_search(
-        self, locale: str, field_values: Dict[str, Any] = None
+        self, field_values: Dict[str, Any] = None, locale: Optional[str] = None
     ) -> Response:
         """Searches the creature API for items that match the criteria
 
@@ -1616,7 +1705,9 @@ class Talent:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def talent(self, locale: str, talent_id: Optional[int] = None) -> Response:
+    def talent(
+        self, talent_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of spells, or a specific spell
 
         Args:
@@ -1632,7 +1723,9 @@ class Talent:
             )
         return self.__client.game_data(localize(locale), "static", "talent", "index")
 
-    def pvp_talent(self, locale: str, pvp_talent_id: Optional[int] = None) -> Response:
+    def pvp_talent(
+        self, pvp_talent_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of spells, or a specific spell
 
         Args:
@@ -1655,7 +1748,9 @@ class TechTalent:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def tech_talent_tree(self, locale: str, tree_id: Optional[int] = None) -> Response:
+    def tech_talent_tree(
+        self, tree_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of tech talent trees or a tech talent tree by ID
 
         Args:
@@ -1673,7 +1768,9 @@ class TechTalent:
             localize(locale), "static", "tech-talent-tree", "index"
         )
 
-    def tech_talent(self, locale: str, talent_id: Optional[int] = None) -> Response:
+    def tech_talent(
+        self, talent_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of tech talents or a tech talent by ID
 
         Args:
@@ -1691,7 +1788,9 @@ class TechTalent:
             localize(locale), "static", "tech-talent", "index"
         )
 
-    def tech_talent_media(self, locale: str, talent_id: int) -> Response:
+    def tech_talent_media(
+        self, talent_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a spell by ID.
 
         Args:
@@ -1710,7 +1809,9 @@ class Title:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def title(self, locale: str, title_id: Optional[int] = None) -> Response:
+    def title(
+        self, title_id: Optional[int] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of spells, or a specific spell
 
         Args:
@@ -1731,7 +1832,7 @@ class WoWToken:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def wow_token_index(self, locale: str) -> Response:
+    def wow_token_index(self, locale: Optional[str] = None) -> Response:
         """Returns the WoW Token index.
 
         Args:

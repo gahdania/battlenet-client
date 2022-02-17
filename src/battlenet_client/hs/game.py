@@ -5,7 +5,7 @@ Disclaimer:
     retrieved from this API.
 """
 
-from typing import Optional, Any, TYPE_CHECKING, Dict, List
+from typing import Optional, Any, TYPE_CHECKING, Dict
 
 from requests import Response
 
@@ -19,9 +19,9 @@ class Hearthstone:
 
     def card_search(
         self,
-        locale: str,
         field_values: Dict[str, Any],
         game_mode: Optional[str] = "constructed",
+        locale: Optional[str] = None,
     ) -> Response:
         """Searches for cards that match `field_values'
 
@@ -42,7 +42,10 @@ class Hearthstone:
         return self.__client.search(locale, "cards", field_values, game_mode)
 
     def card(
-        self, locale: str, card_id: str, game_mode: Optional[str] = "constructed"
+        self,
+        card_id: str,
+        game_mode: Optional[str] = "constructed",
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns the card provided by `card_id'
 
@@ -66,7 +69,9 @@ class Hearthstone:
             locale, "cards", card_id, params={"gameMode": game_mode}
         )
 
-    def card_back_search(self, locale: str, field_values: Dict[str, Any]) -> Response:
+    def card_back_search(
+        self, field_values: Dict[str, Any], locale: Optional[str] = None
+    ) -> Response:
         """Searches for cards that match `field_values'
 
         Args:
@@ -84,7 +89,7 @@ class Hearthstone:
 
         return self.__client.search(locale, "cardbacks", field_values)
 
-    def card_back(self, locale: str, card_back_id: str) -> Response:
+    def card_back(self, card_back_id: str, locale: Optional[str] = None) -> Response:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
         Args:
@@ -99,7 +104,9 @@ class Hearthstone:
         """
         return self.__client.game_data(locale, "cardbacks", card_back_id)
 
-    def card_deck(self, locale, field_values: Optional[Dict[str, Any]]) -> Response:
+    def card_deck(
+        self, field_values: Optional[Dict[str, Any]], locale: Optional[str] = None
+    ) -> Response:
         """Searches for cards that match `field_values'
 
         Args:
@@ -116,7 +123,9 @@ class Hearthstone:
         """
         return self.__client.search(locale, "deck", field_values)
 
-    def metadata(self, locale: str, meta_data: Optional[str] = None) -> Response:
+    def metadata(
+        self, meta_data: Optional[str] = None, locale: Optional[str] = None
+    ) -> Response:
         """Returns an index of Azerite Essences, or a specific Azerite Essence
 
         Args:

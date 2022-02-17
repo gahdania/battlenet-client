@@ -40,7 +40,7 @@ class Account:
         else:
             raise WoWClientError("Requires authorization client")
 
-    def account_profile_summary(self, locale: str) -> Response:
+    def account_profile_summary(self, locale: Optional[str] = None) -> Response:
         """Accesses a summary of the account
 
         Args:
@@ -603,7 +603,9 @@ class CharacterSoulBinds:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def soulbinds(self, locale: str, realm_name: str, character_name: str) -> Response:
+    def soulbinds(
+        self, realm_name: str, character_name: str, locale: Optional[str] = None
+    ) -> Response:
         """Accesses the available soulbinds of the requested character
         identified by :character_name: on realm :realm_name:
 
@@ -630,7 +632,7 @@ class CharacterSpecializations:
         self.__client = client
 
     def specializations_summary(
-        self, locale: str, realm_name: str, character_name: str
+        self, realm_name: str, character_name: str, locale: Optional[str] = None
     ) -> Response:
         """Access the available specializations of the requested character
         identified by :character_name: on realm :realm_name:
@@ -713,7 +715,9 @@ class Guild:
     def __init__(self, client: "WoWClient") -> None:
         self.__client = client
 
-    def guild(self, locale: str, realm_name: str, guild_name: str) -> Response:
+    def guild(
+        self, realm_name: str, guild_name: str, locale: Optional[str] = None
+    ) -> Response:
         """Returns a single guild by its name and realm.
 
         Args:
@@ -738,7 +742,7 @@ class Guild:
         )
 
     def guild_activities(
-        self, locale: str, realm_name: str, guild_name: str
+        self, realm_name: str, guild_name: str, locale: Optional[str] = None
     ) -> Response:
         """Returns a single guild's activity by name and realm.
 
@@ -765,7 +769,7 @@ class Guild:
         )
 
     def guild_achievements(
-        self, locale: str, realm_name: str, guild_name: str
+        self, realm_name: str, guild_name: str, locale: Optional[str] = None
     ) -> Response:
         """Returns a single guild's achievements by name and realm.
 
@@ -791,7 +795,9 @@ class Guild:
             "achievements",
         )
 
-    def guild_roster(self, locale: str, realm_name: str, guild_name: str) -> Response:
+    def guild_roster(
+        self, realm_name: str, guild_name: str, locale: Optional[str] = None
+    ) -> Response:
         """Returns a single guild's roster by its name and realm.
 
         Args:
@@ -816,7 +822,7 @@ class Guild:
             "roster",
         )
 
-    def guild_crest_components_index(self, locale: str) -> Response:
+    def guild_crest_components_index(self, locale: Optional[str] = None) -> Response:
         """Returns an index of guild crest components.
 
         Args:
@@ -827,7 +833,9 @@ class Guild:
         """
         return self.__client.game_data(locale, "static", "guild-crest", "index")
 
-    def guild_crest_border_media(self, locale: str, border_id: int) -> Response:
+    def guild_crest_border_media(
+        self, border_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a specific guild crest border.
 
         Args:
@@ -841,7 +849,9 @@ class Guild:
             locale, "static", "guild-crest", "border", border_id
         )
 
-    def guild_crest_emblem_media(self, locale: str, crest_id: int) -> Response:
+    def guild_crest_emblem_media(
+        self, crest_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns media for a specific guild crest emblem.
 
         Args:

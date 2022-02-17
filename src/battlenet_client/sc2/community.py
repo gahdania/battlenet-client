@@ -23,7 +23,7 @@ class Profile:
     def __init__(self, client: "SC2Client") -> None:
         self.__client = client
 
-    def static(self, locale: str, region_id: int) -> Response:
+    def static(self, region_id: int, locale: Optional[str] = None) -> Response:
         """Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
 
         Args:
@@ -37,7 +37,11 @@ class Profile:
         return self.__client.community(locale, "static", "profile", region_id)
 
     def metadata(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
+        self,
+        region_id: int,
+        realm_id: int,
+        profile_id: int,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns metadata for an individual's profile.
 
@@ -55,7 +59,11 @@ class Profile:
         )
 
     def profile(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
+        self,
+        region_id: int,
+        realm_id: int,
+        profile_id: int,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns data about an individual SC2 profile.
 
@@ -74,11 +82,11 @@ class Profile:
 
     def ladder(
         self,
-        locale: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
         ladder_id: Optional[int] = None,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns a ladder summary, or specific ladder for an individual SC2 profile.
 
@@ -106,7 +114,7 @@ class Ladder:
     def __init__(self, client: "SC2Client") -> None:
         self.__client = client
 
-    def grandmaster(self, locale: str, region_id: int) -> Response:
+    def grandmaster(self, region_id: int, locale: Optional[str] = None) -> Response:
         """Returns ladder data for the current season's grandmaster leaderboard.
 
         Args:
@@ -118,7 +126,7 @@ class Ladder:
         """
         return self.__client.community(locale, "ladder", "grandmaster", region_id)
 
-    def season(self, locale: str, region_id: int) -> Response:
+    def season(self, region_id: int, locale: Optional[str] = None) -> Response:
         """Returns data about the current season.
 
         Args:
@@ -135,7 +143,7 @@ class Account:
     def __init__(self, client: "SC2Client") -> None:
         self.__client = client
 
-    def player(self, locale: str, account_id: str) -> Response:
+    def player(self, account_id: str, locale: Optional[str] = None) -> Response:
         """Returns the player data for the provided `account_id`.
 
         Args:
@@ -156,7 +164,11 @@ class Legacy:
         self.__client = client
 
     def profile(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
+        self,
+        region_id: int,
+        realm_id: int,
+        profile_id: int,
+        locale: Optional[str] = None,
     ) -> Response:
         """Retrieves data about an individual SC2 profile.
 
@@ -174,7 +186,11 @@ class Legacy:
         )
 
     def ladders(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
+        self,
+        region_id: int,
+        realm_id: int,
+        profile_id: int,
+        locale: Optional[str] = None,
     ) -> Response:
         """Retrieves data about an individual SC2 profile's ladders.
 
@@ -192,7 +208,11 @@ class Legacy:
         )
 
     def match_history(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
+        self,
+        region_id: int,
+        realm_id: int,
+        profile_id: int,
+        locale: Optional[str] = None,
     ) -> Response:
         """Returns data about an individual SC2 profile's match history.
 
@@ -209,7 +229,9 @@ class Legacy:
             locale, "legacy", "profile", region_id, realm_id, profile_id, "matches"
         )
 
-    def ladder(self, locale: str, region_id: int, ladder_id: int) -> Response:
+    def ladder(
+        self, region_id: int, ladder_id: int, locale: Optional[str] = None
+    ) -> Response:
         """Returns data about an individual SC2 profile's match history.
 
         Args:
@@ -222,7 +244,7 @@ class Legacy:
         """
         return self.__client.community(locale, "legacy", "ladder", region_id, ladder_id)
 
-    def achievements(self, locale: str, region_id: int) -> Response:
+    def achievements(self, region_id: int, locale: Optional[str] = None) -> Response:
         """Returns the player data for the provided `account_id`.
 
         Args:
@@ -236,7 +258,7 @@ class Legacy:
             locale, "legacy", "data", "achievements", region_id
         )
 
-    def rewards(self, locale: str, region_id: int) -> Response:
+    def rewards(self, region_id: int, locale: Optional[str] = None) -> Response:
         """Returns the player data for the provided `account_id`.
 
         Args:
@@ -256,7 +278,9 @@ class ProfileCN:
 
         self.__client = client
 
-    def profile(self, locale: str, profile_id: str, region: str, name: str) -> Response:
+    def profile(
+        self, profile_id: str, region: str, name: str, locale: Optional[str] = None
+    ) -> Response:
         """Retrieves data about an individual SC2 profile.
 
         Args:
@@ -273,7 +297,9 @@ class ProfileCN:
 
         return self.__client.community(locale, "profile", profile_id, region, name)
 
-    def ladders(self, locale: str, profile_id: str, region: str, name: str) -> Response:
+    def ladders(
+        self, profile_id: str, region: str, name: str, locale: Optional[str] = None
+    ) -> Response:
         """Returns data about an individual SC2 profile's ladders.
 
         Args:
@@ -294,7 +320,7 @@ class ProfileCN:
         )
 
     def match_history(
-        self, locale: str, profile_id: str, region: str, name: str
+        self, profile_id: str, region: str, name: str, locale: Optional[str] = None
     ) -> Response:
         """Returns data about an individual SC2 profile's match history.
 
@@ -322,7 +348,7 @@ class LadderCN:
 
         self.__client = client
 
-    def ladder(self, locale: str, ladder_id: str) -> Response:
+    def ladder(self, ladder_id: str, locale: Optional[str] = None) -> Response:
         """Returns data about an SC2 ladder.
 
         Args:
@@ -342,7 +368,7 @@ class DataResourceCN:
 
         self.__client = client
 
-    def achievements(self, locale: str) -> Response:
+    def achievements(self, locale: Optional[str] = None) -> Response:
         """Returns the achievements for Starcraft II
 
         Args:
@@ -353,7 +379,7 @@ class DataResourceCN:
         """
         return self.__client.community(locale, "data", "achievements")
 
-    def rewards(self, locale: str) -> Response:
+    def rewards(self, locale: Optional[str] = None) -> Response:
         """Returns the rewards of the achievements in Starcraft II
 
         Args:

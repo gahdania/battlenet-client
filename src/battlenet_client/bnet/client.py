@@ -135,7 +135,7 @@ class BNetClient(OAuth2Session):
         authorization_url, self._state = self.authorization_url(url=auth_url, **kwargs)
         return unquote(authorization_url)
 
-    def user_info(self, locale: str) -> Response:
+    def user_info(self, locale: Optional[str] = None) -> Response:
         """Returns the user info
 
         Args:
