@@ -26,6 +26,7 @@ from typing import List, Optional, Any, Dict, Union
 
 from requests import Response
 from importlib import import_module
+from io import BytesIO
 
 from ..bnet.client import BNetClient
 from ..bnet.misc import slugify, localize
@@ -198,6 +199,19 @@ class WoWClient(BNetClient):
             params={"locale": locale},
             headers={"Battlenet-Namespace": getattr(self, namespace)},
         )
+
+    def media_icon(self, locale: str, namespace: str, *args):
+
+        data = self.media_data(locale, namespace, *args)
+
+        for asset in data["assets"]:
+            for key, value in asset.items():
+                if key == "value":
+                    return self.get(
+                        value,
+                        params={"locale": locale},
+                        headers={"Battlenet-Namespace": getattr(self, namespace)},
+                    )
 
     def search(
         self, locale: str, namespace: str, document: str, fields: Dict[str, Any]

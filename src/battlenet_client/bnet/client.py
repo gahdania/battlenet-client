@@ -5,13 +5,14 @@ Disclaimer:
     retrieved from this API.
 """
 from time import sleep
-from requests import Response, exceptions
+from requests import Response
+from requests.exceptions import HTTPError
 from io import BytesIO
 from decouple import config
 from urllib.parse import unquote
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
-from typing import Optional, List
+from typing import Optional, List, Dict, Union, Any
 
 from . import exceptions, constants
 
@@ -153,7 +154,9 @@ class BNetClient(OAuth2Session):
         url = f"{self.auth_host}/oauth/userinfo"
         return self.get(url, params={"locale": locale})
 
-    def request(self, method, url, **kwargs):
+    def request(
+        self, method, url, **kwargs
+    ) -> Union[Response, Dict[str, Any], BytesIO]:
 
         retries = 0
 
@@ -161,15 +164,18 @@ class BNetClient(OAuth2Session):
             try:
                 response = super().request(method, url, **kwargs)
                 response.raise_for_status()
-            except exceptions.HTTPError as err:
+            except HTTPError as err:
                 if err.response.status_code == 429:
                     retries += 1
                     sleep(1)
             else:
-                if response.request.url.startswith(self.api_host):
+                if response.url.startswith(self.api_host):
                     if response.headers["content-type"].startswith("application/json"):
                         return response.json()
 
+                if response.url.startswith(self.render_host) or response.url.startswith(
+                    "https://render.worldofwarcraft.com"
+                ):
                     if response.headers["content-type"] in ("image/jpeg", "image/png"):
                         return BytesIO(response.content)
 

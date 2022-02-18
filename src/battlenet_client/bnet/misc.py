@@ -5,7 +5,7 @@ Disclaimer:
     retrieved from this API.
 """
 
-from typing import Tuple
+from typing import Tuple, Optional, Union
 
 
 def currency_convertor(value: int) -> Tuple[int, int, int]:
@@ -35,7 +35,7 @@ def slugify(value: str) -> str:
     return value.lower().replace("'", "").replace(" ", "-")
 
 
-def localize(locale: str) -> str:
+def localize(locale: Optional[str] = None) -> Union[None, str]:
     """Returns the standardized locale
 
     Args:
@@ -48,6 +48,9 @@ def localize(locale: str) -> str:
         TypeError: when locale is not a string
         ValueError: when the lang and country are not in the given lists
     """
+    if locale is None:
+        return None
+
     if not isinstance(locale, str):
         raise TypeError("Locale must be a string")
 

@@ -1163,6 +1163,22 @@ class PlayableClass:
             localize(locale), "static", "playable-class", class_id
         )
 
+    def playable_class_icon(
+        self, class_id: int, locale: Optional[str] = None
+    ) -> Response:
+        """Returns media for a playable class by ID.
+
+        Args:
+            locale (str): which locale to use for the request
+            class_id (int ): class id
+
+        Returns:
+            dict: json decoded media data for the playable class(es)
+        """
+        return self.__client.media_icon(
+            localize(locale), "static", "playable-class", class_id
+        )
+
     def pvp_talent_slots(self, class_id: int, locale: Optional[str] = None) -> Response:
         """Returns the PvP talent slots for a playable class by ID.
 
@@ -1240,6 +1256,22 @@ class PlayableSpec:
             dict: json decoded media data for the playable specialization
         """
         return self.__client.media_data(
+            localize(locale), "static", "playable-specialization", spec_id
+        )
+
+    def playable_spec_icon(
+        self, spec_id: int, locale: Optional[str] = None
+    ) -> Response:
+        """Returns media for a playable specialization by ID.
+
+        Args:
+            locale (str): which locale to use for the request
+            spec_id (int): specialization id
+
+        Returns:
+            dict: json decoded media data for the playable specialization
+        """
+        return self.__client.media_icon(
             localize(locale), "static", "playable-specialization", spec_id
         )
 
