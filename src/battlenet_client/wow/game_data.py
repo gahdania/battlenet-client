@@ -35,7 +35,7 @@ Class:
     Title
     WoWToken
 """
-from typing import Optional, Any, TYPE_CHECKING, Dict
+from typing import Optional, Any, TYPE_CHECKING, Dict, Union
 
 if TYPE_CHECKING:
 
@@ -1586,21 +1586,23 @@ class Realm:
         self.__client = client
 
     def realm(
-        self, realm_name: Optional[str] = None, locale: Optional[str] = None
+        self, realm: Optional[Union[str, int]] = None, locale: Optional[str] = None
     ) -> Response:
         """Returns an index of realms, or a specific realm
 
         Args:
             locale (str): which locale to use for the request
-            realm_name (str, optional): the pvp tier ID or the word 'index'
+            realm (str/int, optional): the pvp tier ID or the word 'index'
 
         Returns:
             dict: json decoded data for the index/individual realm(s)
         """
-        if realm_name:
-            return self.__client.game_data(
-                localize(locale), "dynamic", "realm", slugify(realm_name)
-            )
+        if realm:
+            if isinstance(realm, str):
+                return self.__client.game_data(
+                    localize(locale), "dynamic", "realm", slugify(realm)
+                )
+            return self.__client.game_data(localize(locale), "dynamic", "realm", realm)
         return self.__client.game_data(localize(locale), "dynamic", "realm", "index")
 
     def realm_search(
