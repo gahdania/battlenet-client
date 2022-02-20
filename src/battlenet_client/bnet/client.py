@@ -50,7 +50,7 @@ class BNetClient(OAuth2Session):
         redirect_uri: Optional[str] = None,
     ) -> None:
 
-        self._state = None
+        self.state = None
 
         if not client_id:
             client_id = config("CLIENT_ID")
@@ -138,7 +138,7 @@ class BNetClient(OAuth2Session):
             raise ValueError("Requires Authorization Workflow")
 
         auth_url = f"{self.auth_host}/oauth/authorize"
-        authorization_url, self._state = super().authorization_url(
+        authorization_url, self.state = super().authorization_url(
             url=auth_url, **kwargs
         )
         return unquote(authorization_url)
