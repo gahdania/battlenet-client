@@ -105,7 +105,7 @@ class WoWClient(BNetClient):
                 setattr(self, name, getattr(mod, cls_name)(self))
 
         if self.auth_flow:
-            mod = import_module("profile", f"battlenet_client.wow")
+            mod = import_module(f"battlenet_client.wow.profile")
             for name, cls_name in MODULES["auth"]:
                 setattr(self, name, getattr(mod, cls_name)(self))
 

@@ -83,6 +83,11 @@ class BNetClient(OAuth2Session):
 
         if redirect_uri and scope:
             self.auth_flow = True
+            if "openid" in scope:
+                self._config_endpoint = (
+                    f"{self.auth_host}/.well-known/openid-configuration"
+                )
+                self._jwks = f"{self.api_host}/oauth/jwks/certs"
             super().__init__(
                 client_id=client_id, scope=scope, redirect_uri=redirect_uri
             )
@@ -133,7 +138,9 @@ class BNetClient(OAuth2Session):
             raise ValueError("Requires Authorization Workflow")
 
         auth_url = f"{self.auth_host}/oauth/authorize"
-        authorization_url, self._state = self.authorization_url(url=auth_url, **kwargs)
+        authorization_url, self._state = super().authorization_url(
+            url=auth_url, **kwargs
+        )
         return unquote(authorization_url)
 
     def user_info(self, locale: Optional[str] = None) -> Response:
