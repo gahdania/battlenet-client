@@ -1,109 +1,138 @@
-"""Defines the classes that handle the community APIs for Diablo III
+"""defines the classes that handle the community APIs for Diablo III
 
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
 """
 
-from typing import Optional, TYPE_CHECKING
-
-from requests import Response
-
-if TYPE_CHECKING:
-
-    from client import D3Client
+from typing import Optional
 
 from urllib.parse import quote
 
-from battlenet_client.bnet.misc import slugify
+from battlenet_client import utils
 
 
 class Community:
-    def __init__(self, client: "D3Client") -> None:
-        self.__client = client
-
-    def __repr__(self):
-        return self.__name__
-
+    @staticmethod
     def act(
-        self, act_id: Optional[int] = None, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        act_id: Optional[int] = None,
+        locale: Optional[str] = None,
+    ):
         """Returns an index of acts, or the act by ID
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             act_id (int, optional): the act's ID to retrieve its data
 
         Returns:
             dict: the dict containing the list of acts or the details of the specified :act_id:
         """
+        uri = f"{utils.api_host(region_tag)}/d3/data/act"
         if act_id:
-            return self.__client.community(locale, "act", act_id)
+            uri += f"/{act_id}"
 
-        return self.__client.community(locale, "act")
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-    def artisan(self, artisan_slug: str, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def artisan(
+        client, region_tag: str, artisan_slug: str, locale: Optional[str] = None
+    ):
         """Returns the artisan by the slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             artisan_slug (str): the slug of the artisan
 
         Returns:
             dict: the dict containing data of the artisan
         """
-        return self.__client.community(locale, "artisan", slugify(artisan_slug))
+        uri = f"{utils.api_host(region_tag)}/d3/data/artisan/{utils.slugify(artisan_slug)}"
 
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
     def recipe(
-        self, artisan_slug: str, recipe_slug: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        artisan_slug: str,
+        recipe_slug: str,
+        locale: Optional[str] = None,
+    ):
         """Returns a single recipe by the by slug for the specified artisan
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             artisan_slug (str): the slug of the artisan
             recipe_slug (str): the slug of the recipe
 
         Returns:
             dict: the dict containing for the recipe
         """
-        return self.__client.community(
-            locale, "artisan", slugify(artisan_slug), "recipe", slugify(recipe_slug)
-        )
+        uri = f"{utils.api_host(region_tag)}/d3/data/artisan/{utils.slugify(artisan_slug)}/recipe"
+        uri += f"/{utils.slugify(recipe_slug)}"
 
-    def follower(self, follower_slug: str, locale: Optional[str] = None) -> Response:
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
+    def follower(
+        client, region_tag: str, follower_slug: str, locale: Optional[str] = None
+    ):
         """Returns the follower by slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             follower_slug (str): the slug of a follower
 
         Returns:
             dict: the dict containing for the follower
         """
-        return self.__client.community(locale, "follower", slugify(follower_slug))
+        uri = f"{utils.api_host(region_tag)}/d3/data/follower/{utils.slugify(follower_slug)}"
 
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
     def character_class(
-        self, class_slug: str, locale: Optional[str] = None
-    ) -> Response:
+        client, region_tag: str, class_slug: str, locale: Optional[str] = None
+    ):
         """Returns a single character class by slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             class_slug (str): the slug of a character class
 
         Returns:
             dict: the dict containing for the character class
         """
-        return self.__client.community(locale, "hero", slugify(class_slug))
+        uri = f"{utils.api_host(region_tag)}/d3/data/hero/{utils.slugify(class_slug)}"
 
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
     def api_skill(
-        self, class_slug: str, skill_slug: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        class_slug: str,
+        skill_slug: str,
+        locale: Optional[str] = None,
+    ):
         """Returns a single skill by the by slug for the specified character class
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             class_slug (str): the slug of a character class
             skill_slug (str):
 
@@ -111,63 +140,87 @@ class Community:
             dict: the dict containing for the skill
         """
 
-        return self.__client.community(
-            locale,
-            "hero",
-            slugify(class_slug),
-            "skill",
-            slugify(skill_slug),
-        )
+        uri = f"{utils.api_host(region_tag)}/d3/data/hero/{utils.slugify(class_slug)}"
+        uri += f"/skill/{utils.slugify(skill_slug)}"
 
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
     def item_type(
-        self, item_slug: Optional[str] = None, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        item_slug: Optional[str] = None,
+        locale: Optional[str] = None,
+    ):
         """Returns the index of item types, or a specific item type
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             item_slug (str, optional): the slug of an item type
 
         Returns:
             dict: the dict containing for the item type
         """
+        uri = f"{utils.api_host(region_tag)}/d3/data/item-type"
 
         if item_slug:
-            return self.__client.community(locale, "item-type", slugify(item_slug))
+            uri += f"/{utils.slugify(item_slug)}"
 
-        return self.__client.community(locale, "item-type")
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-    def item(self, item_slug: str, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def item(client, region_tag: str, item_slug: str, locale: Optional[str] = None):
         """Returns the item by slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             item_slug (str): the slug of the item
 
         Returns:
             dict: the dict containing for the item
         """
-        return self.__client.community(locale, "item", item_slug)
+        uri = f"{utils.api_host(region_tag)}/d3/data/item/{utils.slugify(item_slug)}"
 
-    def api_account(self, bnet_tag: str, locale: Optional[str] = None) -> Response:
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
+    def api_account(
+        client, region_tag: str, bnet_tag: str, locale: Optional[str] = None
+    ):
         """Returns the specified account profile
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             bnet_tag (str): bnet tag of the user
 
         Returns:
             dict: the dict containing for the account
         """
-        return self.__client.profile_api(locale, f"{quote(bnet_tag)}/")
+        uri = f"{utils.api_host(region_tag)}/d3/profile/{bnet_tag}"
 
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
     def api_hero(
-        self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: str,
+        bnet_tag: str,
+        hero_id: str,
+        category: Optional[str] = None,
+    ):
         """Returns the follower by slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             bnet_tag (str): BNet tag for the account
             hero_id (str):  Hero's ID
             category (str): category to retrieve if specified ('items', 'follower-items')
@@ -175,180 +228,17 @@ class Community:
         Returns:
             dict: the dict containing for the hero, items, or follower's items
         """
+        uri = (
+            f"{utils.api_host(region_tag)}/d3/profile/{quote(bnet_tag)}/hero/{hero_id}"
+        )
+
         if category:
-            if category in ("items", "follower-items"):
-                return self.__client.profile_api(
-                    locale, quote(bnet_tag), "hero", hero_id, category
-                )
-            else:
+
+            if category not in ("items", "follower-items"):
                 raise ValueError(
                     "Invalid category;  Valid categories are 'items' and 'follower-items'"
                 )
-        else:
-            return self.__client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
 
+            uri += f"/{category.lower()}"
 
-class CommunityCN:
-    def __init__(self, client: "D3Client") -> None:
-        self.__client = client
-
-    def act(
-        self, act_id: Optional[int] = None, locale: Optional[str] = None
-    ) -> Response:
-        """Returns an index of acts, or the act by ID
-
-        Args:
-            locale (str): localization to use with API
-            act_id (int, optional): the act's ID to retrieve its data
-
-        Returns:
-            dict: the dict containing the list of acts or the details of the specified :act_id:
-        """
-
-        if act_id:
-            return self.__client.community(locale, "act", act_id)
-
-        return self.__client.community(locale, "act")
-
-    def artisan(self, artisan_slug: str, locale: Optional[str] = None) -> Response:
-        """Returns the artisan by the slug
-
-        Args:
-            locale (str): localization to use with API
-            artisan_slug (str): the slug of the artisan
-
-        Returns:
-            dict: the dict containing data of the artisan
-        """
-        return self.__client.community(locale, "artisan", artisan_slug)
-
-    def recipe(
-        self, artisan_slug: str, recipe_slug: str, locale: Optional[str] = None
-    ) -> Response:
-        """Returns a single recipe by the by slug for the specified artisan
-
-        Args:
-            locale (str): localization to use with API
-            artisan_slug (str): the slug of the artisan
-            recipe_slug (str): the slug of the recipe
-
-        Returns:
-            dict: the dict containing for the recipe
-        """
-        return self.__client.community(
-            locale, "artisan", artisan_slug, "recipe", slugify(recipe_slug)
-        )
-
-    def follower(self, follower_slug: str, locale: Optional[str] = None) -> Response:
-        """Returns the follower by slug
-
-        Args:
-            locale (str): localization to use with API
-            follower_slug (str): the slug of a follower
-
-        Returns:
-            dict: the dict containing for the follower
-        """
-        return self.__client.community(locale, "follower", slugify(follower_slug))
-
-    def character_class(
-        self, class_slug: str, locale: Optional[str] = None
-    ) -> Response:
-        """Returns a single character class by slug
-
-        Args:
-            locale (str): localization to use with API
-            class_slug (str): the slug of a character class
-
-        Returns:
-            dict: the dict containing for the character class
-        """
-        return self.__client.community(locale, "hero", slugify(class_slug))
-
-    def api_skill(
-        self, class_slug: str, skill_slug: str, locale: Optional[str] = None
-    ) -> Response:
-        """Returns a single skill by the by slug for the specified character class
-
-        Args:
-            locale (str): localization to use with API
-            class_slug (str): the slug of a character class
-            skill_slug (str):
-
-        Returns:
-            dict: the dict containing for the skill
-        """
-        return self.__client.community(
-            locale,
-            "hero",
-            slugify(class_slug),
-            "skill",
-            slugify(skill_slug),
-        )
-
-    def item_type(
-        self, item_slug: Optional[str] = None, locale: Optional[str] = None
-    ) -> Response:
-        """Returns the index of item types, or a specific item type
-
-        Args:
-            locale (str): localization to use with API
-            item_slug (str, optional): the slug of an item type
-
-        Returns:
-            dict: the dict containing for the item type
-        """
-        if item_slug:
-            return self.__client.community(locale, "item-type", slugify(item_slug))
-
-        return self.__client.community(locale, "item-type")
-
-    def item(self, item_slug: str, locale: Optional[str] = None) -> Response:
-        """Returns the item by slug
-
-        Args:
-            locale (str): localization to use with API
-            item_slug (str): the slug of the item
-
-        Returns:
-            dict: the dict containing for the item
-        """
-        return self.__client.community(locale, "item", item_slug)
-
-    def api_account(self, bnet_tag: str, locale: Optional[str] = None) -> Response:
-        """Returns the specified account profile
-
-        Args:
-            locale (str): localization to use with API
-            bnet_tag (str): bnet tag of the user
-
-        Returns:
-            dict: the dict containing for the account
-        """
-        return self.__client.profile_api(locale, f"{quote(bnet_tag)}/")
-
-    def api_hero(
-        self, locale: str, bnet_tag: str, hero_id: str, category: Optional[str] = None
-    ) -> Response:
-        """Returns the follower by slug
-
-        Args:
-            locale (str): localization to use with API
-            bnet_tag (str): BNet tag for the account
-            hero_id (str):  Hero's ID
-            category (str): category to retrieve if specified ('items', 'follower-items')
-
-        Returns:
-            dict: the dict containing for the hero, items, or follower's items
-        """
-        if category:
-            if category in ("items", "follower-items"):
-                return self.__client.profile_api(
-                    locale, quote(bnet_tag), "hero", hero_id, category
-                )
-            else:
-                raise ValueError(
-                    "Invalid category;  Valid categories are 'items' and 'follower-items'"
-                )
-        else:
-            return self.__client.profile_api(locale, quote(bnet_tag), "hero", hero_id)
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()

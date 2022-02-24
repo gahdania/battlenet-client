@@ -4,85 +4,105 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
     retrieved from this API.
 """
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 
-from requests import Response
-
-if TYPE_CHECKING:
-
-    from client import D3Client
+from battlenet_client import utils
 
 
 class GameData:
-    def __init__(self, client: "D3Client") -> None:
-        self.client = client
-
+    @staticmethod
     def season(
-        self, season_id: Optional[int] = None, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        season_id: Optional[int] = None,
+        locale: Optional[str] = None,
+    ):
         """Returns an index of seasons, or a leaderboard of the specified season
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             season_id (int): the ID of the season
 
         Returns:
             dict: the dict containing for the index of seasons, or the index of
                 the leaderboards for the given season
         """
+        uri = f"{utils.api_host(region_tag)}/data/d3/season/"
         if season_id:
-            return self.client.game_data(locale, "season", season_id)
+            uri += season_id
 
-        return self.client.game_data(locale, "season/")
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def season_leaderboard(
-        self, season_id: int, leaderboard_id: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        season_id: int,
+        leaderboard_id: str,
+        locale: Optional[str] = None,
+    ):
         """Returns the leaderboard for the specified season by slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             season_id (int): the ID of the season
             leaderboard_id (Str): the slug of the leaderboard
 
         Returns:
             dict: the dict containing for the leaderboard for the given season
         """
-        return self.client.game_data(
-            locale, "season", season_id, "leaderboard", leaderboard_id
-        )
+        uri = f"{utils.api_host(region_tag)}/data/d3/season/{season_id}/leaderboard/{leaderboard_id}"
 
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
     def era(
-        self, era_id: Optional[int] = None, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        era_id: Optional[int] = None,
+        locale: Optional[str] = None,
+    ):
         """Returns an index of eras, or index of leaderboards for the era
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             era_id (int): the ID of the era
 
         Returns:
             dict: the dict containing for the index of sea, or the leaderboard
                 for the given season
         """
+        uri = f"{utils.api_host(region_tag)}/data/d3/era/"
         if era_id:
-            return self.client.game_data(locale, "era", era_id)
+            uri += era_id
 
-        return self.client.game_data(locale, "era/")
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def era_leaderboard(
-        self, era_id: int, leaderboard_id: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        era_id: int,
+        leaderboard_id: str,
+        locale: Optional[str] = None,
+    ):
         """Returns the leaderboard for the specified era by slug
 
         Args:
-            locale (str): localization to use with API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             era_id (int): the ID of the season
             leaderboard_id (str): the slug of the leaderboard
 
         Returns:
             dict: the dict containing for the leaderboard for the given season
         """
-        return self.client.game_data(
-            locale, "era", era_id, "leaderboard", leaderboard_id
-        )
+        uri = f"{utils.api_host(region_tag)}/data/d3/era/{era_id}/{leaderboard_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
