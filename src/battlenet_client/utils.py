@@ -1,24 +1,27 @@
-"""Holds miscellaneous functions for the entire package
+"""Miscellaneous functions to support world of warcraft
 
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Battle.net and any data
-    retrieved from this API.
+Functions:
+    currency_convertor
 """
-
 from typing import Tuple, Optional, Union
 
 
+WOW_CLASSICS = ("classic1x", "classic")
+
+
 def currency_convertor(value: int) -> Tuple[int, int, int]:
-    """Returns the value into gold, silver and copper values
+    """Returns the value into gold, silver and copper
 
     Args:
-        value (int): the value to be converted
+        value (int/str): the value to be converted
 
     Returns:
         tuple: gold, silver and copper values
     """
+    value = int(value)
+
     if value < 0:
-        raise ValueError("Value must be zero or a positive value")
+        raise ValueError("Value cannot be negative")
 
     return value // 10000, (value % 10000) // 100, value % 100
 
@@ -54,17 +57,7 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
     if not isinstance(locale, str):
         raise TypeError("Locale must be a string")
 
-    if locale[:2].lower() not in (
-        "en",
-        "es",
-        "pt",
-        "fr",
-        "ru",
-        "de",
-        "it",
-        "ko",
-        "zh",
-    ):
+    if locale[:2].lower() not in ("en", "es", "pt", "fr", "ru", "de", "it", "ko", "zh"):
         raise ValueError("Invalid language bnet")
 
     if locale[-2:].lower() not in (
@@ -85,3 +78,35 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
         raise ValueError("Invalid country bnet")
 
     return f"{locale[:2].lower()}_{locale[-2:].upper()}"
+
+
+def api_host(region: str):
+    if region.lower() == "cn":
+        return "https://gateway.battlenet.com.cn"
+
+    return f"https://{region.lower()}.api.blizzard.com"
+
+
+def auth_host(region: str):
+    if region.lower() == "cn":
+        return "https://www.battlenet.com.cn"
+
+    if region.lower() in ("kr", "tw"):
+        return "https://apac.battle.net"
+
+    return f"https://{region.lower()}.battle.net"
+
+
+def render_host(region: str):
+    if region.lower() == "cn":
+        return "https://render.worldofwarcraft.com.cn"
+
+    return f"https://render-{region.lower()}.worldofwarcraft.com"
+
+
+def namespace(api_type, release, region):
+
+    if release.lower() != "retail":
+        return f"{api_type}-{release.lower()}-{region.lower()}"
+
+    return f"{api_type}-{region.lower()}"

@@ -11,13 +11,9 @@ Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of WoW and WoW Classic
     and any data pertaining thereto
 """
-from requests import Response
-
 from typing import Optional, List
 
 from battlenet_client.bnet.client import BNetClient
-
-from battlenet_client.utils import localize
 
 
 class SC2Client(BNetClient):
@@ -54,41 +50,3 @@ class SC2Client(BNetClient):
             scope=scope,
             redirect_uri=redirect_uri,
         )
-
-    def game_data(self, locale: str, *args, **kwargs) -> Response:
-        """Generates then necessary game data API URI and keyword args for to pasted on to the client get method
-
-        Args:
-            locale (str): the localization to use for the request
-
-        Returns:
-            dict: the resultant JSON decoded dict
-        """
-        kwargs["params"]["locale"] = localize(locale)
-
-        if args[0].startswith("https"):
-            uri = args[0]
-        else:
-            uri = f"{self.api_host}/data/sc2/{'/'.join([str(arg) for arg in args if arg is not None])}"
-
-        kwargs["params"]["locale"] = localize(locale)
-
-        return self.get(uri, **kwargs)
-
-    def community(self, locale: str, *args, **kwargs) -> Response:
-        """Generates then necessary community API URI and keyword args for to pasted on to the client get method
-
-        Args:
-            locale (str): the localization to use for the request
-
-        Returns:
-            dict: the resultant JSON decoded dict
-        """
-        kwargs["params"]["locale"] = localize(locale)
-
-        if args[0].startswith("https"):
-            uri = args[0]
-        else:
-            uri = f"{self.api_host}/sc2/{'/'.join([str(arg) for arg in args if arg is not None])}"
-
-        return self.get(uri, **kwargs)

@@ -17,6 +17,7 @@ Updated out of date documentation
 Updated BNetClient.__str__() and .__repr__()
 move version related variables into the respective client classes
 updated localize to allow passing None
+decoupling API from BNetClient and subclasses
 
 ### Removed
 Duplicate __str__ and __repr__ methods in the children client classes (D3Client, HSClient, SC2Client, and WoWClient)

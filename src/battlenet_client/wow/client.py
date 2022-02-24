@@ -13,7 +13,8 @@ Examples:
 
     > # for authorization work flows (wow.Account) (requires a web server for the redirect)
     > from battlenet_client import wow
-    > client = wow.WoWClient(<region>, scope=['wow.profile',], redirect_uri='https://localhost/redirect', client_id='<client ID>', client_secret='<client secret>')
+    > client = wow.WoWClient(<region>, scope=['wow.profile',], redirect_uri='https://localhost/redirect',
+                             client_id='<client ID>', client_secret='<client secret>')
     # after authenticating with Blizzard.
     > wow.Account(client).account_profile_summary('en_US')
 
@@ -22,17 +23,9 @@ Disclaimer:
     and any data pertaining thereto
 
 """
-from typing import List, Optional, Any, Dict, Union
+from typing import List, Optional
 
-from requests import Response
-from importlib import import_module
-from io import BytesIO
-
-from ..bnet.client import BNetClient
-from battlenet_client.utils import slugify, localize, auth_host
-
-from .exceptions import WoWClientError
-from .constants import MODULES
+from battlenet_client.bnet.client import BNetClient
 
 
 class WoWClient(BNetClient):
@@ -51,11 +44,6 @@ class WoWClient(BNetClient):
         redirect_uri (str, optional): the URI to return after a successful authentication between the user and Blizzard
         client_id (str, optional): the client ID from the developer portal
         client_secret (str, optional): the client secret from the developer portal
-
-    Attributes:
-        dynamic (str): the namespace to use for dynamic elements of the API (ie: characters, and guilds)
-        static (str): the namespace to use for static elements of the API (ie: realms, connected_realms)
-        profile (str): the namespace to use for profile based elements (ie: player info, protected char info)
     """
 
     __MAJOR__ = 2
@@ -103,131 +91,3 @@ class WoWClient(BNetClient):
             return f"profile-{self._release}-{self.tag}"
 
         return f"profile-{self.tag}"
-
-    def game_data(
-        self, locale: str, namespace: str, *args: Union[str, int]
-    ) -> Response:
-        """Used to retrieve data from the source data APIs
-
-        Args:
-            locale (str): the locale to use, example: en_US
-            namespace (str): namespace the API requires, example: static
-
-        Returns:
-            dict: data returned by the API
-        """
-        if isinstance(args[0], str) and args[0].startswith("http"):
-            uri = args[0]
-        else:
-            uri = f"{self.api_host}/data/wow/{'/'.join([str(arg) for arg in args if arg is not None])}"
-
-        return self.get(
-            uri,
-            params={"locale": localize(locale)},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
-
-    def profile_data(
-        self, locale: str, namespace: str, *args: Union[str, int]
-    ) -> Response:
-        """Used to retrieve data from the profile APIs which do not require authentication from the user
-
-        Args:
-            locale (str): the locale to use, example: en_US
-            namespace (str): namespace the API requires, example: static
-
-        Returns:
-            dict: data returned by the   API
-        """
-        if isinstance(args[0], str) and args[0].startswith("http"):
-            uri = args[0]
-        else:
-            uri = f"{self.api_host}/profile/wow/{'/'.join([str(arg) for arg in args if arg is not None])}"
-
-        return self.get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
-
-    def protected_data(
-        self, locale: str, namespace: str, *args: Union[str, int]
-    ) -> Response:
-        """Used to retrieve data from the profile APIs which do require authentication from the user
-
-        Args:
-            locale (str): the locale to use, example: en_US
-            namespace (str): namespace the API requires, example: static
-
-        Returns:
-            dict: data returned by the API
-        """
-        if not self.auth_flow:
-            raise WoWClientError("Requires Authorization Workflow")
-
-        if isinstance(args[0], str) and args[0].startswith("http"):
-            uri = args[0]
-        else:
-            uri = f"{self.api_host}/profile/user/wow{'/'.join([str(arg) for arg in args if arg is not None])}"
-
-        return self.post(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
-
-    def media_data(self, locale: str, namespace: str, *args) -> Response:
-        """Used to retrieve media data including URLs for them
-
-        Args:
-            locale (str): the locale to use, example: en_US
-            namespace (str): namespace the API requires, example: static
-
-        Returns:
-            dict: data returned by the API
-        """
-
-        uri = f"{self.api_host}/data/wow/media/{'/'.join([slugify(str(arg)) for arg in args if arg is not None])}"
-
-        return self.get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
-
-    def media_icon(self, locale: str, namespace: str, *args):
-
-        data = self.media_data(locale, namespace, *args)
-
-        for asset in data["assets"]:
-            for key, value in asset.items():
-                if key == "value":
-                    return self.get(
-                        value,
-                        params={"locale": locale},
-                        headers={"Battlenet-Namespace": getattr(self, namespace)},
-                    )
-
-    def search(
-        self, locale: str, namespace: str, document: str, fields: Dict[str, Any]
-    ) -> Response:
-        """Used to perform searches where available
-
-        Args:
-            locale (str): the locale to use, example: en_US
-            namespace (str): namespace the API requires, example: static
-            document (str): the document tree to be searched
-            fields (dict): the criteria to search
-
-        Returns:
-            dict: data returned by the API
-        """
-        uri = f"{self.api_host}/data/wow/search/{slugify(document)}"
-        params = {"locale": locale}
-        params.update(fields)
-
-        return self.get(
-            uri,
-            params={"locale": locale},
-            headers={"Battlenet-Namespace": getattr(self, namespace)},
-        )
