@@ -1,23 +1,19 @@
-from requests import Response
+from typing import Optional
 
-from typing import TYPE_CHECKING, Optional
-
-if TYPE_CHECKING:
-    from .client import SC2Client
+from battlenet_client import utils
 
 
 class LeagueData:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
+    @staticmethod
     def league_data(
-        self,
+        client,
+        region_tag: str,
         season_id: str,
         queue_id: str,
         team_type: str,
         league_id: str,
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Returns data for the specified season, queue, team, and league.
 
         queueId: the standard available queueIds are: 1=WoL 1v1, 2=WoL 2v2, 3=WoL 3v3, 4=WoL 4v4, 101=HotS 1v1,
@@ -29,7 +25,9 @@ class LeagueData:
         leagueId: available leagueIds are: 0=Bronze, 1=Silver, 2=Gold, 3=Platinum, 4=Diamond, 5=Master, 6=Grandmaster.
 
         Args:
-            locale (str): The locale to reflect in localized data.
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             season_id (str): The season ID of the data to retrieve.
             queue_id (str): The queue ID of the data to retrieve.
             team_type (str): The team type of the data to retrieve.
@@ -38,7 +36,5 @@ class LeagueData:
         Returns:
             dict: dict containing league data for specified season, queue, team, and league.
         """
-
-        return self.__client.game_data(
-            locale, "league", season_id, queue_id, team_type, league_id
-        )
+        uri = f"{utils.api_host(region_tag)}/data/sc2/league/{season_id}/{queue_id}/{team_type}/{league_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()

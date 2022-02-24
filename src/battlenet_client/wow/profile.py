@@ -1,63 +1,57 @@
 """This module contains the classes for accessing profile related APIs
-
-Classes:
-    Account
-    CharacterAchievements
-    CharacterAppearance
-    CharacterCollections
-    CharacterEncounters
-    CharacterEquipment
-    CharacterHunterPets
-    CharacterMedia
-    CharacterMythicKeystone
-    CharacterProfession
-    CharacterProfile
-    CharacterPvP
-    CharacterQuests
-    CharacterReputations
-    CharacterSoulBinds
-    CharacterSpecializations
-    CharacterStatistics
-    CharacterTitles
-    Guild
 """
+from urllib.parse import quote
+from typing import Optional
 
-from typing import Optional, TYPE_CHECKING
 
-from requests import Response
-
-if TYPE_CHECKING:
-    from .client import WoWClient
-
-from battlenet_client.bnet.misc import slugify
-from .exceptions import WoWReleaseError, WoWClientError
+from battlenet_client import utils
+from .exceptions import WoWReleaseError
 
 
 class Account:
-    def __init__(self, client: "WoWClient") -> None:
-        if client.auth_flow:
-            self.__client = client
-        else:
-            raise WoWClientError("Requires authorization client")
-
-    def account_profile_summary(self, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def account_profile_summary(
+        client,
+        region_tag: str,
+        locale: Optional[str] = None,
+        release: Optional[str] = "retail",
+    ):
         """Accesses a summary of the account
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
 
         Returns:
             dict: JSON decoded data that contains the profile summary
         """
-        return self.__client.protected_data(locale, "profile")
+        uri = f"{utils.api_host(region_tag)}/profile/user/wow"
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
+    @staticmethod
     def protected_character_profile_summary(
-        self, locale: str, realm_id: int, character_id: int
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_id: int,
+        character_id: int,
+        release: Optional[str] = "retail",
+    ):
         """Accesses a summary of protected account information for the
         character identified by :realm_id: and :character_id:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_id (int): the ID for the character's realm
             character_id (int): the ID of character
@@ -66,17 +60,30 @@ class Account:
             dict: JSON decoded data that contains the protected character
                 profile summary
         """
-        return self.__client.protected_data(
-            locale, "profile", "protected-character", realm_id, character_id
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/user/wow/protected-character/{realm_id}-{character_id}"
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
+    @staticmethod
     def account_collections(
-        self, locale: str, category: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        category: Optional[str] = "",
+        release: Optional[str] = "retail",
+    ):
         """Access the collection of battle pets and/or mounts of an account as
         provided by :category:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             category (str): 'pets' to retrieve the pet collections, and
                 'mounts' to retrieve the mount collection of the account or
@@ -85,24 +92,33 @@ class Account:
         Returns:
             dict: JSON decoded data for the index/individual collections
         """
-        if category is not None:
-            return self.__client.protected_data(
-                locale, "profile", "collections", slugify(category)
-            )
-        return self.__client.protected_data(locale, "profile", "collections")
+        uri = f"{utils.api_host(region_tag)}/profile/user/wow/collections/{category}"
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
 
-class CharacterAchievements:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+class Character:
+    @staticmethod
     def achievement_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the achievement summary of the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -110,22 +126,34 @@ class CharacterAchievements:
         Returns:
             dict: JSON decoded data that contains requested achievement summary
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "achievements",
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += (
+            f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/achievements"
         )
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
+    @staticmethod
     def achievement_statistics(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the achievement statistics for the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -133,28 +161,32 @@ class CharacterAchievements:
         Returns:
             dict: JSON decoded data that contains the requested achievement statistics
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "achievements",
-            "statistics",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/achievements/statistics"
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-
-class CharacterAppearance:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def appearance_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the appearance summary for the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -162,32 +194,34 @@ class CharacterAppearance:
         Returns:
             dict: JSON decoded data that contains requested appearance summary
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "appearance",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/appearance"
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-
-class CharacterCollections:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def collections(
-        self,
-        locale: str,
+        client,
+        region_tag: str,
+        locale: Optional[str],
         realm_name: str,
         character_name: str,
         category: Optional[str] = None,
-    ) -> Response:
+        release: Optional[str] = "retail",
+    ):
         """Accesses the battle pet and/or mount collections for the requested
         character identified by :character_name: on realm :realm_name: of the
         given :category:.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -197,45 +231,42 @@ class CharacterCollections:
         Returns:
             dict: JSON decoded data that contains requested collection
         """
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += (
+            f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/collections"
+        )
+
         if category:
             if category.lower() not in ("pets", "mounts"):
                 raise ValueError("Category needs to pets or mounts")
+            uri += f"/{utils.slugify(category)}"
 
-            return self.__client.profile_data(
-                locale,
-                "profile",
-                "character",
-                slugify(realm_name),
-                slugify(character_name),
-                "collections",
-                category.lower(),
-            )
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "collections",
-        )
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-
-class CharacterEncounters:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def encounters(
-        self,
-        locale: str,
+        client,
+        region_tag: str,
+        locale: Optional[str],
         realm_name: str,
         character_name: str,
         category: Optional[str] = None,
-    ) -> Response:
+        release: Optional[str] = "retail",
+    ):
         """Accesses the encounters for the requested character identified by
         :character_name: on realm :realm_name:.  The encounters can be limited
         by :category:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -245,40 +276,38 @@ class CharacterEncounters:
         Returns:
             dict: JSON decoded dict that contains requested encounter data or index
         """
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/encounters"
 
         if category:
             if category.lower() not in ("dungeons", "raids"):
                 raise ValueError("Available Categories: None, dungeons and raids")
-            return self.__client.profile_data(
-                locale,
-                "profile",
-                "character",
-                slugify(realm_name),
-                slugify(character_name),
-                "encounters",
-                slugify(category),
-            )
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "encounters",
-        )
+            uri += f"/{utils.slugify(category)}"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterEquipment:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def equipment_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the equipped items of the requested character identified by
         :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -286,27 +315,33 @@ class CharacterEquipment:
         Returns:
             dict: JSON decoded dict that contains requested equipment summary
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "equipment",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/equipment"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterHunterPets:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def hunter_pets_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Access the list of hunter pets of the requested character identified
         by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -314,27 +349,35 @@ class CharacterHunterPets:
         Returns:
             dict: JSON decoded data of the hunter's pets
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "hunter-pets",
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += (
+            f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/hunter-pets"
         )
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterMedia:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def media_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the media assets, such as avatar render, of the requested
         character identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -342,32 +385,35 @@ class CharacterMedia:
         Returns:
             dict: JSON decoded data that contains requested media assets
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "character-media",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/character-media"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterMythicKeystone:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def mythic_keystone(
-        self,
-        locale: str,
+        client,
+        region_tag: str,
+        locale: Optional[str],
         realm_name: str,
         character_name: str,
         season_id: Optional[int] = None,
-    ) -> Response:
+        release: Optional[str] = "retail",
+    ):
         """Accesses the mythic keystone (M+ or Mythic+) information of the
         requested character identified by :character_name: on realm
         :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -377,38 +423,36 @@ class CharacterMythicKeystone:
         Returns:
             dict: JSON decoded data of requested mythic keystone details
         """
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/mythic-keystone-profile"
+
         if season_id:
-            return self.__client.profile_data(
-                locale,
-                "profile",
-                "character",
-                slugify(realm_name),
-                slugify(character_name),
-                "mythic-keystone-profile",
-                "season",
-                season_id,
-            )
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "mythic-keystone-profile",
-        )
+            uri += f"/season/{season_id}"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterProfessions:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def professions_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the profession information of the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -416,23 +460,29 @@ class CharacterProfessions:
         Returns:
             dict: JSON decoded data of the character's professions
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "professions",
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += (
+            f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/professions"
         )
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterProfile:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def profile(
-        self, locale: str, realm_name: str, character_name: str, status: bool = False
-    ) -> Response:
+        client,
+        region_tag: str,
+        realm_name: str,
+        character_name: str,
+        locale: Optional[str] = None,
+        status: bool = False,
+        release: Optional[str] = "retail",
+    ):
         """Access the profile status of the requested character identified by
         :character_name: on realm :realm_name:
 
@@ -458,6 +508,9 @@ class CharacterProfile:
             the data for another 30 days.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -466,40 +519,38 @@ class CharacterProfile:
         Returns:
             dict: JSON decoded data of character profile summary
         """
+        # https://us.api.blizzard.com/profile/wow/character/zul'jin/gahdania?namespace=profile-us&locale=en_US&access_token=USZrqt5kOYoo2usRyH73SgRox6ka93GYju
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{quote(character_name.lower())}"
 
         if status:
-            return self.__client.profile_data(
-                locale,
-                "profile",
-                "character",
-                slugify(realm_name),
-                slugify(character_name),
-                "status",
-            )
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-        )
+            uri += "/status"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterPvP:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def pvp(
-        self,
-        locale: str,
+        client,
+        region_tag: str,
+        locale: Optional[str],
         realm_name: str,
         character_name: str,
         pvp_bracket: Optional[str] = None,
-    ) -> Response:
+        release: Optional[str] = "retail",
+    ):
         """Accesses the Player versus Player (PvP) information of the requested
         character identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -509,79 +560,79 @@ class CharacterPvP:
         Returns:
             dict: JSON decoded data of requested pvp details
         """
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}"
 
         if pvp_bracket:
-            return self.__client.profile_data(
-                locale,
-                "profile",
-                "character",
-                slugify(realm_name),
-                slugify(character_name),
-                "pvp-bracket",
-                pvp_bracket,
-            )
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "pvp-summary",
-        )
+            uri += f"/pvp-bracket/{utils.slugify(pvp_bracket)}"
+        else:
+            uri += "/pvp-summary"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterQuests:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def quests(
-        self, locale: str, realm_name: str, character_name: str, completed: bool = False
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        completed: Optional[bool] = False,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the all or just completed quest information of the
         requested character identified by :character_name: on realm
         :realm_name:.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
             completed (bool):  To show all quests (False), or to show only
                 completed quests (True)
+
         Returns:
             dict: JSON decoded data of the completed or uncompleted quests
         """
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/quests"
 
         if completed:
-            return self.__client.profile_data(
-                locale,
-                "profile",
-                "character",
-                slugify(realm_name),
-                slugify(character_name),
-                "quests",
-                "completed",
-            )
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "quests",
-        )
+            uri += f"/completed"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterReputations:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def reputations_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the reputation data of the requested character identified
         by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -589,27 +640,35 @@ class CharacterReputations:
         Returns:
             dict: JSON decoded data of the character's reputations
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "reputations",
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += (
+            f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/reputations"
         )
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterSoulBinds:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def soulbinds(
-        self, realm_name: str, character_name: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        realm_name: str,
+        character_name: str,
+        locale: Optional[str] = None,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the available soulbinds of the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -617,27 +676,33 @@ class CharacterSoulBinds:
         Returns:
             dict: JSON decoded data of the character's soulbinds
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "soulbinds",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/soulbinds"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterSpecializations:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def specializations_summary(
-        self, realm_name: str, character_name: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        realm_name: str,
+        character_name: str,
+        locale: Optional[str] = None,
+        release: Optional[str] = "retail",
+    ):
         """Access the available specializations of the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -645,27 +710,33 @@ class CharacterSpecializations:
         Returns:
             dict: JSON decoded data of the character's specializations
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "specializations",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/specializations"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterStatistics:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def statistics_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the statistics of the requested character identified by
         :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -673,27 +744,33 @@ class CharacterStatistics:
         Returns:
             dict: JSON decoded data of the character's statistics
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "statistics",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/statistics"
 
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
-class CharacterTitles:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def title_summary(
-        self, locale: str, realm_name: str, character_name: str
-    ) -> Response:
+        client,
+        region_tag: str,
+        locale: Optional[str],
+        realm_name: str,
+        character_name: str,
+        release: Optional[str] = "retail",
+    ):
         """Accesses the list of titles earned by the requested character
         identified by :character_name: on realm :realm_name:
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the slug for the character's realm
             character_name (str): name of character
@@ -701,166 +778,61 @@ class CharacterTitles:
         Returns:
             dict: JSON decoded data the titles the player has earned
         """
-        return self.__client.profile_data(
-            locale,
-            "profile",
-            "character",
-            slugify(realm_name),
-            slugify(character_name),
-            "titles",
-        )
+        uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/titles"
+
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()
 
 
 class Guild:
-    def __init__(self, client: "WoWClient") -> None:
-        self.__client = client
-
+    @staticmethod
     def guild(
-        self, realm_name: str, guild_name: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        realm_name: str,
+        guild_name: str,
+        category: Optional[str] = None,
+        locale: Optional[str] = None,
+        release: Optional[str] = "retail",
+    ):
         """Returns a single guild by its name and realm.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             realm_name (str): the name of the guild's realm
             guild_name (str): the name of the guild
+            category (str): category of guild data to retrieve
 
         Returns:
             dict: json decoded data of the guild
         """
-        if self.__client.release != "retail":
+        if release != "retail":
             raise WoWReleaseError(
-                f"{self.__client.release} does not support the Guild Data API"
+                f"{release.title()} does not support the Guild Data API"
             )
 
-        return self.__client.game_data(
-            locale,
-            "profile",
-            "guild",
-            slugify(realm_name),
-            slugify(guild_name),
-        )
+        # API testing shows that the guild name is not a true slug.   It lowercased only
+        # name is URL escaped
 
-    def guild_activities(
-        self, realm_name: str, guild_name: str, locale: Optional[str] = None
-    ) -> Response:
-        """Returns a single guild's activity by name and realm.
+        uri = f"{utils.api_host(region_tag)}/data/wow/guild/"
+        uri += f"{utils.slugify(realm_name)}/{utils.slugify(guild_name)}"
 
-        Args:
-            locale (str): which locale to use for the request
-            realm_name (str): the name of the guild's realm
-            guild_name (str): the name of the guild
+        if category and category in ("activity", "achievements", "roster"):
+            uri += f"/{category}"
 
-        Returns:
-            dict: json decoded data of the guild activities
-        """
-        if self.__client.release != "retail":
-            raise WoWReleaseError(
-                f"{self.__client.release} does not support the Guild Data API"
-            )
-
-        return self.__client.game_data(
-            locale,
-            "profile",
-            "guild",
-            slugify(realm_name),
-            slugify(guild_name),
-            "activity",
-        )
-
-    def guild_achievements(
-        self, realm_name: str, guild_name: str, locale: Optional[str] = None
-    ) -> Response:
-        """Returns a single guild's achievements by name and realm.
-
-        Args:
-            locale (str): which locale to use for the request
-            realm_name (str): the name of the guild's realm
-            guild_name (str): the name of the guild
-
-        Returns:
-            dict: json decoded data of the guild achievements
-        """
-        if self.__client.release != "retail":
-            raise WoWReleaseError(
-                f"{self.__client.release} does not support the Guild Data API"
-            )
-
-        return self.__client.game_data(
-            locale,
-            "profile",
-            "guild",
-            slugify(realm_name),
-            slugify(guild_name),
-            "achievements",
-        )
-
-    def guild_roster(
-        self, realm_name: str, guild_name: str, locale: Optional[str] = None
-    ) -> Response:
-        """Returns a single guild's roster by its name and realm.
-
-        Args:
-            locale (str): which locale to use for the request
-            realm_name (str): the name of the guild's realm
-            guild_name (str): the name of the guild
-
-        Returns:
-            dict: json decoded data of the guild's achievement summary
-        """
-        if self.__client.release != "retail":
-            raise WoWReleaseError(
-                f"{self.__client.release} does not support the Guild Data API"
-            )
-
-        return self.__client.game_data(
-            locale,
-            "profile",
-            "guild",
-            slugify(realm_name),
-            slugify(guild_name),
-            "roster",
-        )
-
-    def guild_crest_components_index(self, locale: Optional[str] = None) -> Response:
-        """Returns an index of guild crest components.
-
-        Args:
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data for the index of guild crest components
-        """
-        return self.__client.game_data(locale, "static", "guild-crest", "index")
-
-    def guild_crest_border_media(
-        self, border_id: int, locale: Optional[str] = None
-    ) -> Response:
-        """Returns media for a specific guild crest border.
-
-        Args:
-            locale (str): which locale to use for the request
-            border_id (int): the border ID
-
-        Returns:
-            dict: json decoded media data for the guild border
-        """
-        return self.__client.media_data(
-            locale, "static", "guild-crest", "border", border_id
-        )
-
-    def guild_crest_emblem_media(
-        self, crest_id: int, locale: Optional[str] = None
-    ) -> Response:
-        """Returns media for a specific guild crest emblem.
-
-        Args:
-            locale (str): which locale to use for the request
-            crest_id (int): the border ID
-
-        Returns:
-            dict: json decoded media data for the guild crest
-        """
-        return self.__client.media_data(
-            locale, "static", "guild-crest", "emblem", crest_id
-        )
+        return client.get(
+            uri,
+            params={
+                "locale": utils.localize(locale),
+                "namespace": utils.namespace("profile", release, region_tag),
+            },
+        ).json()

@@ -9,44 +9,50 @@ Disclaimer:
     retrieved from this API.
 """
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
-from requests import Response
-
-if TYPE_CHECKING:
-    from .client import SC2Client
-
-from .exceptions import SC2ClientError, SC2RegionError
+from battlenet_client import utils
+from .exceptions import SC2RegionError
 
 
-class Profile:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def static(self, region_id: int, locale: Optional[str] = None) -> Response:
+class Community:
+    @staticmethod
+    def static(
+        client,
+        region_tag: str,
+        *,
+        region_id: Optional[str] = None,
+        locale: Optional[str] = None,
+    ):
         """Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
 
         Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            region_id (str): region for the profile, or use sc2.constants  (used outside CN only)
 
         Returns:
             dict: dict containing the static profile data
         """
+        uri = f"{utils.api_host(region_tag)}/sc2/static/profile/{region_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-        return self.__client.community(locale, "static", "profile", region_id)
-
+    @staticmethod
     def metadata(
-        self,
+        client,
+        region_tag: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Returns metadata for an individual's profile.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             realm_id (int): the realm of the profile (1 or 2)
             profile_id (int): the profile ID
@@ -54,21 +60,24 @@ class Profile:
         Returns:
             dict: dict containing the requested metadata
         """
-        return self.__client.community(
-            locale, "metadata", "profile", region_id, realm_id, profile_id
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/metadata/profile/{region_id}/{realm_id}/{profile_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def profile(
-        self,
+        client,
+        region_tag: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Returns data about an individual SC2 profile.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             realm_id (int): the realm of the profile (1 or 2)
             profile_id (int): the profile ID
@@ -76,22 +85,25 @@ class Profile:
         Returns:
             dict: dict containing the requested profile data
         """
-        return self.__client.community(
-            locale, "profile", region_id, realm_id, profile_id
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/profile/{region_id}/{realm_id}/{profile_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def ladder(
-        self,
+        client,
+        region_tag: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
-        ladder_id: Optional[int] = None,
+        ladder_id: Optional[int] = "summary",
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Returns a ladder summary, or specific ladder for an individual SC2 profile.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             realm_id (int): the realm of the profile (1 or 2)
             profile_id (int): the profile ID
@@ -100,80 +112,76 @@ class Profile:
         Returns:
             dict: dict containing the requested profile data
         """
-        if ladder_id:
-            return self.__client.community(
-                locale, "profile", region_id, realm_id, profile_id, "ladder", "summary"
-            )
+        uri = f"{utils.api_host(region_tag)}/sc2/profile/{region_id}/{realm_id}/{profile_id}/ladder/{ladder_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-        return self.__client.community(
-            locale, "profile", region_id, realm_id, profile_id, "ladder", ladder_id
-        )
-
-
-class Ladder:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def grandmaster(self, region_id: int, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def grandmaster(
+        client, region_tag: str, region_id: int, locale: Optional[str] = None
+    ):
         """Returns ladder data for the current season's grandmaster leaderboard.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
 
         Returns:
             dict: dict containing info about the grandmaster leaderboard
         """
-        return self.__client.community(locale, "ladder", "grandmaster", region_id)
+        uri = f"{utils.api_host(region_tag)}/sc2/ladder/grandmaster/{region_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-    def season(self, region_id: int, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def season(client, region_tag: str, region_id: int, locale: Optional[str] = None):
         """Returns data about the current season.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
 
         Returns:
             dict: dict containing info about the current season
         """
-        return self.__client.community(locale, "ladder", "season", region_id)
+        uri = f"{utils.api_host(region_tag)}/sc2/ladder/season/{region_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-
-class Account:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def player(self, account_id: str, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def player(client, region_tag: str, account_id: str, locale: Optional[str] = None):
         """Returns the player data for the provided `account_id`.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             account_id (int): the account ID to request
 
         Returns:
             dict: json decoded data of the account
         """
-        if not self.__client.auth_flow:
-            raise SC2ClientError("Requires the authorized workflow")
-
-        return self.__client.community(locale, "player", account_id)
+        uri = f"{utils.api_host(region_tag)}/sc2/player/{account_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
 
 class Legacy:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
+    @staticmethod
     def profile(
-        self,
+        client,
+        region_tag: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Retrieves data about an individual SC2 profile.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             realm_id (int): the realm of the profile (1 or 2)
             profile_id (int): the profile ID
@@ -181,21 +189,24 @@ class Legacy:
         Returns:
              dict: json decoded data of the profile
         """
-        return self.__client.community(
-            locale, "legacy", "profile", region_id, realm_id, profile_id
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def ladders(
-        self,
+        client,
+        region_tag: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Retrieves data about an individual SC2 profile's ladders.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             realm_id (int): the realm of the profile (1 or 2)
             profile_id (int): the profile ID
@@ -203,21 +214,24 @@ class Legacy:
         Returns:
             dict: json decoded data of the profile's ladders
         """
-        return self.__client.community(
-            locale, "legacy", "profile", region_id, realm_id, profile_id, "ladders"
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}/ladders"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def match_history(
-        self,
+        client,
+        region_tag: str,
         region_id: int,
         realm_id: int,
         profile_id: int,
         locale: Optional[str] = None,
-    ) -> Response:
+    ):
         """Returns data about an individual SC2 profile's match history.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             realm_id (int): the realm of the profile (1 or 2)
             profile_id (int): the profile ID
@@ -225,66 +239,86 @@ class Legacy:
         Returns:
             dict: json decoded data of the profile's match history
         """
-        return self.__client.community(
-            locale, "legacy", "profile", region_id, realm_id, profile_id, "matches"
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}/matches"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def ladder(
-        self, region_id: int, ladder_id: int, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        region_id: int,
+        ladder_id: int,
+        locale: Optional[str] = None,
+    ):
         """Returns data about an individual SC2 profile's match history.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             region_id (int): region for the profile, or use sc2.constants
             ladder_id (int): ladder ID for the request
 
         Returns:
             dict: json decoded data of the profile's data for the specified ladder
         """
-        return self.__client.community(locale, "legacy", "ladder", region_id, ladder_id)
+        uri = f"{utils.api_host(region_tag)}/sc2/legacy/ladder/{region_id}/{ladder_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-    def achievements(self, region_id: int, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def achievements(
+        client, region_tag: str, region_id: int, locale: Optional[str] = None
+    ):
         """Returns the player data for the provided `account_id`.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             region_id (int): the account ID to request
 
         Returns:
             dict: json decoded data of the profile's achievements
         """
-        return self.__client.community(
-            locale, "legacy", "data", "achievements", region_id
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/legacy/data/achievements/{region_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-    def rewards(self, region_id: int, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def rewards(client, region_tag: str, region_id: int, locale: Optional[str] = None):
         """Returns the player data for the provided `account_id`.
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
             region_id (int): the account ID to request
 
         Returns:
             dict: json decoded data of the profile's rewards
         """
-        return self.__client.community(locale, "legacy", "data", "rewards", region_id)
+        uri = f"{utils.api_host(region_tag)}/sc2/legacy/data/rewards/{region_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
 
-class ProfileCN:
-    def __init__(self, client: "SC2Client") -> None:
-        if client.tag != "cn":
-            raise SC2RegionError("Invalid region for API")
-
-        self.__client = client
-
+class CommunityCN:
+    @staticmethod
     def profile(
-        self, profile_id: str, region: str, name: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        profile_id: str,
+        region: str,
+        name: str,
+        locale: Optional[str] = None,
+    ):
         """Retrieves data about an individual SC2 profile.
 
+        Notes:
+            This can only be used in the CN region
+
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             profile_id (int): the profile ID
             region (str): region for the profile
             name (str): name of the profile
@@ -292,18 +326,27 @@ class ProfileCN:
         Returns:
              dict: json decoded data of the profile
         """
-        if self.__client.tag != 5:
+        if region_tag.lower() != "cn":
             raise SC2RegionError("This API is not available in this region")
 
-        return self.__client.community(locale, "profile", profile_id, region, name)
+        uri = f"{utils.api_host(region_tag)}/sc2/profile/{profile_id}/{region}/{name}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def ladders(
-        self, profile_id: str, region: str, name: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        profile_id: str,
+        region: str,
+        name: str,
+        locale: Optional[str] = None,
+    ):
         """Returns data about an individual SC2 profile's ladders.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             profile_id (int): the profile ID
             region (str): region for the profile
             name (str): name of the profile
@@ -312,20 +355,27 @@ class ProfileCN:
             dict: json decoded data of the profile's ladders
         """
 
-        if self.__client.tag != 5:
+        if region_tag.lower() != "cn":
             raise SC2RegionError("This API is not available in this region")
 
-        return self.__client.community(
-            locale, "profile", profile_id, region, name, "ladders"
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/profile/{profile_id}/{region}/{name}/ladders"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
+    @staticmethod
     def match_history(
-        self, profile_id: str, region: str, name: str, locale: Optional[str] = None
-    ) -> Response:
+        client,
+        region_tag: str,
+        profile_id: str,
+        region: str,
+        name: str,
+        locale: Optional[str] = None,
+    ):
         """Returns data about an individual SC2 profile's match history.
 
         Args:
-            locale (str): localization being requested of the API
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             profile_id (int): the profile ID
             region (str): region for the profile
             name (str): name of the profile
@@ -333,59 +383,63 @@ class ProfileCN:
         Returns:
             dict: json decoded data of the profile's ladders
         """
-        if self.__client.tag != 5:
+        if region_tag.lower() != "cn":
             raise SC2RegionError("This API is not available in this region")
 
-        return self.__client.community(
-            locale, "profile", profile_id, region, name, "matches"
-        )
+        uri = f"{utils.api_host(region_tag)}/sc2/profile/{profile_id}/{region}/{name}/matches"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-
-class LadderCN:
-    def __init__(self, client: "SC2Client") -> None:
-        if client.tag != "cn":
-            raise SC2RegionError("Invalid region for API")
-
-        self.__client = client
-
-    def ladder(self, ladder_id: str, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def ladder(client, region_tag: str, ladder_id: str, locale: Optional[str] = None):
         """Returns data about an SC2 ladder.
 
         Args:
-            locale (str): The locale to use in the response.
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
             ladder_id (str): The ID of the ladder to retrieve.
 
         Returns:
             dict: dict with data of the ladder
         """
-        return self.__client.community(locale, "ladder", ladder_id)
+        if region_tag.lower() != "cn":
+            raise SC2RegionError("This API is not available in this region")
 
+        uri = f"{utils.api_host(region_tag)}/sc2/ladder/{ladder_id}"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
 
-class DataResourceCN:
-    def __init__(self, client: "SC2Client") -> None:
-        if client.tag != "cn":
-            raise SC2RegionError("Invalid region for API")
-
-        self.__client = client
-
-    def achievements(self, locale: Optional[str] = None) -> Response:
+    @staticmethod
+    def achievements(client, region_tag: str, locale: Optional[str] = None):
         """Returns the achievements for Starcraft II
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
 
         Returns:
             dict: json decoded data of the guild's achievement summary
         """
-        return self.__client.community(locale, "data", "achievements")
+        if region_tag.lower() != "cn":
+            raise SC2RegionError("This API is not available in this region")
 
-    def rewards(self, locale: Optional[str] = None) -> Response:
+        uri = f"{utils.api_host(region_tag)}/sc2/data/achievements"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+
+    @staticmethod
+    def rewards(client, region_tag: str, locale: Optional[str] = None):
         """Returns the rewards of the achievements in Starcraft II
 
         Args:
+            client (obj: oauth): OpenID/OAuth instance
+            region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
 
         Returns:
             dict: json decoded data of the guild's achievement summary
         """
-        return self.__client.community(locale, "data", "rewards")
+        if region_tag.lower() != "cn":
+            raise SC2RegionError("This API is not available in this region")
+
+        uri = f"{utils.api_host(region_tag)}/sc2/data/rewards"
+        return client.get(uri, params={"locale": utils.localize(locale)}).json()

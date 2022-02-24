@@ -17,7 +17,7 @@ from typing import Optional, List
 
 from battlenet_client.bnet.client import BNetClient
 
-from battlenet_client.bnet.misc import localize
+from battlenet_client.utils import localize
 
 
 class SC2Client(BNetClient):

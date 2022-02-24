@@ -29,7 +29,7 @@ from importlib import import_module
 from io import BytesIO
 
 from ..bnet.client import BNetClient
-from ..bnet.misc import slugify, localize
+from battlenet_client.utils import slugify, localize, auth_host
 
 from .exceptions import WoWClientError
 from .constants import MODULES
@@ -81,33 +81,28 @@ class WoWClient(BNetClient):
             redirect_uri=redirect_uri,
         )
 
-        self.release = release.lower()
+        self._release = release.lower()
 
-        if release.lower() == "retail":
-            self.dynamic = f"dynamic-{self.tag}"
-            self.static = f"static-{self.tag}"
-            self.profile = f"profile-{self.tag}"
+    @property
+    def dynamic(self):
+        if self._release.lower() != "retail":
+            return f"dynamic-{self._release}-{self.tag}"
 
-        if release.lower() != "retail":
-            self.dynamic = f"dynamic-{self.release}-{self.tag}"
-            self.static = f"static-{self.release}-{self.tag}"
-            self.profile = f"profile-{self.release}-{self.tag}"
+        return f"dynamic-{self.tag}"
 
-        if self.tag == "cn":
-            self.render_host = "https://render.worldofwarcraft.com.cn"
-        else:
-            self.render_host = f"https://render-{self.tag}.worldofwarcraft.com"
+    @property
+    def static(self):
+        if self._release.lower() != "retail":
+            return f"static-{self._release}-{self.tag}"
 
-        # load the base API programmatically
-        for module_name in ("game_data", "profile"):
-            mod = import_module(f"battlenet_client.wow.{module_name}")
-            for name, cls_name in MODULES[module_name]:
-                setattr(self, name, getattr(mod, cls_name)(self))
+        return f"static-{self.tag}"
 
-        if self.auth_flow:
-            mod = import_module(f"battlenet_client.wow.profile")
-            for name, cls_name in MODULES["auth"]:
-                setattr(self, name, getattr(mod, cls_name)(self))
+    @property
+    def profile(self):
+        if self._release.lower() != "retail":
+            return f"profile-{self._release}-{self.tag}"
+
+        return f"profile-{self.tag}"
 
     def game_data(
         self, locale: str, namespace: str, *args: Union[str, int]
