@@ -34,8 +34,12 @@ class Community:
         uri = f"{utils.api_host(region_tag)}/d3/data/act"
         if act_id:
             uri += f"/{act_id}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def artisan(
@@ -53,8 +57,12 @@ class Community:
             dict: the dict containing data of the artisan
         """
         uri = f"{utils.api_host(region_tag)}/d3/data/artisan/{utils.slugify(artisan_slug)}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def recipe(
@@ -78,8 +86,12 @@ class Community:
         """
         uri = f"{utils.api_host(region_tag)}/d3/data/artisan/{utils.slugify(artisan_slug)}/recipe"
         uri += f"/{utils.slugify(recipe_slug)}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def follower(
@@ -97,8 +109,12 @@ class Community:
             dict: the dict containing for the follower
         """
         uri = f"{utils.api_host(region_tag)}/d3/data/follower/{utils.slugify(follower_slug)}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def character_class(
@@ -116,8 +132,12 @@ class Community:
             dict: the dict containing for the character class
         """
         uri = f"{utils.api_host(region_tag)}/d3/data/hero/{utils.slugify(class_slug)}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def api_skill(
@@ -142,8 +162,12 @@ class Community:
 
         uri = f"{utils.api_host(region_tag)}/d3/data/hero/{utils.slugify(class_slug)}"
         uri += f"/skill/{utils.slugify(skill_slug)}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item_type(
@@ -168,7 +192,12 @@ class Community:
         if item_slug:
             uri += f"/{utils.slugify(item_slug)}"
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item(client, region_tag: str, item_slug: str, locale: Optional[str] = None):
@@ -185,7 +214,12 @@ class Community:
         """
         uri = f"{utils.api_host(region_tag)}/d3/data/item/{utils.slugify(item_slug)}"
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def api_account(
@@ -204,7 +238,12 @@ class Community:
         """
         uri = f"{utils.api_host(region_tag)}/d3/profile/{bnet_tag}"
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def api_hero(
@@ -241,4 +280,9 @@ class Community:
 
             uri += f"/{category.lower()}"
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)

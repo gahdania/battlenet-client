@@ -36,7 +36,11 @@ class Community:
             dict: dict containing the static profile data
         """
         uri = f"{utils.api_host(region_tag)}/sc2/static/profile/{region_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def metadata(
@@ -61,7 +65,11 @@ class Community:
             dict: dict containing the requested metadata
         """
         uri = f"{utils.api_host(region_tag)}/sc2/metadata/profile/{region_id}/{realm_id}/{profile_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def profile(
@@ -86,7 +94,11 @@ class Community:
             dict: dict containing the requested profile data
         """
         uri = f"{utils.api_host(region_tag)}/sc2/profile/{region_id}/{realm_id}/{profile_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def ladder(
@@ -95,6 +107,7 @@ class Community:
         region_id: int,
         realm_id: int,
         profile_id: int,
+        *,
         ladder_id: Optional[int] = "summary",
         locale: Optional[str] = None,
     ):
@@ -113,7 +126,11 @@ class Community:
             dict: dict containing the requested profile data
         """
         uri = f"{utils.api_host(region_tag)}/sc2/profile/{region_id}/{realm_id}/{profile_id}/ladder/{ladder_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def grandmaster(
@@ -131,7 +148,11 @@ class Community:
             dict: dict containing info about the grandmaster leaderboard
         """
         uri = f"{utils.api_host(region_tag)}/sc2/ladder/grandmaster/{region_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def season(client, region_tag: str, region_id: int, locale: Optional[str] = None):
@@ -147,7 +168,11 @@ class Community:
             dict: dict containing info about the current season
         """
         uri = f"{utils.api_host(region_tag)}/sc2/ladder/season/{region_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def player(client, region_tag: str, account_id: str, locale: Optional[str] = None):
@@ -163,7 +188,11 @@ class Community:
             dict: json decoded data of the account
         """
         uri = f"{utils.api_host(region_tag)}/sc2/player/{account_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Legacy:
@@ -190,7 +219,11 @@ class Legacy:
              dict: json decoded data of the profile
         """
         uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def ladders(
@@ -215,7 +248,11 @@ class Legacy:
             dict: json decoded data of the profile's ladders
         """
         uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}/ladders"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def match_history(
@@ -240,7 +277,11 @@ class Legacy:
             dict: json decoded data of the profile's match history
         """
         uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}/matches"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def ladder(
@@ -263,7 +304,11 @@ class Legacy:
             dict: json decoded data of the profile's data for the specified ladder
         """
         uri = f"{utils.api_host(region_tag)}/sc2/legacy/ladder/{region_id}/{ladder_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def achievements(
@@ -281,7 +326,11 @@ class Legacy:
             dict: json decoded data of the profile's achievements
         """
         uri = f"{utils.api_host(region_tag)}/sc2/legacy/data/achievements/{region_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def rewards(client, region_tag: str, region_id: int, locale: Optional[str] = None):
@@ -297,7 +346,11 @@ class Legacy:
             dict: json decoded data of the profile's rewards
         """
         uri = f"{utils.api_host(region_tag)}/sc2/legacy/data/rewards/{region_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class CommunityCN:
@@ -330,7 +383,11 @@ class CommunityCN:
             raise SC2RegionError("This API is not available in this region")
 
         uri = f"{utils.api_host(region_tag)}/sc2/profile/{profile_id}/{region}/{name}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def ladders(
@@ -359,7 +416,11 @@ class CommunityCN:
             raise SC2RegionError("This API is not available in this region")
 
         uri = f"{utils.api_host(region_tag)}/sc2/profile/{profile_id}/{region}/{name}/ladders"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def match_history(
@@ -387,7 +448,11 @@ class CommunityCN:
             raise SC2RegionError("This API is not available in this region")
 
         uri = f"{utils.api_host(region_tag)}/sc2/profile/{profile_id}/{region}/{name}/matches"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def ladder(client, region_tag: str, ladder_id: str, locale: Optional[str] = None):
@@ -406,7 +471,11 @@ class CommunityCN:
             raise SC2RegionError("This API is not available in this region")
 
         uri = f"{utils.api_host(region_tag)}/sc2/ladder/{ladder_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def achievements(client, region_tag: str, locale: Optional[str] = None):
@@ -424,7 +493,11 @@ class CommunityCN:
             raise SC2RegionError("This API is not available in this region")
 
         uri = f"{utils.api_host(region_tag)}/sc2/data/achievements"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def rewards(client, region_tag: str, locale: Optional[str] = None):
@@ -442,4 +515,8 @@ class CommunityCN:
             raise SC2RegionError("This API is not available in this region")
 
         uri = f"{utils.api_host(region_tag)}/sc2/data/rewards"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)

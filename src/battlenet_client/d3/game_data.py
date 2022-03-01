@@ -33,7 +33,12 @@ class GameData:
         if season_id:
             uri += season_id
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def season_leaderboard(
@@ -56,8 +61,12 @@ class GameData:
             dict: the dict containing for the leaderboard for the given season
         """
         uri = f"{utils.api_host(region_tag)}/data/d3/season/{season_id}/leaderboard/{leaderboard_id}"
+        params = {"locale": utils.localize(locale)}
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def era(
@@ -82,7 +91,12 @@ class GameData:
         if era_id:
             uri += era_id
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def era_leaderboard(
@@ -105,4 +119,8 @@ class GameData:
             dict: the dict containing for the leaderboard for the given season
         """
         uri = f"{utils.api_host(region_tag)}/data/d3/era/{era_id}/{leaderboard_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)

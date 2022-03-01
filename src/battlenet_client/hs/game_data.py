@@ -1,4 +1,4 @@
-"""Generates the URI/querystring and headers for the Hearthsone API endpoints
+"""Generates the URI/querystring and headers for the Hearthstone API endpoints
 
 Disclaimer:
     All rights reserved, Blizzard is the intellectual property owner of HearthstoneI and any data
@@ -31,8 +31,6 @@ class Hearthstone:
         Returns:
             dict: json decoded search results that match `field_values'
 
-        Raises:
-            HSClientError: when a client other than HSClient is used.
         """
         if "gameMode" not in field_values.keys():
             field_values["gameMode"] = "constructed"
@@ -42,13 +40,17 @@ class Hearthstone:
         #  adding locale and namespace key/values pairs to field_values to make a complete params list
         field_values.update({"locale": utils.localize(locale)})
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=field_values)
 
     @staticmethod
     def card(
         client,
         region_tag: str,
         card_id: str,
+        *,
         locale: Optional[str] = None,
         game_mode: Optional[str] = "constructed",
     ):
@@ -65,15 +67,13 @@ class Hearthstone:
 
         Returns:
             dict: json decoded data for the index/individual azerite essence(s)
-
-        Raises:
-            HSClientError: when a client other than HSClient is used.
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/cards/{card_id}"
-
-        return client.get(
-            uri, params={"locale": utils.localize(locale), "gameMode": game_mode}
-        ).json()
+        params = {"locale": utils.localize(locale), "gameMode": game_mode}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, params=params)
 
     @staticmethod
     def card_back_search(
@@ -94,16 +94,16 @@ class Hearthstone:
 
         Returns:
             dict: json decoded search results that match `field_values'
-
-        Raises:
-            HSClientError: when a client other than HSClient is used.
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/cardbacks"
 
         #  adding locale and namespace key/values pairs to field_values to make a complete params list
         field_values.update({"locale": utils.localize(locale)})
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=field_values)
 
     @staticmethod
     def card_back(
@@ -119,19 +119,21 @@ class Hearthstone:
 
         Returns:
             dict: json decoded data for the index/individual azerite essence(s)
-
-        Raises:
-            HSClientError: when a client other than HSClient is used.
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/cards/{card_back_id}"
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)
 
     @staticmethod
     def card_deck(
         client,
         region_tag: str,
-        field_values: Optional[Dict[str, Any]],
+        field_values: Dict[str, Any],
         locale: Optional[str] = None,
     ):
         """Searches for cards that match `field_values'
@@ -146,21 +148,22 @@ class Hearthstone:
 
         Returns:
             dict: json decoded search results that match `field_values'
-
-        Raises:
-            HSClientError: when a client other than HSClient is used.
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/deck"
 
         #  adding locale and namespace key/values pairs to field_values to make a complete params list
         field_values.update({"locale": utils.localize(locale)})
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=field_values)
 
     @staticmethod
     def metadata(
         client,
         region_tag: str,
+        *,
         meta_data: Optional[str] = None,
         locale: Optional[str] = None,
     ):
@@ -178,13 +181,15 @@ class Hearthstone:
 
         Returns:
             dict: json decoded data for the index/individual azerite essence(s)
-
-        Raises:
-            HSClientError: when a client other than HSClient is used.
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/metadata"
 
         if meta_data:
             uri += f"/{meta_data}"
 
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_proctected_resource(uri, "GET", params=params)

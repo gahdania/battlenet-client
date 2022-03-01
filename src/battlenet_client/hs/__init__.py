@@ -1,1 +1,1 @@
-from .client import HSClient
+from .game_data import *

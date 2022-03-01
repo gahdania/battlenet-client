@@ -37,4 +37,8 @@ class LeagueData:
             dict: dict containing league data for specified season, queue, team, and league.
         """
         uri = f"{utils.api_host(region_tag)}/data/sc2/league/{season_id}/{queue_id}/{team_type}/{league_id}"
-        return client.get(uri, params={"locale": utils.localize(locale)}).json()
+        params = {"locale": utils.localize(locale)}
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)

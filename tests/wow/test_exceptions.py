@@ -4,7 +4,7 @@ Notes:
     achievement is used since it is the first module and suitable for testing both exceptions"""
 import pytest
 
-from battlenet_client.bnet.client import BattleNetClient
+from battlenet_client.clients import BattleNetClient
 from battlenet_client.bnet.constants import UNITED_STATES, WOW
 from decouple import config
 

@@ -1,8 +1,0 @@
-===========================
-World of Warcraft Constants
-===========================
-
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
-
-.. automodule:: battlenet_client.wow.constants
-   :members:

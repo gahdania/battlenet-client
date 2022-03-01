@@ -1,1 +1,1 @@
-from .client import BNetClient
+from .oauth import OAuth

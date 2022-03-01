@@ -10,6 +10,7 @@ class Achievement:
     def achievement_category(
         client,
         region_tag: str,
+        *,
         release: Optional[str] = "retail",
         category_id: Optional[int] = "index",
         locale: Optional[str] = None,
@@ -32,18 +33,20 @@ class Achievement:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/achievement-category/{category_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def achievement(
         client,
-        region_tag,
+        region_tag: str,
+        *,
         achievement_id: Optional[int] = "index",
         release: Optional[str] = "retail",
         locale: Optional[str] = None,
@@ -61,19 +64,21 @@ class Achievement:
             dict: json decoded data for the index/individual achievements
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/achievement/{achievement_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def achievement_media(
         client,
         region_tag: str,
         achievement_id: int,
+        *,
         release: Optional[str] = "retail",
         locale: Optional[str] = None,
     ):
@@ -90,13 +95,15 @@ class Achievement:
             dict: json decoded media data for the achievement
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/{achievement_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Auction:
@@ -105,6 +112,7 @@ class Auction:
         client,
         region_tag: str,
         connected_realm_id: int,
+        *,
         release: Optional[str] = "retail",
         auction_house_id: Optional[int] = None,
         locale: Optional[str] = None,
@@ -151,13 +159,15 @@ class Auction:
         if release == "retail" and auction_house_id is not None:
             raise WoWReleaseError("Auction House ID provided for retail")
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class AzeriteEssence:
@@ -165,6 +175,7 @@ class AzeriteEssence:
     def azerite_essence(
         client,
         region_tag: str,
+        *,
         essence_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -182,21 +193,24 @@ class AzeriteEssence:
             dict: json decoded data for the index/individual azerite essence(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/azerite-essence/{essence_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def azerite_essence_search(
         client,
         region_tag: str,
+        field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
-        **field_values: Dict[str, Any],
     ):
         """Searches for azerite essences that match `field_values`
 
@@ -220,13 +234,17 @@ class AzeriteEssence:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
     @staticmethod
     def azerite_essence_media(
         client,
         region_tag: str,
         essence_id: int,
+        *,
         release: Optional[str] = "retail",
         locale: Optional[str] = None,
     ):
@@ -245,13 +263,15 @@ class AzeriteEssence:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/media/azerite-essence/{essence_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class ConnectedRealm:
@@ -259,6 +279,7 @@ class ConnectedRealm:
     def connected_realm(
         client,
         region_tag: str,
+        *,
         connected_realm_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -277,19 +298,22 @@ class ConnectedRealm:
             dict: json decoded data for the index/individual connected realms
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def connected_realm_search(
         client,
         region_tag: str,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -315,7 +339,10 @@ class ConnectedRealm:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
 
 class Covenant:
@@ -323,6 +350,7 @@ class Covenant:
     def covenant(
         client,
         region_tag: str,
+        *,
         covenant_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -341,19 +369,22 @@ class Covenant:
                 dict: json decoded data for the index/individual covenant
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/covenant/{covenant_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def covenant_media(
         client,
         region_tag: str,
         covenant_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -370,18 +401,21 @@ class Covenant:
             dict: json decoded media data for the covenant
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/covenant{covenant_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def soulbind(
         client,
         region_tag: str,
+        *,
         soulbind_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -399,18 +433,21 @@ class Covenant:
             dict: json decoded data for the index/individual soulbind
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/covenant/soulbind/{soulbind_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def conduit(
         client,
         region_tag: str,
+        *,
         conduit_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -428,13 +465,15 @@ class Covenant:
             dict: json decoded data for the index/individual conduit
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/covenant/conduit/{conduit_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Creature:
@@ -442,6 +481,7 @@ class Creature:
     def creature_family(
         client,
         region_tag: str,
+        *,
         family_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -460,18 +500,21 @@ class Creature:
                 dict: json decoded data for the index/individual creature family/families
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/creature-family/{family_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def creature_type(
         client,
         region_tag: str,
+        *,
         type_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -490,19 +533,22 @@ class Creature:
                 dict: json decoded data for the index/individual creature type(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/creature-type/{type_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def creature(
         client,
         region_tag: str,
         creature_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -519,19 +565,22 @@ class Creature:
             dict: json decoded data for the index/individual creature(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/creature/{creature_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def creature_search(
         client,
         region_tag: str,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -557,13 +606,17 @@ class Creature:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
     @staticmethod
     def creature_display_media(
         client,
         region_tag: str,
         display_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -582,19 +635,22 @@ class Creature:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/media/creature-display/{display_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def creature_family_media(
         client,
         region_tag: str,
         family_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -613,13 +669,15 @@ class Creature:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/media/creature-display/{family_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class GuildCrest:
@@ -627,6 +685,7 @@ class GuildCrest:
     def guild_crest_components_index(
         client,
         region_tag: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -642,19 +701,22 @@ class GuildCrest:
             dict: json decoded data for the index of guild crest components
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/guild-crest/index"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def guild_crest_border_media(
         client,
         region_tag: str,
         border_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -671,19 +733,22 @@ class GuildCrest:
             dict: json decoded media data for the guild border
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/border/{border_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def guild_crest_emblem_media(
         client,
         region_tag: str,
         emblem_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -700,13 +765,15 @@ class GuildCrest:
             dict: json decoded media data for the guild crest
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/emblem/{emblem_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Item:
@@ -714,6 +781,7 @@ class Item:
     def item_class(
         client,
         region_tag: str,
+        *,
         class_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -732,18 +800,21 @@ class Item:
                 dict: json decoded data for the index/individual item class(es)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item_set(
         client,
         region_tag: str,
+        *,
         set_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -762,13 +833,15 @@ class Item:
                 dict: json decoded data for the index/individual item set(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/item-set/{set_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item_subclass(
@@ -776,6 +849,7 @@ class Item:
         region_tag: str,
         class_id: int,
         subclass_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -793,19 +867,22 @@ class Item:
             dict: json decoded data for the item's subclass
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}/item-subclass/{subclass_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        )
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item(
         client,
         region_tag: str,
         item_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -822,19 +899,22 @@ class Item:
             dict: json decoded data for the individual item
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/item/{item_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item_media(
         client,
         region_tag: str,
         item_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -851,19 +931,22 @@ class Item:
             dict: json decoded media data for the item
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/item/{item_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def item_search(
         client,
         region_tag,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -889,7 +972,10 @@ class Item:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
 
 class Journal:
@@ -897,6 +983,7 @@ class Journal:
     def journal_expansion(
         client,
         region_tag: str,
+        *,
         expansion_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -914,18 +1001,21 @@ class Journal:
             dict: json decoded data for the index/individual journal expansion(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/journal-expansion/{expansion_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def journal_encounter(
         client,
         region_tag: str,
+        *,
         encounter_id: Optional[int] = None,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -946,19 +1036,22 @@ class Journal:
             dict: json decoded data for the index/individual journal encounter(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{encounter_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def journal_encounter_search(
         client,
         region_tag: str,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -984,12 +1077,16 @@ class Journal:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
     @staticmethod
     def journal_instance(
         client,
-        region_tag,
+        region_tag: str,
+        *,
         instance_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1007,19 +1104,22 @@ class Journal:
             dict: json decoded data for the index/individual journal instance(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{instance_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def journal_instance_media(
         client,
         region_tag: str,
         instance_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1036,13 +1136,15 @@ class Journal:
             dict: json decoded media data for the instance
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/journal-instance/{instance_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Media:
@@ -1051,6 +1153,7 @@ class Media:
         client,
         region_tag: str,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1076,7 +1179,10 @@ class Media:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
 
 class ModifiedCrafting:
@@ -1084,6 +1190,7 @@ class ModifiedCrafting:
     def modified_crafting(
         client,
         region_tag: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1099,18 +1206,21 @@ class ModifiedCrafting:
             dict: json decoded data for the index of modified crafting
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def modified_crafting_category(
         client,
         region_tag: str,
+        *,
         category_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1128,18 +1238,21 @@ class ModifiedCrafting:
             dict: json decoded data for the index/individual modified crafting category/categories
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/category/{category_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def modified_crafting_reagent_slot_type(
         client,
-        region_tag,
+        region_tag: str,
+        *,
         slot_type_id: Optional[int] = None,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1157,13 +1270,15 @@ class ModifiedCrafting:
             dict: json decoded data for the index/individual modified crafting reagent slot type(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/reagent-slot-type/{slot_type_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Mount:
@@ -1171,6 +1286,7 @@ class Mount:
     def mount(
         client,
         region_tag: str,
+        *,
         mount_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1188,19 +1304,22 @@ class Mount:
             dict: json decoded data for the index/individual mount(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/mount/{mount_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mount_search(
         client,
         region_tag: str,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1226,7 +1345,10 @@ class Mount:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
 
 class MythicKeystone:
@@ -1234,6 +1356,7 @@ class MythicKeystone:
     def mythic_keystone_affix(
         client,
         region_tag: str,
+        *,
         affix_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1251,19 +1374,22 @@ class MythicKeystone:
             dict: json decoded data for the index/individual mythic keystone affix(es)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/keystone-affix/{affix_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mythic_keystone_affix_media(
         client,
         region_tag: str,
         affix_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1280,18 +1406,21 @@ class MythicKeystone:
             dict: json decoded media data for the mythic keystone affix(es)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/keystone-affix/{affix_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mythic_keystone_dungeon(
         client,
         region_tag: str,
+        *,
         dungeon_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1309,18 +1438,21 @@ class MythicKeystone:
             dict: json decoded data for the index/individual mythic keystone dungeon(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/dungeon/{dungeon_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mythic_keystone_index(
         client,
         region_tag: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1336,18 +1468,21 @@ class MythicKeystone:
             dict: json decoded data for the index of the mythic keystone dungeon documents
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/index"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mythic_keystone_period(
         client,
         region_tag: str,
+        *,
         period_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1367,18 +1502,21 @@ class MythicKeystone:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/period/{period_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mythic_keystone_season(
         client,
         region_tag: str,
+        *,
         season_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1398,19 +1536,22 @@ class MythicKeystone:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/season/{season_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def mythic_keystone_leader_board(
         client,
         region_tag: str,
         connected_realm_id: int,
+        *,
         dungeon_id: Optional[int] = None,
         period_id: Optional[int] = None,
         locale: Optional[str] = None,
@@ -1437,13 +1578,15 @@ class MythicKeystone:
         else:
             uri += "index"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class MythicRaid:
@@ -1453,6 +1596,7 @@ class MythicRaid:
         region_tag: str,
         raid_name: str,
         faction: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1472,13 +1616,15 @@ class MythicRaid:
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/leaderboard/hall-of-fame/"
         uri += f"{utils.slugify(raid_name)}/{utils.slugify(faction)}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Pet:
@@ -1486,6 +1632,7 @@ class Pet:
     def pet(
         client,
         region_tag: str,
+        *,
         pet_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1503,19 +1650,22 @@ class Pet:
             dict: json decoded data for the index/individual pet(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pet/{pet_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pet_media(
         client,
         region_tag: str,
         pet_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1532,18 +1682,21 @@ class Pet:
             dict: json decoded media data for the for pet
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/pet/{pet_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pet_ability(
         client,
         region_tag: str,
+        *,
         pet_ability_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1561,19 +1714,22 @@ class Pet:
             dict: json decoded data for the index/individual pet ability/abilities
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pet-ability/{pet_ability_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pet_ability_media(
         client,
         region_tag: str,
         ability_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1590,13 +1746,15 @@ class Pet:
             dict: json decoded media data for the pet ability
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/pet-ability/{ability_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class PlayableClass:
@@ -1604,6 +1762,7 @@ class PlayableClass:
     def playable_class(
         client,
         region_tag: str,
+        *,
         class_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1621,19 +1780,22 @@ class PlayableClass:
             dict: json decoded data for the index/individual playable class(es)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def playable_class_media(
         client,
         region_tag: str,
         class_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1650,19 +1812,22 @@ class PlayableClass:
             dict: json decoded media data for the playable class(es)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-class/{class_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pvp_talent_slots(
         client,
         region_tag: str,
         class_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1679,13 +1844,15 @@ class PlayableClass:
             dict: json decoded data for the index of PvP Talent slots
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}/pvp-talent-slots"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class PlayableRace:
@@ -1693,6 +1860,7 @@ class PlayableRace:
     def playable_race(
         client,
         region_tag: str,
+        *,
         race_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1710,13 +1878,15 @@ class PlayableRace:
             dict: json decoded data for the index/individual playable race(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-race/{race_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class PlayableSpec:
@@ -1724,6 +1894,7 @@ class PlayableSpec:
     def playable_spec(
         client,
         region_tag: str,
+        *,
         spec_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1742,19 +1913,22 @@ class PlayableSpec:
             dict: json decoded data for the index/individual playable specialization(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-specialization/{spec_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def playable_spec_media(
         client,
         region_tag: str,
         spec_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1771,13 +1945,15 @@ class PlayableSpec:
             dict: json decoded media data for the playable specialization
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-specialization/{spec_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class PowerType:
@@ -1785,6 +1961,7 @@ class PowerType:
     def power_type(
         client,
         region_tag: str,
+        *,
         power_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1802,13 +1979,15 @@ class PowerType:
             dict: json decoded data for the index/individual power types
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/power-type/{power_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Profession:
@@ -1816,6 +1995,7 @@ class Profession:
     def profession(
         client,
         region_tag: str,
+        *,
         profession_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1833,19 +2013,22 @@ class Profession:
             dict: json decoded dict for the profession or the index of the achievements
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def profession_media(
         client,
         region_tag: str,
         profession_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1862,13 +2045,15 @@ class Profession:
             dict: the media assets for the given creature display ID
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/profession/{profession_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def profession_skill_tier(
@@ -1876,6 +2061,7 @@ class Profession:
         region_tag: str,
         profession_id: int,
         skill_tier_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1893,19 +2079,22 @@ class Profession:
             dict: json decoded dict for the profession or the index of the achievements
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}/skill-tier/{skill_tier_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def recipe(
         client,
         region_tag: str,
         recipe_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1922,19 +2111,22 @@ class Profession:
             dict: json decoded dict for the profession or the index of the achievements
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/recipe/{recipe_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def recipe_media(
         client,
         region_tag: str,
         recipe_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -1951,13 +2143,15 @@ class Profession:
             dict: the media assets for the given creature display ID
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/recipe/{recipe_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class PVP:
@@ -1965,6 +2159,7 @@ class PVP:
     def pvp_season(
         client,
         region_tag: str,
+        *,
         season_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -1982,19 +2177,22 @@ class PVP:
             dict: json decoded data for the index/individual PvP season(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pvp_leader_board(
         client,
         region_tag,
         season_id: int,
+        *,
         pvp_bracket: Optional[str] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2013,19 +2211,22 @@ class PVP:
             dict: json decoded data for the index of the PvP leader board
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}/pvp-leaderboard/{pvp_bracket}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pvp_rewards_index(
         client,
         region_tag: str,
         season_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -2042,18 +2243,21 @@ class PVP:
             dict: json decoded data for the index of PvP rewards
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}/pvp-reward/index"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pvp_tier(
         client,
         region_tag: str,
+        *,
         tier_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2072,19 +2276,22 @@ class PVP:
                 dict: the index or data for the pvp tier
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-tier/{tier_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pvp_tier_media(
         client,
         region_tag,
         tier_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -2101,13 +2308,15 @@ class PVP:
             dict: json decoded media data for the PvP tier
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/pvp-tier/{tier_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Quest:
@@ -2115,6 +2324,7 @@ class Quest:
     def quest(
         client,
         region_tag: str,
+        *,
         quest_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2132,18 +2342,21 @@ class Quest:
             dict: json decoded data for the index/individual quest(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/quest/{quest_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def quest_category(
         client,
         region_tag: str,
+        *,
         quest_category_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2163,18 +2376,21 @@ class Quest:
         uri = (
             f"{utils.api_host(region_tag)}/data/wow/quest/category/{quest_category_id}"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def quest_area(
         client,
         region_tag: str,
+        *,
         quest_area_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2192,18 +2408,21 @@ class Quest:
             dict: json decoded data for the index/individual quest area(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/quest/area/{quest_area_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def quest_type(
         client,
         region_tag: str,
+        *,
         quest_type_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2221,13 +2440,15 @@ class Quest:
             dict: json decoded data for the index/individual quest type(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/quest/type/{quest_type_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Realm:
@@ -2235,6 +2456,7 @@ class Realm:
     def realm(
         client,
         region_tag: str,
+        *,
         realm_slug: Optional[Union[str, int]] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2252,19 +2474,22 @@ class Realm:
             dict: json decoded data for the index/individual realm(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/realm/{realm_slug}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def realm_search(
         client,
         region_tag,
         field_values: Dict[str, Any],
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -2291,7 +2516,10 @@ class Realm:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
 
 class Region:
@@ -2299,6 +2527,7 @@ class Region:
     def region(
         client,
         region_tag: str,
+        *,
         region_req: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2316,13 +2545,15 @@ class Region:
             dict: json decoded data for the index/individual region_tag(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/region/{region_req}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Reputation:
@@ -2330,6 +2561,7 @@ class Reputation:
     def reputation_faction(
         client,
         region_tag: str,
+        *,
         faction_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2348,18 +2580,21 @@ class Reputation:
             dict: json decoded data for the index/individual reputation faction(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/reputation-faction/{faction_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def reputation_tier(
         client,
         region_tag: str,
+        *,
         tier_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2377,13 +2612,15 @@ class Reputation:
             dict: json decoded data for the index/individual reputation tier(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/reputation-tiers/{tier_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Spell:
@@ -2392,6 +2629,7 @@ class Spell:
         client,
         region_tag: str,
         spell_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -2408,19 +2646,22 @@ class Spell:
             dict: json decoded data for the index/individual spell(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/spell/{spell_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def spell_media(
         client,
         region_tag,
         spell_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -2437,13 +2678,15 @@ class Spell:
             dict: json decoded media data for the spell
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/spell/{spell_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def spell_search(
@@ -2475,7 +2718,10 @@ class Spell:
             }
         )
 
-        return client.get(uri, params=field_values).json()
+        try:
+            return client.get(uri, params=field_values)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=field_values)
 
 
 class Talent:
@@ -2483,6 +2729,7 @@ class Talent:
     def talent(
         client,
         region_tag: str,
+        *,
         talent_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2500,18 +2747,21 @@ class Talent:
             dict: json decoded data for the index/individual talent(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/talent/{talent_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def pvp_talent(
         client,
         region_tag: str,
+        *,
         pvp_talent_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2530,13 +2780,15 @@ class Talent:
             dict: json decoded data for the talent index or individual talent
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-talent/{pvp_talent_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class TechTalent:
@@ -2544,6 +2796,7 @@ class TechTalent:
     def tech_talent_tree(
         client,
         region_tag: str,
+        *,
         tree_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2561,18 +2814,21 @@ class TechTalent:
             dict: json decoded data for the index/individual tech talent tree(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent-tree/{tree_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def tech_talent(
         client,
         region_tag: str,
+        *,
         talent_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2590,19 +2846,22 @@ class TechTalent:
             dict: json decoded data for the index/individual tech talent(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent/{talent_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
     @staticmethod
     def tech_talent_media(
         client,
         region_tag: str,
         talent_id: int,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -2619,13 +2878,15 @@ class TechTalent:
             dict: json decoded media data for the tech talent
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/media/tech-talent/{talent_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class Title:
@@ -2633,6 +2894,7 @@ class Title:
     def title(
         client,
         region_tag: str,
+        *,
         title_id: Optional[int] = "index",
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -2650,13 +2912,15 @@ class Title:
             dict: json decoded data for the index/individual title(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/title/{title_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)
 
 
 class WoWToken:
@@ -2684,10 +2948,12 @@ class WoWToken:
             )
 
         uri = f"{utils.api_host(region_tag)}/data/wow/token/index"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("dynamic", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("static", release, region_tag),
+        }
+
+        try:
+            return client.get(uri, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(uri, "GET", params=params)

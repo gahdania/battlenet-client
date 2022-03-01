@@ -1,8 +1,0 @@
-========================
-World of Warcraft Client
-========================
-
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
-
-.. automodule:: battlenet_client.wow.client
-   :members:

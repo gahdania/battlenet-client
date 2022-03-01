@@ -1,1 +1,2 @@
-from .client import SC2Client
+from .community import *
+from .game_data import *

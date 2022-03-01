@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Credential Authorization Workflow &#8212; Battle.net API 2.1.0a1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using the Authorization Code Flow" href="auth_client.html" />
+    <link rel="prev" title="Tutorials" href="index.html" />
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auth_client.html" title="Using the Authorization Code Flow"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tutorials"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Battle.net API 2.1.0a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Tutorials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Credential Authorization Workflow</a></li>
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+
+  <section id="credential-authorization-workflow">
+<h1>Credential Authorization Workflow<a class="headerlink" href="#credential-authorization-workflow" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note" id="cred-code-flow">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Note that you can still use the user authorization client, with the endpoints that accept the client credentials
+as well.</p></li>
+<li><p>Any OAuth v2 or OpenID Connect client will work with the endpoints.  The ones contained in the package are for
+convenience</p></li>
+<li><p>Authorization Code Flow will be the most common for user authentication, while credential client code flow
+will be for backend work, such as maintaining the persistent data, such as playable classes.</p></li>
+</ul>
+</div>
+<p>First of all, the client authorization workflow is <strong>the</strong> most commonly used workflow
+by the Battle.Net REST API.</p>
+<p>As mentioned in the <a class="reference external" href="usage-summary">usage summary</a> page, you will need a developer account. As well as having a client configured in the portal.</p>
+<p>As you will see in the below <a class="reference external" href="credential-workflow-example">example</a>, you will need to first import the BattleNetClient class, then
+instantiate it.</p>
+<section id="id1">
+<h2>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import it</span>
+<span class="kn">from</span> <span class="nn">battlenet_client.clients</span> <span class="kn">import</span> <span class="n">CredentialClient</span>
+<span class="kn">from</span> <span class="nn">battlenet_client</span> <span class="kn">import</span> <span class="n">wow</span>
+
+<span class="c1"># Instantiate it</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">CredentialClient</span><span class="p">(</span><span class="s1">&#39;&lt;region&gt;&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">client</span> <span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">client_secret</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="c1"># request the data using it</span>
+<span class="k">return</span> <span class="n">wow</span><span class="o">.</span><span class="n">Achievement</span><span class="o">.</span><span class="n">achievement_category</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s1">&#39;&lt;region abbreviation&gt;&#39;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="mi">81</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="s1">&#39;&lt;locale&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That is it. Again, there are other packages that work with this class, allowing you to focus on the more important parts of your project</p>
+<p>See Also: <a class="reference external" href="authentication-workflow-tutorial">User Authorization Workflow Tutorial</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Credential Authorization Workflow</a><ul>
+<li><a class="reference internal" href="#id1">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Tutorials</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="auth_client.html"
+                          title="next chapter">Using the Authorization Code Flow</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorials/cred_client.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auth_client.html" title="Using the Authorization Code Flow"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tutorials"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Battle.net API 2.1.0a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Tutorials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Credential Authorization Workflow</a></li>
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, David &#34;Gahd&#34; Couples.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

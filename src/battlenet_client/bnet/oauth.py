@@ -28,4 +28,9 @@ class OAuth:
         """
 
         url = f"{utils.auth_host(region_tag)}/oauth/userinfo"
-        return client.post(url, params={"locale": locale})
+        params = {"locale": utils.localize(locale)}
+
+        try:
+            return client.post(url, params=params)
+        except AttributeError:
+            return client.fetch_protected_resource(url, "POST", params=params)

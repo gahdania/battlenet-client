@@ -13,6 +13,7 @@ class Account:
     def account_profile_summary(
         client,
         region_tag: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -28,21 +29,20 @@ class Account:
             dict: JSON decoded data that contains the profile summary
         """
         uri = f"{utils.api_host(region_tag)}/profile/user/wow"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def protected_character_profile_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_id: int,
         character_id: int,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses a summary of protected account information for the
@@ -61,19 +61,18 @@ class Account:
                 profile summary
         """
         uri = f"{utils.api_host(region_tag)}/profile/user/wow/protected-character/{realm_id}-{character_id}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def account_collections(
         client,
         region_tag: str,
-        locale: Optional[str],
+        *,
+        locale: Optional[str] = None,
         category: Optional[str] = "",
         release: Optional[str] = "retail",
     ):
@@ -93,13 +92,12 @@ class Account:
             dict: JSON decoded data for the index/individual collections
         """
         uri = f"{utils.api_host(region_tag)}/profile/user/wow/collections/{category}"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
 
 class Character:
@@ -107,9 +105,10 @@ class Character:
     def achievement_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the achievement summary of the requested character
@@ -130,21 +129,21 @@ class Character:
         uri += (
             f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/achievements"
         )
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def achievement_statistics(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the achievement statistics for the requested character
@@ -163,21 +162,20 @@ class Character:
         """
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/achievements/statistics"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def appearance_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the appearance summary for the requested character
@@ -196,21 +194,20 @@ class Character:
         """
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/appearance"
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def collections(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         category: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -241,21 +238,20 @@ class Character:
                 raise ValueError("Category needs to pets or mounts")
             uri += f"/{utils.slugify(category)}"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def encounters(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         category: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -284,21 +280,20 @@ class Character:
                 raise ValueError("Available Categories: None, dungeons and raids")
             uri += f"/{utils.slugify(category)}"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def equipment_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the equipped items of the requested character identified by
@@ -318,21 +313,20 @@ class Character:
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/equipment"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def hunter_pets_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Access the list of hunter pets of the requested character identified
@@ -354,21 +348,20 @@ class Character:
             f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/hunter-pets"
         )
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def media_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the media assets, such as avatar render, of the requested
@@ -388,21 +381,20 @@ class Character:
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/character-media"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def mythic_keystone(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         season_id: Optional[int] = None,
         release: Optional[str] = "retail",
     ):
@@ -429,21 +421,20 @@ class Character:
         if season_id:
             uri += f"/season/{season_id}"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def professions_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the profession information of the requested character
@@ -465,13 +456,11 @@ class Character:
             f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/professions"
         )
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def profile(
@@ -479,6 +468,7 @@ class Character:
         region_tag: str,
         realm_name: str,
         character_name: str,
+        *,
         locale: Optional[str] = None,
         status: bool = False,
         release: Optional[str] = "retail",
@@ -519,28 +509,26 @@ class Character:
         Returns:
             dict: JSON decoded data of character profile summary
         """
-        # https://us.api.blizzard.com/profile/wow/character/zul'jin/gahdania?namespace=profile-us&locale=en_US&access_token=USZrqt5kOYoo2usRyH73SgRox6ka93GYju
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{quote(character_name.lower())}"
 
         if status:
             uri += "/status"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def pvp(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         pvp_bracket: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -568,21 +556,20 @@ class Character:
         else:
             uri += "/pvp-summary"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def quests(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         completed: Optional[bool] = False,
         release: Optional[str] = "retail",
     ):
@@ -609,21 +596,20 @@ class Character:
         if completed:
             uri += f"/completed"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def reputations_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the reputation data of the requested character identified
@@ -645,13 +631,11 @@ class Character:
             f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/reputations"
         )
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def soulbinds(
@@ -659,6 +643,7 @@ class Character:
         region_tag: str,
         realm_name: str,
         character_name: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -679,13 +664,11 @@ class Character:
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/soulbinds"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def specializations_summary(
@@ -693,6 +676,7 @@ class Character:
         region_tag: str,
         realm_name: str,
         character_name: str,
+        *,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
@@ -713,21 +697,20 @@ class Character:
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/specializations"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def statistics_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the statistics of the requested character identified by
@@ -747,21 +730,20 @@ class Character:
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/statistics"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
     @staticmethod
     def title_summary(
         client,
         region_tag: str,
-        locale: Optional[str],
         realm_name: str,
         character_name: str,
+        *,
+        locale: Optional[str] = None,
         release: Optional[str] = "retail",
     ):
         """Accesses the list of titles earned by the requested character
@@ -781,13 +763,11 @@ class Character:
         uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/titles"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
 
 
 class Guild:
@@ -797,6 +777,7 @@ class Guild:
         region_tag: str,
         realm_name: str,
         guild_name: str,
+        *,
         category: Optional[str] = None,
         locale: Optional[str] = None,
         release: Optional[str] = "retail",
@@ -820,19 +801,14 @@ class Guild:
                 f"{release.title()} does not support the Guild Data API"
             )
 
-        # API testing shows that the guild name is not a true slug.   It lowercased only
-        # name is URL escaped
-
         uri = f"{utils.api_host(region_tag)}/data/wow/guild/"
         uri += f"{utils.slugify(realm_name)}/{utils.slugify(guild_name)}"
 
         if category and category in ("activity", "achievements", "roster"):
             uri += f"/{category}"
 
-        return client.get(
-            uri,
-            params={
-                "locale": utils.localize(locale),
-                "namespace": utils.namespace("profile", release, region_tag),
-            },
-        ).json()
+        params = {
+            "locale": utils.localize(locale),
+            "namespace": utils.namespace("profile", release, region_tag),
+        }
+        return client.get(uri, params=params)
