@@ -1,8 +1,0 @@
-================================
-World of Warcraft Misc Functions
-================================
-
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
-
-.. automodule:: battlenet_client.wow.misc
-   :members:

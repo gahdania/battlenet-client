@@ -1,0 +1,73 @@
+# Introduction
+
+The Battle.net REST API wrappers is package to make interfacing with the Battle.net API much easier.  It allows you,
+the developer, to focus on writing your scripts without needing to worry about the boiler plate code.
+
+## Installation
+
+To install this package is use your favorite python package installation utility, or use git
+
+### For Windows, OS X, and Linux
+
+```
+pip install battlenet_client
+```
+
+### Using GIT
+
+```
+git clone https://gitlab.com/battlenet1/battlenet-client.git
+```
+
+## Usage
+
+This client uses two flows to help the developer focus on the tasks at hand.  The first is the OAuth credential client
+flow, which uses just the developer’s client ID and secret to authenticate with the BNET API.  The other is the
+OAuth authorization code flow.  This one uses a combination of the developer’s client ID and secret, as well as the
+user’s authorization with Blizzard, to allow access to the those particular endpoints.  The examples below are from the
+wow branch of the package.  The other games’ endpoints work in the same way.
+
+### Examples
+
+**NOTE**:
+* Note that you can still use the user authorization client, with the endpoints that accept the client credentials
+as well.
+
+
+* Any OAuth v2 or OpenID Connect client will work with the endpoints.  The ones contained in the package are for
+convenience
+
+
+* Authorization Code Flow will be the most common for user authentication, while credential client code flow
+will be for backend work, such as maintaining the persistent data, such as playable classes.
+
+OAuth Credential Client Flow Example:
+
+```
+> from battlenet_client.client import Credential Client
+> client = wow.WoWClient(<region>, release=<release>, client_id=<client_id>, client_secret=<client_secret>)
+> client.playable_class.playable_class(<locale>, <class id>)
+```
+
+**WARNING**: A web server must be configured to accept the redirect back from the Blizzard authentication servers in order to
+use any endpoint that requires the authorization workflow enabled client.  They are listed on the
+Authorization Code Flow: <https://develop.battle.net/documentation/guides/using-oauth/authorization-code-flow>
+
+Oauth Authorization Code Flow Example:
+
+```
+> from battlenet_client import wow
+> client = wow.WoWClient(<region>, scope=['wow.profile',], redirect_uri=<redirect_uri>, release=<release>,
+                         client_id=<client_id>, client_secret=<client_secret>)
+> redirect(client.authorization_url())
+> client.account.account_profile_summary('en_US')
+{"_links": {"self": {"href": "https://us.api.blizzard.com/profile/user/wow?namespace=profile-us"}, ...
+```
+
+**NOTE**: The Oauth authorization code flow will also work for the API endpoints that works with the credential code flow
+without the need to create a credential code flow client instance.
+
+**NOTE**: The are some caveats that are covered in the tutorials for [Credential Code Flow](cred-code-flow) and
+[Authorization Code Flow](auth-code-flow).
+
+<!-- _ -->
