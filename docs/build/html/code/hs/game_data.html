@@ -47,14 +47,158 @@
         <div class="bodywrapper">
           <div class="body" role="main">
 
-  <section id="module-battlenet_client.hs.game_data">
-<span id="game-data"></span><h1>Game Data<a class="headerlink" href="#module-battlenet_client.hs.game_data" title="Permalink to this headline">¶</a></h1>
-<p>Generates the URI/querystring and headers for the Hearthstone API endpoints</p>
-<dl class="simple">
-<dt>Disclaimer:</dt><dd><p>All rights reserved, Blizzard is the intellectual property owner of HearthstoneI and any data
-retrieved from this API.</p>
+  <section id="game-data">
+<h1>Game Data<a class="headerlink" href="#game-data" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">battlenet_client.hs.game_data.</span></span><span class="sig-name descname"><span class="pre">Hearthstone</span></span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone.card">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">game_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'constructed'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone.card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the card provided by <cite>card_id</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>card_id</strong> (<em>int</em><em>, </em><em>str</em>) – the ID or full slug of the card</p></li>
+<li><p><strong>game_mode</strong> (<em>str</em><em>, </em><em>optional</em>) – the game mode
+See for more information:
+<a class="reference external" href="https://develop.battle.net/documentation/hearthstone/guides/game-modes">https://develop.battle.net/documentation/hearthstone/guides/game-modes</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json decoded data for the index/individual azerite essence(s)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone.card_back">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">card_back</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_back_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone.card_back" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a card back identified by <cite>card_back_id</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>card_back_id</strong> (<em>int</em><em>, </em><em>str</em>) – the ID or full slug of the card back</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json decoded data for the card back identified by <cite>card_back_id</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone.card_back_search">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">card_back_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone.card_back_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for cards that match <cite>field_values</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>field_values</strong> (<em>dict</em>) – search criteria, as key/value pairs
+For more information for the field names and options:
+<a class="reference external" href="https://develop.battle.net/documentation/hearthstone/guides/card-backs">https://develop.battle.net/documentation/hearthstone/guides/card-backs</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json decoded search results that match <cite>field_values</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone.card_deck">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">card_deck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone.card_deck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for cards that match <cite>field_values</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>field_values</strong> (<em>dict</em>) – search criteria, as key/value pairs
+For more information for the field names and options:
+<a class="reference external" href="https://develop.battle.net/documentation/hearthstone/guides/decks">https://develop.battle.net/documentation/hearthstone/guides/decks</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json decoded search results that match <cite>field_values</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone.card_search">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">card_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone.card_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for cards that match <cite>field_values</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>field_values</strong> (<em>dict</em>) – search criteria, as key/value pairs
+For more information for the field names and options:
+<a class="reference external" href="https://develop.battle.net/documentation/hearthstone/game-data-apis">https://develop.battle.net/documentation/hearthstone/game-data-apis</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json decoded search results that match <cite>field_values</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.hs.game_data.Hearthstone.metadata">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.hs.game_data.Hearthstone.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of metadata or a specific set of metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>meta_data</strong> (<em>str</em><em>, </em><em>optional</em>) – what metadata to filter
+Please see below for more information
+<a class="reference external" href="https://develop.battle.net/documentation/hearthstone/guides/metadata">https://develop.battle.net/documentation/hearthstone/guides/metadata</a>
+valid options: <cite>sets</cite>, <cite>setGroups</cite>, <cite>types</cite>, <cite>rarities</cite>, <cite>classes</cite>,
+<cite>minionTypes</cite>, <cite>keywords</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json decoded list of metadata or a specific set of metadata</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

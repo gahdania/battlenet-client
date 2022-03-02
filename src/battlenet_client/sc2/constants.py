@@ -1,17 +1,18 @@
-"""Contains constants used for Starcraft 2
+from battlenet_client.constants import Region
 
-Constants:
-    US
-    EU
-    APAC
-    CN
 
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Starcraft 2 and any data
-    retrieved from this API.
-"""
-# REGION IDS for SC2
-US = 1
-EU = 2
-APAC = 3  # Korea and Taiwan
-CN = 5
+class SC2Region(Region):
+    class Id:
+        """Defines the Region IDs for Starcraft II"""
+
+        #: Region ID for North America
+        US = 1
+
+        #: Region ID for Europe
+        EU = 2
+
+        #: Region ID for Korea and Taiwan
+        APAC = 3
+
+        #: Region ID for China
+        CN = 5

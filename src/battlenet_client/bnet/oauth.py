@@ -1,8 +1,5 @@
-"""defines the methods for accessing user data from Battle.net
+"""Defines the methods for accessing user data from Battle.net
 
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
-    retrieved from this API.
 """
 
 from typing import Optional
@@ -21,13 +18,14 @@ class OAuth:
             locale (str): which locale to use for the request
 
         Returns:
-            dict: the json decoded information for the user (user # and battle tag ID)
+            dict: User Information (user # and battle tag ID)
 
         Notes:
-            this function requires the BattleNet Client to be use OAuth (Authentication Workflow)
+            This function requires an OpenID, or OAuth V2 Client using the authorization code flow
         """
 
         url = f"{utils.auth_host(region_tag)}/oauth/userinfo"
+
         params = {"locale": utils.localize(locale)}
 
         try:

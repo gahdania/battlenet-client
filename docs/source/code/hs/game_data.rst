@@ -2,7 +2,9 @@
 Game Data
 ================================================
 
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
+.. moduleauthor:: David "Gahd" Couples
 
-.. automodule:: battlenet_client.hs.game_data
+.. py:currentmodule:: battlenet_client.hs.game_data
+
+.. autoclass:: Hearthstone
    :members:

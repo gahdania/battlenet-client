@@ -1,9 +1,4 @@
-"""Generates the URI/querystring and headers for the Diablo III API endpoints
-
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
-    retrieved from this API.
-"""
+"""Generates the URI/querystring and headers for the Diablo III API endpoints"""
 from typing import Optional
 
 from battlenet_client import utils
@@ -26,7 +21,7 @@ class GameData:
             season_id (int): the ID of the season
 
         Returns:
-            dict: the dict containing for the index of seasons, or the index of
+            dict: The dict containing for the index of seasons, or the index of
                 the leaderboards for the given season
         """
         uri = f"{utils.api_host(region_tag)}/data/d3/season/"

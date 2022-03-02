@@ -18,7 +18,7 @@ class Hearthstone:
         field_values: Dict[str, Any],
         locale: Optional[str] = None,
     ):
-        """Searches for cards that match `field_values'
+        """Searches for cards that match `field_values`
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
@@ -29,7 +29,7 @@ class Hearthstone:
                 https://develop.battle.net/documentation/hearthstone/game-data-apis
 
         Returns:
-            dict: json decoded search results that match `field_values'
+            dict: json decoded search results that match `field_values`
 
         """
         if "gameMode" not in field_values.keys():
@@ -54,7 +54,7 @@ class Hearthstone:
         locale: Optional[str] = None,
         game_mode: Optional[str] = "constructed",
     ):
-        """Returns the card provided by `card_id'
+        """Returns the card provided by `card_id`
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
@@ -82,7 +82,7 @@ class Hearthstone:
         field_values: Dict[str, Any],
         locale: Optional[str] = None,
     ):
-        """Searches for cards that match `field_values'
+        """Searches for cards that match `field_values`
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
@@ -93,7 +93,7 @@ class Hearthstone:
                 https://develop.battle.net/documentation/hearthstone/guides/card-backs
 
         Returns:
-            dict: json decoded search results that match `field_values'
+            dict: json decoded search results that match `field_values`
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/cardbacks"
 
@@ -109,16 +109,16 @@ class Hearthstone:
     def card_back(
         client, region_tag: str, card_back_id: str, locale: Optional[str] = None
     ):
-        """Returns an index of Azerite Essences, or a specific Azerite Essence
+        """Returns a card back identified by `card_back_id`
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
             region_tag (str): region_tag abbreviation
             locale (str): which locale to use for the request
-            card_back_id (int, str): the ID or full slug of the card
+            card_back_id (int, str): the ID or full slug of the card back
 
         Returns:
-            dict: json decoded data for the index/individual azerite essence(s)
+            dict: json decoded data for the card back identified by `card_back_id`
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/cards/{card_back_id}"
 
@@ -136,7 +136,7 @@ class Hearthstone:
         field_values: Dict[str, Any],
         locale: Optional[str] = None,
     ):
-        """Searches for cards that match `field_values'
+        """Searches for cards that match `field_values`
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
@@ -147,7 +147,7 @@ class Hearthstone:
                 https://develop.battle.net/documentation/hearthstone/guides/decks
 
         Returns:
-            dict: json decoded search results that match `field_values'
+            dict: json decoded search results that match `field_values`
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/deck"
 
@@ -167,7 +167,7 @@ class Hearthstone:
         meta_data: Optional[str] = None,
         locale: Optional[str] = None,
     ):
-        """Returns an index of Azerite Essences, or a specific Azerite Essence
+        """Returns a list of metadata or a specific set of metadata
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
@@ -176,11 +176,11 @@ class Hearthstone:
             meta_data (str, optional): what metadata to filter
                 Please see below for more information
                 https://develop.battle.net/documentation/hearthstone/guides/metadata
-                valid options: 'sets', 'setGroups', 'types', 'rarities', 'classes',
-                    'minionTypes', 'keywords'
+                valid options: `sets`, `setGroups`, `types`, `rarities`, `classes`,
+                `minionTypes`, `keywords`
 
         Returns:
-            dict: json decoded data for the index/individual azerite essence(s)
+            dict: json decoded list of metadata or a specific set of metadata
         """
         uri = f"{utils.api_host(region_tag)}/hearthstone/metadata"
 

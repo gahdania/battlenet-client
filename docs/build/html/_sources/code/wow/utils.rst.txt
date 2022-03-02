@@ -2,7 +2,7 @@
 Utility Functions
 ================================================
 
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
+.. moduleauthor:: David "Gahd" Couples
 
 .. automodule:: battlenet_client.wow.utils
    :members:

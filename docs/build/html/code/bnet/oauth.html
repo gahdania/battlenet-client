@@ -47,14 +47,36 @@
         <div class="bodywrapper">
           <div class="body" role="main">
 
-  <section id="module-battlenet_client.bnet.oauth">
-<span id="oauth"></span><h1>OAuth<a class="headerlink" href="#module-battlenet_client.bnet.oauth" title="Permalink to this headline">¶</a></h1>
-<p>defines the methods for accessing user data from Battle.net</p>
-<dl class="simple">
-<dt>Disclaimer:</dt><dd><p>All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
-retrieved from this API.</p>
+  <section id="oauth">
+<h1>OAuth<a class="headerlink" href="#oauth" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="battlenet_client.bnet.oauth.OAuth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">battlenet_client.bnet.oauth.</span></span><span class="sig-name descname"><span class="pre">OAuth</span></span><a class="headerlink" href="#battlenet_client.bnet.oauth.OAuth" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.bnet.oauth.OAuth.user_info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">user_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.bnet.oauth.OAuth.user_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the user info</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>User Information (user # and battle tag ID)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function requires an OpenID, or OAuth V2 Client using the authorization code flow</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

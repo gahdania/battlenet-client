@@ -47,8 +47,45 @@
         <div class="bodywrapper">
           <div class="body" role="main">
 
-  <section id="module-battlenet_client.sc2.game_data">
-<span id="game-data"></span><h1>Game Data<a class="headerlink" href="#module-battlenet_client.sc2.game_data" title="Permalink to this headline">¶</a></h1>
+  <section id="game-data">
+<h1>Game Data<a class="headerlink" href="#game-data" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="battlenet_client.sc2.game_data.LeagueData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">battlenet_client.sc2.game_data.</span></span><span class="sig-name descname"><span class="pre">LeagueData</span></span><a class="headerlink" href="#battlenet_client.sc2.game_data.LeagueData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="battlenet_client.sc2.game_data.LeagueData.league_data">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">league_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">season_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">league_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.sc2.game_data.LeagueData.league_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns data for the specified season, queue, team, and league.</p>
+<dl class="simple">
+<dt>queueId: the standard available queueIds are: 1=WoL 1v1, 2=WoL 2v2, 3=WoL 3v3, 4=WoL 4v4, 101=HotS 1v1,</dt><dd><p>102=HotS 2v2, 103=HotS 3v3, 104=HotS 4v4, 201=LotV 1v1, 202=LotV 2v2, 203=LotV 3v3, 204=LotV 4v4,
+206=LotV Archon. Note that other available queues may not be listed here.</p>
+</dd>
+</dl>
+<p>teamType: there are two available teamTypes: 0=arranged, 1=random.</p>
+<p>leagueId: available leagueIds are: 0=Bronze, 1=Silver, 2=Gold, 3=Platinum, 4=Diamond, 5=Master, 6=Grandmaster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>obj</strong> (<em>client</em>) – oauth): OpenID/OAuth instance</p></li>
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>season_id</strong> (<em>str</em>) – The season ID of the data to retrieve.</p></li>
+<li><p><strong>queue_id</strong> (<em>str</em>) – The queue ID of the data to retrieve.</p></li>
+<li><p><strong>team_type</strong> (<em>str</em>) – The team type of the data to retrieve.</p></li>
+<li><p><strong>league_id</strong> (<em>str</em>) – The league ID of the data to retrieve.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict containing league data for specified season, queue, team, and league.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

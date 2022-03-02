@@ -1,9 +1,4 @@
-"""Defines exceptions related to the Diablo III API wrappers
-
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
-    retrieved from this API.
-"""
+"""Defines exceptions related to the Diablo III API wrappers"""
 
 
 class D3Error(Exception):

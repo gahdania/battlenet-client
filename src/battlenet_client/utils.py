@@ -102,11 +102,3 @@ def render_host(region: str):
         return "https://render.worldofwarcraft.com.cn"
 
     return f"https://render-{region.lower()}.worldofwarcraft.com"
-
-
-def namespace(api_type, release, region):
-
-    if release.lower() != "retail":
-        return f"{api_type}-{release.lower()}-{region.lower()}"
-
-    return f"{api_type}-{region.lower()}"

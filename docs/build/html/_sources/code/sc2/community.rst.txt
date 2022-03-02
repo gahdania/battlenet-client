@@ -2,7 +2,15 @@
 Community
 ================================================
 
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
+.. moduleauthor:: David "Gahd" Couples
 
-.. automodule:: battlenet_client.sc2.community
+.. py:currentmodule:: battlenet_client.sc2.community
+
+.. autoclass:: Community
+   :members:
+
+.. autoclass:: CommunityCN
+   :members:
+
+.. autoclass:: Legacy
    :members:

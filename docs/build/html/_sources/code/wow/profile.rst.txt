@@ -2,7 +2,15 @@
 Profile
 ================================================
 
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
+.. moduleauthor:: David "Gahd" Couples
 
-.. automodule:: battlenet_client.wow.profile
+.. py:currentmodule:: battlenet_client.wow.profile
+
+.. autoclass:: Account
+   :members:
+
+.. autoclass:: Character
+   :members:
+
+.. autoclass:: Guild
    :members:

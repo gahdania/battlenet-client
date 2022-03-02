@@ -4,6 +4,8 @@ from typing import Optional, Any, Dict, Union
 from .exceptions import WoWReleaseError
 from battlenet_client import utils
 
+from battlenet_client.wow.utils import namespace
+
 
 class Achievement:
     @staticmethod
@@ -35,7 +37,7 @@ class Achievement:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
         try:
             return client.get(uri, params=params)
@@ -66,7 +68,7 @@ class Achievement:
         uri = f"{utils.api_host(region_tag)}/data/wow/achievement/{achievement_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
         try:
             return client.get(uri, params=params)
@@ -97,7 +99,7 @@ class Achievement:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/{achievement_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -161,7 +163,7 @@ class Auction:
 
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -195,7 +197,7 @@ class AzeriteEssence:
         uri = f"{utils.api_host(region_tag)}/data/wow/azerite-essence/{essence_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -230,7 +232,7 @@ class AzeriteEssence:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -265,7 +267,7 @@ class AzeriteEssence:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -300,7 +302,7 @@ class ConnectedRealm:
         uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -335,7 +337,7 @@ class ConnectedRealm:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -357,21 +359,20 @@ class Covenant:
     ):
         """Returns an index of covenants, or a specific covenant
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                covenant_id (int, optional): the ID of the covenant or the @staticmethod
-        default 'index'
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            covenant_id (int, optional): the ID of the covenant or the default 'index'
 
-            Returns:
-                dict: json decoded data for the index/individual covenant
+        Returns:
+            dict: json decoded data for the index/individual covenant
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/covenant/{covenant_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -403,7 +404,7 @@ class Covenant:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/covenant{covenant_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -435,7 +436,7 @@ class Covenant:
         uri = f"{utils.api_host(region_tag)}/data/wow/covenant/soulbind/{soulbind_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -467,7 +468,7 @@ class Covenant:
         uri = f"{utils.api_host(region_tag)}/data/wow/covenant/conduit/{conduit_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -488,21 +489,20 @@ class Creature:
     ):
         """Returns an index of creature families, or a specific creature family
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                family_id (int, optional): the creature family ID or the @staticmethod
-        default 'index'
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            family_id (int, optional): the creature family ID or the default 'index'
 
-            Returns:
-                dict: json decoded data for the index/individual creature family/families
+        Returns:
+            dict: json decoded data for the index/individual creature family/families
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/creature-family/{family_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -521,21 +521,20 @@ class Creature:
     ):
         """Returns an index of creature types, or a specific creature type
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                type_id (int, optional): the creature type ID or the @staticmethod
-        default 'index'
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            type_id (int, optional): the creature type ID or the default 'index'
 
-            Returns:
-                dict: json decoded data for the index/individual creature type(s)
+        Returns:
+            dict: json decoded data for the index/individual creature type(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/creature-type/{type_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -567,7 +566,7 @@ class Creature:
         uri = f"{utils.api_host(region_tag)}/data/wow/creature/{creature_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -602,7 +601,7 @@ class Creature:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -637,7 +636,7 @@ class Creature:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -671,7 +670,7 @@ class Creature:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -703,7 +702,7 @@ class GuildCrest:
         uri = f"{utils.api_host(region_tag)}/data/wow/guild-crest/index"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -735,7 +734,7 @@ class GuildCrest:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/border/{border_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -767,7 +766,7 @@ class GuildCrest:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/emblem/{emblem_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -788,21 +787,20 @@ class Item:
     ):
         """Returns an index of item classes, or a specific item class
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                class_id (int, optional): item class ID or the @staticmethod
-        default 'index'
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            class_id (int, optional): item class ID or the default 'index'
 
-            Returns:
-                dict: json decoded data for the index/individual item class(es)
+        Returns:
+            dict: json decoded data for the index/individual item class(es)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -821,21 +819,20 @@ class Item:
     ):
         """Returns an index of item sets, or a specific item set
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                set_id (int, optional): the item class ID or the @staticmethod
-        default 'index'
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            set_id (int, optional): the item class ID or the default 'index'
 
-            Returns:
-                dict: json decoded data for the index/individual item set(s)
+        Returns:
+            dict: json decoded data for the index/individual item set(s)
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/item-set/{set_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -869,7 +866,7 @@ class Item:
         uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}/item-subclass/{subclass_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -901,7 +898,7 @@ class Item:
         uri = f"{utils.api_host(region_tag)}/data/wow/item/{item_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -933,7 +930,7 @@ class Item:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/item/{item_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -968,7 +965,7 @@ class Item:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -1003,7 +1000,7 @@ class Journal:
         uri = f"{utils.api_host(region_tag)}/data/wow/journal-expansion/{expansion_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1038,7 +1035,7 @@ class Journal:
         uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{encounter_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1073,7 +1070,7 @@ class Journal:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -1106,7 +1103,7 @@ class Journal:
         uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{instance_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1138,7 +1135,7 @@ class Journal:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/journal-instance/{instance_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1175,7 +1172,7 @@ class Media:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -1208,7 +1205,7 @@ class ModifiedCrafting:
         uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1240,7 +1237,7 @@ class ModifiedCrafting:
         uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/category/{category_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1272,7 +1269,7 @@ class ModifiedCrafting:
         uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/reagent-slot-type/{slot_type_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1306,7 +1303,7 @@ class Mount:
         uri = f"{utils.api_host(region_tag)}/data/wow/mount/{mount_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1341,7 +1338,7 @@ class Mount:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -1376,7 +1373,7 @@ class MythicKeystone:
         uri = f"{utils.api_host(region_tag)}/data/wow/keystone-affix/{affix_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1408,7 +1405,7 @@ class MythicKeystone:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/keystone-affix/{affix_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1440,7 +1437,7 @@ class MythicKeystone:
         uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/dungeon/{dungeon_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1470,7 +1467,7 @@ class MythicKeystone:
         uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/index"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1504,7 +1501,7 @@ class MythicKeystone:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1538,7 +1535,7 @@ class MythicKeystone:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1580,7 +1577,7 @@ class MythicKeystone:
 
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1602,23 +1599,22 @@ class MythicRaid:
     ):
         """Returns an index of mythic keystone affixes, or a specific mythic keystone affix
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                raid_name (str): name of the raid
-                faction (str): horde or alliance, @staticmethod
-        defaults to alliance
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            raid_name (str): name of the raid
+            faction (str): horde or alliance, defaults to alliance
 
-            Returns:
-                dict: json decoded data for the index/individual mythic raid
+        Returns:
+            dict: json decoded data for the index/individual mythic raid
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/leaderboard/hall-of-fame/"
         uri += f"{utils.slugify(raid_name)}/{utils.slugify(faction)}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1652,7 +1648,7 @@ class Pet:
         uri = f"{utils.api_host(region_tag)}/data/wow/pet/{pet_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1684,7 +1680,7 @@ class Pet:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/pet/{pet_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1716,7 +1712,7 @@ class Pet:
         uri = f"{utils.api_host(region_tag)}/data/wow/pet-ability/{pet_ability_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1748,7 +1744,7 @@ class Pet:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/pet-ability/{ability_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1782,7 +1778,7 @@ class PlayableClass:
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1814,7 +1810,7 @@ class PlayableClass:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-class/{class_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1846,7 +1842,7 @@ class PlayableClass:
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}/pvp-talent-slots"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1880,7 +1876,7 @@ class PlayableRace:
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-race/{race_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1915,7 +1911,7 @@ class PlayableSpec:
         uri = f"{utils.api_host(region_tag)}/data/wow/playable-specialization/{spec_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1947,7 +1943,7 @@ class PlayableSpec:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-specialization/{spec_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -1981,7 +1977,7 @@ class PowerType:
         uri = f"{utils.api_host(region_tag)}/data/wow/power-type/{power_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2015,7 +2011,7 @@ class Profession:
         uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2047,7 +2043,7 @@ class Profession:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/profession/{profession_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2081,7 +2077,7 @@ class Profession:
         uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}/skill-tier/{skill_tier_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2113,7 +2109,7 @@ class Profession:
         uri = f"{utils.api_host(region_tag)}/data/wow/recipe/{recipe_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2145,7 +2141,7 @@ class Profession:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/recipe/{recipe_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2179,7 +2175,7 @@ class PVP:
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2213,7 +2209,7 @@ class PVP:
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}/pvp-leaderboard/{pvp_bracket}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2245,7 +2241,7 @@ class PVP:
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}/pvp-reward/index"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2264,21 +2260,20 @@ class PVP:
     ):
         """Returns an index of pvp tier, or a specific pvp tier
 
-            Args:
-                client (obj: oauth): OpenID/OAuth instance
-                release (str): release of the game (ie classic1x, classic, retail)
-                region_tag (str): region_tag abbreviation
-                locale (str): which locale to use for the request
-                tier_id (int, optional): the pvp tier ID or the @staticmethod
-        default 'index'
+        Args:
+            client (obj: oauth): OpenID/OAuth instance
+            release (str): release of the game (ie classic1x, classic, retail)
+            region_tag (str): region_tag abbreviation
+            locale (str): which locale to use for the request
+            tier_id (int, optional): the pvp tier ID or the default 'index'
 
-            Returns:
-                dict: the index or data for the pvp tier
+        Returns:
+            dict: the index or data for the pvp tier
         """
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-tier/{tier_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2310,7 +2305,7 @@ class PVP:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/pvp-tier/{tier_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2344,7 +2339,7 @@ class Quest:
         uri = f"{utils.api_host(region_tag)}/data/wow/quest/{quest_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2378,7 +2373,7 @@ class Quest:
         )
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2410,7 +2405,7 @@ class Quest:
         uri = f"{utils.api_host(region_tag)}/data/wow/quest/area/{quest_area_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2442,7 +2437,7 @@ class Quest:
         uri = f"{utils.api_host(region_tag)}/data/wow/quest/type/{quest_type_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2476,7 +2471,7 @@ class Realm:
         uri = f"{utils.api_host(region_tag)}/data/wow/realm/{realm_slug}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2512,7 +2507,7 @@ class Realm:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -2547,7 +2542,7 @@ class Region:
         uri = f"{utils.api_host(region_tag)}/data/wow/region/{region_req}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2582,7 +2577,7 @@ class Reputation:
         uri = f"{utils.api_host(region_tag)}/data/wow/reputation-faction/{faction_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2614,7 +2609,7 @@ class Reputation:
         uri = f"{utils.api_host(region_tag)}/data/wow/reputation-tiers/{tier_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2648,7 +2643,7 @@ class Spell:
         uri = f"{utils.api_host(region_tag)}/data/wow/spell/{spell_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2680,7 +2675,7 @@ class Spell:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/spell/{spell_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2714,7 +2709,7 @@ class Spell:
         field_values.update(
             {
                 "locale": utils.localize(locale),
-                "namespace": utils.namespace("static", release, region_tag),
+                "namespace": namespace("static", release, region_tag),
             }
         )
 
@@ -2749,7 +2744,7 @@ class Talent:
         uri = f"{utils.api_host(region_tag)}/data/wow/talent/{talent_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2782,7 +2777,7 @@ class Talent:
         uri = f"{utils.api_host(region_tag)}/data/wow/pvp-talent/{pvp_talent_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2816,7 +2811,7 @@ class TechTalent:
         uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent-tree/{tree_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2848,7 +2843,7 @@ class TechTalent:
         uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent/{talent_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2880,7 +2875,7 @@ class TechTalent:
         uri = f"{utils.api_host(region_tag)}/data/wow/media/tech-talent/{talent_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2914,7 +2909,7 @@ class Title:
         uri = f"{utils.api_host(region_tag)}/data/wow/title/{title_id}"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:
@@ -2950,7 +2945,7 @@ class WoWToken:
         uri = f"{utils.api_host(region_tag)}/data/wow/token/index"
         params = {
             "locale": utils.localize(locale),
-            "namespace": utils.namespace("static", release, region_tag),
+            "namespace": namespace("static", release, region_tag),
         }
 
         try:

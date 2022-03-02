@@ -2,7 +2,9 @@
 OAuth
 ================================================
 
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
+.. moduleauthor:: David "Gahd" Couples
 
-.. automodule:: battlenet_client.bnet.oauth
+.. py:currentmodule:: battlenet_client.bnet.oauth
+
+.. autoclass:: OAuth
    :members:

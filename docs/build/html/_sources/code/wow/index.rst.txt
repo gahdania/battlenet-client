@@ -6,7 +6,8 @@ World of Warcraft
    :maxdepth: 2
    :caption: Contents:
 
-   utils
+   constants
    exceptions
+   utils
    game_data
    profile

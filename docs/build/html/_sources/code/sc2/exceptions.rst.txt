@@ -2,7 +2,7 @@
 Exceptions
 ================================================
 
-.. moduleauthor:: David Couples (Gahdania Stormhoof)
+.. moduleauthor:: David "Gahd" Couples
 
 .. automodule:: battlenet_client.sc2.exceptions
    :members:

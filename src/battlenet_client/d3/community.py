@@ -1,9 +1,4 @@
-"""defines the classes that handle the community APIs for Diablo III
-
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
-    retrieved from this API.
-"""
+"""Defines the classes that handle the community APIs for Diablo III"""
 
 from typing import Optional
 
@@ -13,14 +8,17 @@ from battlenet_client import utils
 
 
 class Community:
+    """Defines the methods to communicate with the Community API"""
+
     @staticmethod
     def act(
         client,
         region_tag: str,
+        *,
         act_id: Optional[int] = None,
         locale: Optional[str] = None,
     ):
-        """Returns an index of acts, or the act by ID
+        """Returns the list of acts, or the act by :act_id:
 
         Args:
             client (obj: oauth): OpenID/OAuth instance
@@ -32,8 +30,10 @@ class Community:
             dict: the dict containing the list of acts or the details of the specified :act_id:
         """
         uri = f"{utils.api_host(region_tag)}/d3/data/act"
+
         if act_id:
             uri += f"/{act_id}"
+
         params = {"locale": utils.localize(locale)}
 
         try:
@@ -173,6 +173,7 @@ class Community:
     def item_type(
         client,
         region_tag: str,
+        *,
         item_slug: Optional[str] = None,
         locale: Optional[str] = None,
     ):

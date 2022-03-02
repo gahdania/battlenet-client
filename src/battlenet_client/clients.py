@@ -24,9 +24,8 @@ from typing import Optional, List
 
 from battlenet_client.bnet import (
     exceptions as bnet_exceptions,
-    constants as bnet_constants,
 )
-from battlenet_client import utils
+from battlenet_client import utils, constants as bnet_constants
 
 
 class BNetClient(Client):
