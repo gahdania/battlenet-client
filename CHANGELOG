@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2022-02-24
+### Changed
+All API endpoints now return a URL and parameters dictionary to be used by 3rd party clients.
+Unittests completed to check for the above.
+
+### Removed
+Clients are not longer being actively maintained.
+
+
+## [2.1.0] - 2022-02-02
+### Added
+Battlenet Client - added overriding method "request"
+Added missing document nodes
+added WoWClient method "media" to retrieve the image data for media
+
+### Changed
+Game specific client methods were changed to rely on the requests.get or requests.post methods instead of the
+    requests.request
+Updated out of date documentation
+Updated BNetClient.__str__() and .__repr__()
+move version related variables into the respective client classes
+updated localize to allow passing None
+decoupling API from BNetClient and subclasses
+
+### Removed
+Duplicate __str__ and __repr__ methods in the children client classes (D3Client, HSClient, SC2Client, and WoWClient)
+
 ## [2.0.0] - 2022-01-31
 ### Added
 Diablo 3 API
@@ -13,8 +40,12 @@ StarCraft 2 API
 
 ### Changed
 Moved original bnet test into their own folder, to prevent conflicts with other parts
+Game specific client methods where changed to handle the requests directly
 
 ### Removed
+BattlenetClient._get
+BattlenetClient._post
+BattlenetClient.__endpoint
 
 
 ## [1.2.0] - 2021-08-15

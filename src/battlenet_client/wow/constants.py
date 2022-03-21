@@ -1,65 +1,70 @@
-"""Constants used by the client for the various releases to help the developer
-stay up with Blizzard's naming conventions for the various classics"""
+"""Defines the Region for World of Warcraft
 
-VANILLA = "classic1x"
-BURNING_CRUSADE = "classic"
-RETAIL = "retail"
+Classes:
+    Region
+    Release
 
-MODULES = {
-    "game_data": (
-        ("achievement", "Achievement"),
-        ("auction", "Auction"),
-        ("azerite", "Azerite"),
-        ("connected_realm", "ConnectedRealm"),
-        ("covenant", "Covenant"),
-        ("creature", "Creature"),
-        ("guild_crest", "GuildCrest"),
-        ("item", "Item"),
-        ("journal", "Journal"),
-        ("media", "Media"),
-        ("modified_crafting", "ModifiedCrafting"),
-        ("mount", "Mount"),
-        ("mythic_keystone_affix", "MythicKeystoneAffix"),
-        ("mythic_keystone_dungeon", "MythicKeystoneDungeon"),
-        ("mythic_keystone_leaderboard", "MythicKeystoneLeaderboard"),
-        ("mythic_raid", "MythicRaid"),
-        ("pet", "Pet"),
-        ("playable_class", "PlayableClass"),
-        ("playable_race", "PlayableRace"),
-        ("playable_spec", "PlayableSpec"),
-        ("power", "Power"),
-        ("profession", "Profession"),
-        ("pvp_season", "PvPSeason"),
-        ("pvp_tier", "PvPTier"),
-        ("quest", "Quest"),
-        ("realm", "Realm"),
-        ("region", "Region"),
-        ("reputation", "Reputation"),
-        ("spell", "Spell"),
-        ("talent", "Talent"),
-        ("tech_talent", "TechTalent"),
-        ("title", "Title"),
-        ("wow_token", "WoWToken"),
-    ),
-    "profile": (
-        ("character_achievements", "CharacterAchievements"),
-        ("character_appearance", "CharacterAppearance"),
-        ("character_collection", "CharacterCollections"),
-        ("character_encounters", "CharacterEncounters"),
-        ("character_equipment", "CharacterEquipment"),
-        ("character_hunter_pets", "CharacterHunterPets"),
-        ("character_media", "CharacterMedia"),
-        ("character_mythic_keystone", "CharacterMythicKeystone"),
-        ("character_professions", "CharacterProfessions"),
-        ("character_profile", "CharacterProfile"),
-        ("character_pvp", "CharacterPvP"),
-        ("character_quests", "CharacterQuests"),
-        ("character_reputations", "CharacterReputations"),
-        ("character_soul_binds", "CharacterSoulBinds"),
-        ("character_specializations", "CharacterSpecializations"),
-        ("character_statistics", "CharacterStatistics"),
-        ("character_titles", "CharacterTitles"),
-        ("guild", "Guild"),
-    ),
-    "auth": (("account", "Account"),),
-}
+Misc Variables:
+    __version__
+    __author__
+
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
+"""
+from ..constants import Region as BaseRegion
+
+
+__version__ = '3.0.0'
+__author__ = 'David \'Gahd\' Couples'
+
+
+class Region(BaseRegion):
+    class Id:
+        """Defines the Region IDs for World of Warcraft"""
+
+        #: Region ID for North America
+        NORTH_AMERICA = 1
+
+        #: Region ID for Taiwan
+        TAIWAN = 4
+
+        #: Region ID for Europe
+        EUROPE = 3
+
+        #: Region ID for Korea
+        KOREA = 2
+
+        #: Region ID for China
+        CHINA = 5
+
+
+class Release:
+    """Defines the Release Names for World of Warcraft/World of Warcraft Classic"""
+
+    #: Release name for the original World of Warcraft (v 1.0)
+    VANILLA = "classic1x"
+
+    #: Release name for The Burning Crusade expansion (v 2.0)
+    BURNING_CRUSADE = "classic"
+
+    #: Release name for the current expansion
+    RETAIL = "retail"
+
+    @classmethod
+    def all(cls) -> list:
+        """Returns the list of all releases
+
+        Returns:
+            list: list of all releases
+        """
+        all_list = []
+        for name in dir(cls):
+            if name.startswith('__'):
+                continue
+
+            obj = getattr(cls, name)
+            if isinstance(obj, str):
+                all_list.append(obj)
+
+        return all_list

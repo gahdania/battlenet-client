@@ -1,19 +1,23 @@
-"""Contains constants used for Diablo III
+"""Defines the Region for Diablo III
 
+Classes:
+    Region
 
-Constants:
-    US
-    EU
-    APAC
-    CN
+Misc Variables:
+    __version__
+    __author__
 
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Diablo III and any data
-    retrieved from this API.
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
 """
+from battlenet_client.constants import Region as BaseRegion
 
-# REGION IDS D3
-US = 1
-EU = 2
-APAC = 3  # Korea and Taiwan
-CN = 5
+
+__version__ = '2.0.0'
+__author__ = 'David \'Gahd\' Couples'
+
+
+class Region(BaseRegion):
+    """Defines the constants for regions"""
+    pass
