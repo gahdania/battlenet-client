@@ -39,20 +39,16 @@ Please change log for complete history
 
 ## Meta
 
-David "Gahd" Couples
-
-`@gahdania <twitter>`_
-
-`Gahd on Twitch <twitch>`_
+David "Gahd" Couples: `@gahdania <twitter>`_ / `Gahd on Twitch <twitch>`_ / `Email <gahdania@gahd.io>`_
 
 
 Distributed under the GPL v3+ license. See ``LICENSE`` for more information.
 
-`Battle.net Client on Gitlab <github>`_
+`Battle.net Client on GitHub <github>`_
 
 ## Contributing
 
-1. Create a pull request
+1. Create a `fork`_ from the project
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
@@ -62,5 +58,5 @@ Distributed under the GPL v3+ license. See ``LICENSE`` for more information.
 .. _twitter: https://twitter.com/gahdania
 .. _twitch: https://www.twitch.tv/gahd
 .. _github: https://gitlab.com/battlenet1/battlenet-client
-.. _fork: https://gitlab.com/battlenet1/battlenet-client/-/forks/new
+.. _fork: https://github.com/login?return_to=%2Fgahdania%2Fbattlenet-client
 .. _readthedocs.io: https://battlenet-client.readthedocs.io/en/latest/
