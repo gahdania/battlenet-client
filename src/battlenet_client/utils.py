@@ -21,7 +21,7 @@ License: GPL v3
 Copyright: February 24, 2022
 """
 from typing import Tuple, Optional, Union
-
+from battlenet_client.exceptions import BNetValueError
 
 
 __version__ = '1.0.0'
@@ -40,7 +40,7 @@ def currency_convertor(value: int) -> Tuple[int, int, int]:
     value = int(value)
 
     if value < 0:
-        raise ValueError("Value cannot be negative")
+        raise BNetValueError("BNetValue cannot be negative")
 
     return value // 10000, (value % 10000) // 100, value % 100
 
@@ -71,7 +71,7 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
 
     Raise:
         TypeError: when locale is not a string
-        ValueError: when the lang and country are not in the given lists
+        BNetValueError: when the lang and country are not in the given lists
     """
     if locale is None:
         return None
@@ -80,7 +80,7 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
         raise TypeError("Locale must be a string")
 
     if locale[:2].lower() not in ("en", "es", "pt", "fr", "ru", "de", "it", "ko", "zh"):
-        raise ValueError("Invalid language")
+        raise BNetValueError("Invalid language")
 
     if locale[-2:].lower() not in (
         "us",
@@ -97,7 +97,7 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
         "tw",
         "cn",
     ):
-        raise ValueError("Invalid country")
+        raise BNetValueError("Invalid country")
 
     return f"{locale[:2].lower()}_{locale[-2:].upper()}"
 

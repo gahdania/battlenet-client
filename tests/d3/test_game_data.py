@@ -1,7 +1,7 @@
 import pytest
 from itertools import product
 
-from battlenet_client.exceptions import BNetRegionError
+from battlenet_client.exceptions import BNetRegionNotFoundError
 from battlenet_client.constants import VALID_REGIONS
 from battlenet_client.d3.game_data import season, season_leaderboard, era, era_leaderboard
 from ..constants import INVALID_REGIONS
@@ -20,7 +20,7 @@ def test_season_index(region_tag):
 
 @pytest.mark.parametrize('region_tag', INVALID_REGIONS)
 def test_season_index_invalid_region(region_tag):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         season(region_tag, locale="enus")
 
 
@@ -39,7 +39,7 @@ def test_season(region_tag, season_id):
 @pytest.mark.parametrize('region_tag, season_id',
                          list(product(INVALID_REGIONS, (1, '1'))))
 def test_season_invalid_region(region_tag, season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         season(region_tag, season_id=season_id, locale="enus")
 
 
@@ -62,7 +62,7 @@ def test_season_leaderboard(region_tag, season_id, leaderboard):
                                       (1, '1'),
                                       ('achievement-points', 'rift-barbarian', 'rift-demon-hunter'))))
 def test_season_leaderboard_invalid_region(region_tag, season_id, leaderboard):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         season_leaderboard(region_tag, season_id=season_id, leaderboard_id=leaderboard, locale="enus")
 
 
@@ -79,7 +79,7 @@ def test_era_index(region_tag):
 
 @pytest.mark.parametrize('region_tag', INVALID_REGIONS)
 def test_era_index_invalid_region(region_tag):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         era(region_tag, locale="enus")
 
 
@@ -98,7 +98,7 @@ def test_era(region_tag, era_id):
 @pytest.mark.parametrize('region_tag, era_id',
                          list(product(INVALID_REGIONS, (1, '1'))))
 def test_era_invalid_region(region_tag, era_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         era(region_tag, era_id=era_id, locale="enus")
 
 
@@ -121,5 +121,5 @@ def test_era_leaderboard(region_tag, season_id, leaderboard):
                                       (1, '1'),
                                       ('achievement-points', 'rift-barbarian', 'rift-demon-hunter'))))
 def test_era_leaderboard_invalid_region(region_tag, season_id, leaderboard):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         era_leaderboard(region_tag, season_id, leaderboard, locale="enus")

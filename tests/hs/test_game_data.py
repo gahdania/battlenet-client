@@ -3,7 +3,7 @@ from itertools import product
 import pytest
 
 from battlenet_client.constants import VALID_REGIONS
-from battlenet_client.exceptions import BNetRegionError, BNetValueError
+from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError
 from battlenet_client.hs.game_data import card, card_search, card_back, card_back_search, card_deck, metadata
 from battlenet_client.utils import slugify
 from ..constants import INVALID_REGIONS
@@ -25,7 +25,7 @@ def test_card_back_search_region_error(region_tag):
         'textFilter': 'only',
         'sort': 'dataAdded:desc'
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_back_search(region_tag, field_values, locale='enus')
 
 
@@ -64,7 +64,7 @@ def test_card_back(region_tag, card_back_name):
 @pytest.mark.parametrize('region_tag, card_back_name',
                          list(product(INVALID_REGIONS, ('155-Pizza-Stone', '2-black-temple'))))
 def test_card_back_region_error(region_tag, card_back_name):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_back(region_tag, card_back_id=card_back_name, locale='enus')
 
 
@@ -84,7 +84,7 @@ def test_card_deck_by_valid_code(region_tag):
 
 @pytest.mark.parametrize('region_tag', INVALID_REGIONS)
 def test_card_deck_by_region_error(region_tag):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_deck(region_tag, {
             'code': 'AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA'}, locale='enus')
 
@@ -119,7 +119,7 @@ def test_card_deck_by_valid_ids_region_error(region_tag):
                 57416],
         'hero': 813
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_deck(region_tag, field_values, locale='enus')
 
 
@@ -149,7 +149,7 @@ def test_card_deck_by_valid_id_region_error(region_tag):
         'ids': 906,
         'hero': 813
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_deck(region_tag, field_values, locale='enus')
 
 
@@ -166,7 +166,7 @@ def test_metadata_index(region_tag):
 
 @pytest.mark.parametrize('region_tag', INVALID_REGIONS)
 def test_metadata_index_region_error(region_tag):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         metadata(region_tag, locale='enus')
 
 
@@ -187,7 +187,7 @@ def test_metadata_types(region_tag, metadata_type):
                          list(product(INVALID_REGIONS,
                                       ('sets', 'setGroups', 'types', 'rarities', 'classes', 'minionTypes', 'keywords'))))
 def test_metadata_types_region_error(region_tag, metadata_type):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         metadata(region_tag, meta_data=metadata_type, locale='enus')
 
 
@@ -212,7 +212,7 @@ def test_card_search_all_cards(region_tag):
 
 @pytest.mark.parametrize('region_tag', INVALID_REGIONS)
 def test_search_all_cards_region_error(region_tag):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_search(region_tag, {}, locale='enus')
 
 
@@ -242,7 +242,7 @@ def test_card_search_valid_fields_region_error(region_tag):
         'class': 'shaman',
         'attack': 2
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_search(region_tag, field_values, locale='enus')
 
 
@@ -271,7 +271,7 @@ def test_card_search_invalid_fields_region_error(region_tag):
         'class': 'escort',
         'attack': 2
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card_search(region_tag, field_values, locale='enus')
 
 
@@ -300,5 +300,5 @@ def test_card_valid_region(region_tag, card_id):
                                        '50019-a-new-challenger',
                                        '38531-aberrant-berserker'))))
 def test_card_valid_region(region_tag, card_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         card(region_tag, card_id, locale='enus')

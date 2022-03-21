@@ -98,7 +98,7 @@ Copyright: February 24, 2022
 """
 from typing import Optional, Any, Dict, Union
 
-from . import utils
+from .utils import namespace
 from .. import exceptions
 from .. import utils
 from ..decorators import verify_region
@@ -134,7 +134,7 @@ def achievement_category(
 
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     return uri, params
 
@@ -161,7 +161,7 @@ def achievement(
     uri = f"{utils.api_host(region_tag)}/data/wow/achievement/{achievement_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     return uri, params
 
@@ -188,7 +188,7 @@ def achievement_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/achievement/{achievement_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -254,7 +254,7 @@ def auction(
 
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "dynamic", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -282,7 +282,7 @@ def azerite_essence(
     uri = f"{utils.api_host(region_tag)}/data/wow/azerite-essence/{essence_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -312,7 +312,7 @@ def azerite_essence_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/azerite-essence"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     params.update(field_values)
@@ -344,7 +344,7 @@ def azerite_essence_media(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -374,7 +374,7 @@ def connected_realm(
     uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "dynamic", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -403,7 +403,7 @@ def connected_realm_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/connected-realm"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "dynamic", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
     params.update(field_values)
     return uri, params
@@ -431,7 +431,7 @@ def covenant(
     uri = f"{utils.api_host(region_tag)}/data/wow/covenant/{covenant_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -459,7 +459,7 @@ def covenant_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/covenant/{covenant_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -487,7 +487,7 @@ def soulbind(
     uri = f"{utils.api_host(region_tag)}/data/wow/covenant/soulbind/{soulbind_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -515,7 +515,7 @@ def conduit(
     uri = f"{utils.api_host(region_tag)}/data/wow/covenant/conduit/{conduit_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -543,7 +543,7 @@ def creature_family(
     uri = f"{utils.api_host(region_tag)}/data/wow/creature-family/{family_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -571,7 +571,7 @@ def creature_type(
     uri = f"{utils.api_host(region_tag)}/data/wow/creature-type/{type_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -599,7 +599,7 @@ def creature(
     uri = f"{utils.api_host(region_tag)}/data/wow/creature/{creature_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -628,7 +628,7 @@ def creature_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/creature"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     params.update(field_values)
     return uri, params
@@ -658,7 +658,7 @@ def creature_display_media(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -688,7 +688,7 @@ def creature_family_media(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -714,7 +714,7 @@ def guild_crest_components_index(
     uri = f"{utils.api_host(region_tag)}/data/wow/guild-crest/index"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -747,7 +747,7 @@ def guild_crest_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/{category}/{icon_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -775,7 +775,7 @@ def item_class(
     uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -803,7 +803,7 @@ def item_set(
     uri = f"{utils.api_host(region_tag)}/data/wow/item-set/{set_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -833,7 +833,7 @@ def item_subclass(
     uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}/item-subclass/{subclass_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -861,7 +861,7 @@ def item(
     uri = f"{utils.api_host(region_tag)}/data/wow/item/{item_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -889,7 +889,7 @@ def item_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/item/{item_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -918,7 +918,7 @@ def item_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/item"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     #  adding locale and namespace key/values pairs to field_values to make a complete params list
     params.update(field_values)
@@ -948,7 +948,7 @@ def journal_expansion(
     uri = f"{utils.api_host(region_tag)}/data/wow/journal-expansion/{expansion_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -979,7 +979,7 @@ def journal_encounter(
     uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{encounter_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1008,7 +1008,7 @@ def journal_encounter_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/journal-encounter"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     params.update(field_values)
@@ -1037,7 +1037,7 @@ def journal_instance(
     uri = f"{utils.api_host(region_tag)}/data/wow/journal-instance/{instance_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1065,7 +1065,7 @@ def journal_instance_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/journal-instance/{instance_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1094,7 +1094,7 @@ def media_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/media"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     #  adding locale and namespace key/values pairs to field_values to make a complete params list
     params.update(field_values)
@@ -1122,7 +1122,7 @@ def modified_crafting(
     uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1150,7 +1150,7 @@ def modified_crafting_category(
     uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/category/{category_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1178,7 +1178,7 @@ def modified_crafting_reagent_slot_type(
     uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/reagent-slot-type/{slot_type_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1206,7 +1206,7 @@ def mount(
     uri = f"{utils.api_host(region_tag)}/data/wow/mount/{mount_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1235,7 +1235,7 @@ def mount_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/mount"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     #  adding locale and namespace key/values pairs to field_values to make a complete params list
     params.update(field_values)
@@ -1264,7 +1264,7 @@ def mythic_keystone_affix(
     uri = f"{utils.api_host(region_tag)}/data/wow/keystone-affix/{affix_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1292,7 +1292,7 @@ def mythic_keystone_affix_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/keystone-affix/{affix_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1320,7 +1320,7 @@ def mythic_keystone_dungeon(
     uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/dungeon/{dungeon_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1346,7 +1346,7 @@ def mythic_keystone_index(
     uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/index"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1376,7 +1376,7 @@ def mythic_keystone_period(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1406,7 +1406,7 @@ def mythic_keystone_season(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1445,7 +1445,7 @@ def mythic_keystone_leaderboard(
 
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1476,7 +1476,7 @@ def mythic_raid_leaderboard(
     uri += f"{utils.slugify(raid_name)}/{utils.slugify(faction)}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1504,7 +1504,7 @@ def pet(
     uri = f"{utils.api_host(region_tag)}/data/wow/pet/{pet_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1532,7 +1532,7 @@ def pet_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/pet/{pet_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1560,7 +1560,7 @@ def pet_ability(
     uri = f"{utils.api_host(region_tag)}/data/wow/pet-ability/{pet_ability_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1588,7 +1588,7 @@ def pet_ability_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/pet-ability/{ability_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1616,7 +1616,7 @@ def playable_class(
     uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1644,7 +1644,7 @@ def playable_class_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-class/{class_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1672,7 +1672,7 @@ def pvp_talent_slots(
     uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}/pvp-talent-slots"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1700,7 +1700,7 @@ def playable_race(
     uri = f"{utils.api_host(region_tag)}/data/wow/playable-race/{race_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1729,7 +1729,7 @@ def playable_spec(
     uri = f"{utils.api_host(region_tag)}/data/wow/playable-specialization/{spec_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1757,7 +1757,7 @@ def playable_spec_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-specialization/{spec_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1785,7 +1785,7 @@ def power_type(
     uri = f"{utils.api_host(region_tag)}/data/wow/power-type/{power_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1813,7 +1813,7 @@ def profession(
     uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1841,7 +1841,7 @@ def profession_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/profession/{profession_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1871,7 +1871,7 @@ def profession_skill_tier(
     uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}/skill-tier/{skill_tier_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1899,7 +1899,7 @@ def recipe(
     uri = f"{utils.api_host(region_tag)}/data/wow/recipe/{recipe_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1927,7 +1927,7 @@ def recipe_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/recipe/{recipe_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1955,7 +1955,7 @@ def pvp_season(
     uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -1981,7 +1981,7 @@ def pvp_regions(
     uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/index"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2011,7 +2011,7 @@ def pvp_regional_season(
     uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/{pvp_region_id}/pvp-season/{pvp_season_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2045,7 +2045,7 @@ def pvp_leaderboard(
     uri += f"{season_id}/pvp-leaderboard/{pvp_bracket}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2075,7 +2075,7 @@ def pvp_rewards_index(
     uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/{pvp_region_id}/pvp-season/{season_id}/pvp-reward/index"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2103,7 +2103,7 @@ def pvp_tier(
     uri = f"{utils.api_host(region_tag)}/data/wow/pvp-tier/{tier_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2131,7 +2131,7 @@ def pvp_tier_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/pvp-tier/{tier_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2159,7 +2159,7 @@ def quest(
     uri = f"{utils.api_host(region_tag)}/data/wow/quest/{quest_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2190,7 +2190,7 @@ def quest_category(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2218,7 +2218,7 @@ def quest_area(
     uri = f"{utils.api_host(region_tag)}/data/wow/quest/area/{quest_area_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2247,7 +2247,7 @@ def quest_type(
     uri = f"{utils.api_host(region_tag)}/data/wow/quest/type/{quest_type_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2275,7 +2275,7 @@ def realm(
     uri = f"{utils.api_host(region_tag)}/data/wow/realm/{utils.slugify(realm_slug)}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2305,7 +2305,7 @@ def realm_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/realm"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     params.update(field_values)
     return uri, params
@@ -2333,7 +2333,7 @@ def region(
     uri = f"{utils.api_host(region_tag)}/data/wow/region/{region_req}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2362,7 +2362,7 @@ def reputation_faction(
     uri = f"{utils.api_host(region_tag)}/data/wow/reputation-faction/{faction_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2390,7 +2390,7 @@ def reputation_tier(
     uri = f"{utils.api_host(region_tag)}/data/wow/reputation-tiers/{tier_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2418,7 +2418,7 @@ def spell(
     uri = f"{utils.api_host(region_tag)}/data/wow/spell/{spell_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2446,7 +2446,7 @@ def spell_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/spell/{spell_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2474,7 +2474,7 @@ def spell_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/spell"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
     #  adding locale and namespace key/values pairs to field_values to make a complete params list
     params.update(field_values)
@@ -2503,7 +2503,7 @@ def talent(
     uri = f"{utils.api_host(region_tag)}/data/wow/talent/{talent_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2532,7 +2532,7 @@ def pvp_talent(
     uri = f"{utils.api_host(region_tag)}/data/wow/pvp-talent/{pvp_talent_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2560,7 +2560,7 @@ def tech_talent_tree(
     uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent-tree/{tree_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2588,7 +2588,7 @@ def tech_talent(
     uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent/{talent_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2616,7 +2616,7 @@ def tech_talent_media(
     uri = f"{utils.api_host(region_tag)}/data/wow/media/tech-talent/{talent_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2644,7 +2644,7 @@ def title(
     uri = f"{utils.api_host(region_tag)}/data/wow/title/{title_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params
@@ -2670,7 +2670,7 @@ def wow_token_index(
     uri = f"{utils.api_host(region_tag)}/data/wow/token/index"
     params = {
         "locale": utils.localize(locale),
-        "namespace": utils.namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "static", release)
     }
 
     return uri, params

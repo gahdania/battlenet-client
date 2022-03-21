@@ -2,7 +2,7 @@ from itertools import product
 
 import pytest
 from battlenet_client.wow import utils
-from battlenet_client.exceptions import BNetValueError, BNetRegionError
+from battlenet_client.exceptions import BNetValueError, BNetRegionNotFoundError
 
 
 @pytest.mark.parametrize(('api_type', 'release', 'expected'),
@@ -29,11 +29,4 @@ def test_namespace_valid_params(api_type, release, expected):
                           ('profile', 'classic-x', 'us')])
 def test_namespace_invalid_api_type_or_release(api_type, release, region):
     with pytest.raises(BNetValueError):
-        utils.namespace(region, api_type, release)
-
-
-@pytest.mark.parametrize(('api_type', 'release', 'region'),
-                         list(product(('static', 'dynamic', 'profile'), ('classic',), ('ca',))))
-def test_namespace_invalid_region(api_type, release, region):
-    with pytest.raises(BNetRegionError):
         utils.namespace(region, api_type, release)

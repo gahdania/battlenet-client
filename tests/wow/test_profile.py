@@ -1,7 +1,7 @@
 import pytest
 from itertools import product
 
-from battlenet_client.exceptions import BNetRegionError, BNetValueError
+from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError
 from battlenet_client.constants import VALID_REGIONS
 from battlenet_client.wow.profile import (
     account_profile_summary, protected_character_profile_summary, account_collections, achievement_summary,
@@ -15,7 +15,7 @@ from ..constants import INVALID_REGIONS
 
 
 @pytest.mark.parametrize('region_tag, release',
-                         list(product(VALID_REGIONS, Release.ALL)))
+                         list(product(VALID_REGIONS, Release.all())))
 def test_account_profile_summary_default_index(region_tag, release):
     data = account_profile_summary(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
@@ -31,14 +31,14 @@ def test_account_profile_summary_default_index(region_tag, release):
 
 
 @pytest.mark.parametrize('region_tag, release',
-                         list(product(INVALID_REGIONS, Release.ALL)))
+                         list(product(INVALID_REGIONS, Release.all())))
 def test_account_profile_summary_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         account_profile_summary(region_tag, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_id, character_id',
-                         list(product(VALID_REGIONS, Release.ALL, (1, '1', 1234, '1234'), (56065486, "56546846"))))
+                         list(product(VALID_REGIONS, Release.all(), (1, '1', 1234, '1234'), (56065486, "56546846"))))
 def test_account_protected_character_profile_summary_id(region_tag, release, realm_id, character_id):
     data = protected_character_profile_summary(region_tag, realm_id, character_id, release=release, locale='enus')
     assert isinstance(data, tuple)
@@ -54,14 +54,14 @@ def test_account_protected_character_profile_summary_id(region_tag, release, rea
 
 
 @pytest.mark.parametrize('region_tag, release, realm_id, character_id',
-                         list(product(INVALID_REGIONS, Release.ALL, (1, '1', 1234, '1234'), (56065486, "56546846"))))
+                         list(product(INVALID_REGIONS, Release.all(), (1, '1', 1234, '1234'), (56065486, "56546846"))))
 def test_protected_character_profile_summary_id_invalid_region(region_tag, release, realm_id, character_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         protected_character_profile_summary(region_tag, realm_id, character_id, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release',
-                         list(product(VALID_REGIONS, Release.ALL)))
+                         list(product(VALID_REGIONS, Release.all())))
 def test_account_collections_default_index(region_tag, release):
     data = account_collections(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
@@ -77,14 +77,14 @@ def test_account_collections_default_index(region_tag, release):
 
 
 @pytest.mark.parametrize('region_tag, release',
-                         list(product(INVALID_REGIONS, Release.ALL)))
+                         list(product(INVALID_REGIONS, Release.all())))
 def test_account_collections_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         account_collections(region_tag, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, collection_type',
-                         list(product(VALID_REGIONS, Release.ALL, (None, 'mounts', 'pets'))))
+                         list(product(VALID_REGIONS, Release.all(), (None, 'mounts', 'pets'))))
 def test_account_collections_id(region_tag, release, collection_type):
     data = account_collections(region_tag, category=collection_type, release=release, locale='enus')
     assert isinstance(data, tuple)
@@ -103,21 +103,21 @@ def test_account_collections_id(region_tag, release, collection_type):
 
 
 @pytest.mark.parametrize('region_tag, release, collection_type',
-                         list(product(INVALID_REGIONS, Release.ALL, (None, 'mounts', 'pets'))))
+                         list(product(INVALID_REGIONS, Release.all(), (None, 'mounts', 'pets'))))
 def test_character_profile_summary_id_invalid_region(region_tag, release, collection_type):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         account_collections(region_tag, category=collection_type, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, collection_type',
-                         list(product(VALID_REGIONS, Release.ALL, ('achivements', 'encounters'))))
+                         list(product(VALID_REGIONS, Release.all(), ('achivements', 'encounters'))))
 def test_character_profile_summary_id_invalid_region(region_tag, release, collection_type):
     with pytest.raises(BNetValueError):
         account_collections(region_tag, category=collection_type, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_achievement_summary_id(region_tag, release, realm_slug, character_slug):
@@ -136,16 +136,16 @@ def test_character_achievement_summary_id(region_tag, release, realm_slug, chara
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_achievement_summary_id_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, stats',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (True, False))))
 def test_character_achievement_summary_statistics_id(region_tag, release, realm_slug, character_slug, stats):
@@ -167,18 +167,18 @@ def test_character_achievement_summary_statistics_id(region_tag, release, realm_
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, stats_flag',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (True, False))))
 def test_character_achievement_summary_statistics_id_invalid_region(region_tag, release, realm_slug, character_slug,
                                                                     stats_flag):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement_summary(region_tag, realm_slug, character_slug, statistics=stats_flag, release=release,
                             locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_appearance_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -197,16 +197,16 @@ def test_character_appearance_summary_default_index(region_tag, release, realm_s
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_appearance_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         appearance_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_collections_default_index(region_tag, release, realm_slug, character_slug):
@@ -225,16 +225,16 @@ def test_character_collections_default_index(region_tag, release, realm_slug, ch
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_collections_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         collections(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 'mounts', 'pets'))))
 def test_character_collections_id(region_tag, release, realm_slug, character_slug, collection_type):
@@ -256,7 +256,7 @@ def test_character_collections_id(region_tag, release, realm_slug, character_slu
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 'mounts', 'pets'))))
 def test_character_collections_id_invalid_region(region_tag, release, realm_slug, character_slug, collection_type):
@@ -265,7 +265,7 @@ def test_character_collections_id_invalid_region(region_tag, release, realm_slug
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), ('achievements', 'encounters'))))
 def test_character_collections_id_invalid_category(region_tag, release, realm_slug, character_slug, collection_type):
@@ -274,7 +274,7 @@ def test_character_collections_id_invalid_category(region_tag, release, realm_sl
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_encounters_default_index(region_tag, release, realm_slug, character_slug):
@@ -293,16 +293,16 @@ def test_character_encounters_default_index(region_tag, release, realm_slug, cha
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_encounters_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         encounters(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 'dungeons', 'raids'))))
 def test_character_encounters_id(region_tag, release, realm_slug, character_slug, collection_type):
@@ -324,16 +324,16 @@ def test_character_encounters_id(region_tag, release, realm_slug, character_slug
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 'dungeons', 'raids'))))
 def test_character_collections_id_invalid_region(region_tag, release, realm_slug, character_slug, collection_type):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         collections(region_tag, realm_slug, character_slug, category=collection_type, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), ('achievements', 'encounters'))))
 def test_character_collections_id_invalid_category(region_tag, release, realm_slug, character_slug, collection_type):
@@ -342,7 +342,7 @@ def test_character_collections_id_invalid_category(region_tag, release, realm_sl
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_equipment_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -361,16 +361,16 @@ def test_character_equipment_summary_default_index(region_tag, release, realm_sl
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_equipment_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         equipment_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_hunter_pets_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -389,16 +389,16 @@ def test_character_hunter_pets_summary_default_index(region_tag, release, realm_
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_hunter_pets_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         hunter_pets_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_media_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -417,16 +417,16 @@ def test_character_media_summary_default_index(region_tag, release, realm_slug, 
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_media_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         media_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_mythic_keystone_default_index(region_tag, release, realm_slug, character_slug):
@@ -445,14 +445,14 @@ def test_character_mythic_keystone_default_index(region_tag, release, realm_slug
 
 
 @pytest.mark.parametrize('region_tag, release',
-                         list(product(INVALID_REGIONS, Release.ALL)))
+                         list(product(INVALID_REGIONS, Release.all())))
 def test_character_mythic_keystone_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone(region_tag, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, season_id',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 1, 67))))
 def test_character_mythic_keystone_id(region_tag, release, realm_slug, character_slug, season_id):
@@ -474,16 +474,16 @@ def test_character_mythic_keystone_id(region_tag, release, realm_slug, character
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, season_id',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 1, 67))))
 def test_character_mythic_keystone_id_invalid_region(region_tag, release, realm_slug, character_slug, season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone(region_tag, realm_slug, character_slug, season_id=season_id, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_professions_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -502,16 +502,16 @@ def test_character_professions_summary_default_index(region_tag, release, realm_
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_professions_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         professions_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, status',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (True, False))))
 def test_character_profile_statistics_id(region_tag, release, realm_slug, character_slug, status):
@@ -533,16 +533,16 @@ def test_character_profile_statistics_id(region_tag, release, realm_slug, charac
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, status',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (True, False))))
 def test_character_profile_statistics_id_invalid_region(region_tag, release, realm_slug, character_slug, status):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         profile(region_tag, realm_slug, character_slug, status=status, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, bracket',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'),
                                       (None, '2v2', '3v3', '5v5', 'rbg'))))
@@ -565,17 +565,17 @@ def test_character_pvp_id(region_tag, release, realm_slug, character_slug, brack
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, bracket',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'),
                                       (None, '2v2', '3v3', '5v5', 'rbg'))))
 def test_character_pvp_statistics_id_invalid_region(region_tag, release, realm_slug, character_slug, bracket):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp(region_tag, realm_slug, character_slug, pvp_bracket=bracket, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, bracket',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'),
                                       ('1v1', '4b4', '5b5', 'ubg'))))
@@ -585,7 +585,7 @@ def test_character_pvp_statistics_id_invalid_bracket(region_tag, release, realm_
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, completed',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (True, False))))
 def test_character_quests_id(region_tag, release, realm_slug, character_slug, completed):
@@ -607,16 +607,16 @@ def test_character_quests_id(region_tag, release, realm_slug, character_slug, co
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, completed',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (True, False))))
 def test_character_quests_id_invalid_region(region_tag, release, realm_slug, character_slug, completed):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quests(region_tag, realm_slug, character_slug, completed=completed, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_reputations_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -635,16 +635,16 @@ def test_character_reputations_summary_default_index(region_tag, release, realm_
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_reputations_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         reputations_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL, ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
+                         list(product(VALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_soulbinds_default_index(region_tag, release, realm_slug, character_slug):
     data = soulbinds(region_tag, realm_slug, character_slug, release=release, locale='enus')
@@ -662,16 +662,16 @@ def test_character_soulbinds_default_index(region_tag, release, realm_slug, char
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_soulbinds_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         soulbinds(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL, ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
+                         list(product(VALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_specializations_summary_default_index(region_tag, release, realm_slug, character_slug):
     data = specializations_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
@@ -689,17 +689,17 @@ def test_character_specializations_summary_default_index(region_tag, release, re
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_characters_specializations_summary_default_index_invalid_region(region_tag, release, realm_slug,
                                                                          character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         specializations_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL, ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
+                         list(product(VALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_statistics_summary_default_index(region_tag, release, realm_slug, character_slug):
     data = statistics_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
@@ -717,16 +717,16 @@ def test_character_statistics_summary_default_index(region_tag, release, realm_s
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_characters_statistics_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         statistics_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_titles_summary_default_index(region_tag, release, realm_slug, character_slug):
@@ -745,16 +745,16 @@ def test_character_titles_summary_default_index(region_tag, release, realm_slug,
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_characters_title_summary_default_index_invalid_region(region_tag, release, realm_slug, character_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         title_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, guild_slug, category',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('To The Rescue', 'Thanks I hate it', 'Knights of the WoW Table'),
                                       (None, 'activity', 'achievements', 'roster'))))
@@ -777,17 +777,17 @@ def test_guild_id(region_tag, release, realm_slug, guild_slug, category):
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, guild_slug, category',
-                         list(product(INVALID_REGIONS, Release.ALL,
+                         list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('To The Rescue', 'Thanks I hate it', 'Knights of the WoW Table'),
                                       (None, 'activity', 'achievements', 'roster'))))
 def test_guild_default_index_invalid_region(region_tag, release, realm_slug, guild_slug, category):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         guild(region_tag, realm_slug, guild_slug, category=category, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, guild_slug, category',
-                         list(product(VALID_REGIONS, Release.ALL,
+                         list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('To The Rescue', 'Thanks I hate it', 'Knights of the WoW Table'),
                                       ('laxidazial', 'undergrad', 'poster-child'))))

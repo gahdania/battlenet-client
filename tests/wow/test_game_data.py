@@ -1,7 +1,7 @@
 import pytest
 from itertools import product
 
-from battlenet_client.exceptions import BNetRegionError, BNetValueError, BNetReleaseError
+from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError, BNetReleaseError
 from battlenet_client.constants import VALID_REGIONS
 from battlenet_client import utils
 from battlenet_client.wow.game_data import (
@@ -61,7 +61,7 @@ def test_achievement_category_default_index_all_locales(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_achievement_category_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement_category(region_tag, release=release, locale='enus')
 
 
@@ -100,7 +100,7 @@ def test_achievement_category_id_all_locales(region_tag, release, category):
 @pytest.mark.parametrize('region_tag, release, category',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 81, '81'))))
 def test_achievement_category_id_invalid_region(region_tag, release, category):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement_category(region_tag, category_id=category, release=release, locale='enus')
 
 
@@ -137,7 +137,7 @@ def test_achievement_default_index_all_locales(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_achievement_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement_category(region_tag, release=release, locale='enus')
 
 
@@ -160,7 +160,7 @@ def test_achievement_id(region_tag, release, achievement_id):
 @pytest.mark.parametrize('region_tag, release, category',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 81, '81'))))
 def test_achievement_id_invalid_region(region_tag, release, category):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement(region_tag, achievement_id=category, release=release, locale='enus')
 
 
@@ -183,7 +183,7 @@ def test_achievement_media_id(region_tag, release, achievement_id):
 @pytest.mark.parametrize('region_tag, release, category',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 81, '81'))))
 def test_achievement_media_id_invalid_region(region_tag, release, category):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         achievement_media(region_tag, achievement_id=category, release=release, locale='enus')
 
 
@@ -278,7 +278,7 @@ def test_azerite_essence_default_index_all_locales(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, (Release.RETAIL,))))
 def test_azerite_essence_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         azerite_essence(region_tag, release=release, locale='enus')
 
 
@@ -301,7 +301,7 @@ def test_azerite_essence_id(region_tag, release, essence_id):
 @pytest.mark.parametrize('region_tag, release, essence_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 2, '2'))))
 def test_azerite_essence_id_invalid_region(region_tag, release, essence_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         azerite_essence(region_tag, essence_id=essence_id, release=release, locale='enus')
 
 
@@ -338,7 +338,7 @@ def test_azerite_essence_search_invalid_region(region_tag, release, essence_id):
         'orderby': 'name',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         azerite_essence_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -361,7 +361,7 @@ def test_azerite_essence_media(region_tag, release, essence_id):
 @pytest.mark.parametrize('region_tag, release, essence_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 2, '2'))))
 def test_azerite_essence_media_id_invalid_region(region_tag, release, essence_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         azerite_essence_media(region_tag, essence_id=essence_id, release=release, locale='enus')
 
 
@@ -384,7 +384,7 @@ def test_connected_realm_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_connected_realm_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         connected_realm(region_tag, release=release, locale='enus')
 
 
@@ -409,7 +409,7 @@ def test_connected_realm_id(region_tag, release, cr_id):
                          list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 4, 5, 9, 11, 4372, 4373, 4374, 4376, 5064, 5066, 5072))))
 def test_connected_realm_id_invalid_region(region_tag, release, cr_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         connected_realm(region_tag, connected_realm_id=cr_id, release=release, locale='enus')
 
 
@@ -447,7 +447,7 @@ def test_connected_realm_search_invalid_region(region_tag, release):
         'orderby': 'id',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         connected_realm_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -470,7 +470,7 @@ def test_covenant_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_covenant_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         covenant(region_tag, release=release, locale='enus')
 
 
@@ -493,7 +493,7 @@ def test_covenant_id(region_tag, release, covenant_id):
 @pytest.mark.parametrize('region_tag, release, covenant_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, '1'))))
 def test_covenant_id_invalid_region(region_tag, release, covenant_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         covenant(region_tag, covenant_id=covenant_id, release=release, locale='enus')
 
 
@@ -516,7 +516,7 @@ def test_covenant_media_id(region_tag, release, covenant_id):
 @pytest.mark.parametrize('region_tag, release, covenant_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, '1'))))
 def test_covenant_media_id_invalid_region(region_tag, release, covenant_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         covenant_media(region_tag, covenant_id=covenant_id, release=release, locale='enus')
 
 
@@ -539,7 +539,7 @@ def test_soulbind_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_soulbind_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         soulbind(region_tag, release=release, locale='enus')
 
 
@@ -562,7 +562,7 @@ def test_soulbind_id(region_tag, release, soulbind_id):
 @pytest.mark.parametrize('region_tag, release, soulbind_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_soulbind_id_invalid_region(region_tag, release, soulbind_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         soulbind(region_tag, soulbind_id=soulbind_id, release=release, locale='enus')
 
 
@@ -585,7 +585,7 @@ def test_conduit_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_conduit_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         conduit(region_tag, release=release, locale='enus')
 
 
@@ -608,7 +608,7 @@ def test_conduit_id(region_tag, release, conduit_id):
 @pytest.mark.parametrize('region_tag, release, conduit_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_conduit_id_invalid_region(region_tag, release, conduit_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         conduit(region_tag, conduit_id=conduit_id, release=release, locale='enus')
 
 
@@ -631,7 +631,7 @@ def test_creature_family_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_creature_family_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_family(region_tag, release=release, locale='enus')
 
 
@@ -654,7 +654,7 @@ def test_creature_family_id(region_tag, release, family_id):
 @pytest.mark.parametrize('region_tag, release, creature_family_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_creature_family_id_invalid_region(region_tag, release, creature_family_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_family(region_tag, creature_family_id=creature_family_id, release=release, locale='enus')
 
 
@@ -677,7 +677,7 @@ def test_creature_type_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_creature_type_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_type(region_tag, release=release, locale='enus')
 
 
@@ -700,7 +700,7 @@ def test_creature_type_id(region_tag, release, type_id):
 @pytest.mark.parametrize('region_tag, release, creature_type_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_creature_type_id_invalid_region(region_tag, release, creature_type_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_type(region_tag, creature_type_id=creature_type_id, release=release, locale='enus')
 
 
@@ -723,7 +723,7 @@ def test_creature_id(region_tag, release, creature_id):
 @pytest.mark.parametrize('region_tag, release, creature_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_creature_id_invalid_region(region_tag, release, creature_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature(region_tag, creaturetype_id=creature_id, release=release, locale='enus')
 
 
@@ -762,7 +762,7 @@ def test_creature_search_id_invalid_region(region_tag, release):
         '_page': 1
     }
 
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -785,7 +785,7 @@ def test_creature_display_media_id(region_tag, release, creature_id):
 @pytest.mark.parametrize('region_tag, release, creature_display_media_id',
                          list(product(INVALID_REGIONS, Release.all(), (42722, '42722'))))
 def test_creature_display_media_id_invalid_region(region_tag, release, creature_display_media_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_display_media(region_tag, creature_display_mediatype_id=creature_display_media_id, release=release,
                                locale='enus')
 
@@ -809,7 +809,7 @@ def test_creature_family_media_id(region_tag, release, family_id):
 @pytest.mark.parametrize('region_tag, release, creature_family_media_id',
                          list(product(INVALID_REGIONS, Release.all(), (42722, '42722'))))
 def test_creature_family_media_id_invalid_region(region_tag, release, creature_family_media_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         creature_family_media(region_tag, creature_family_mediatype_id=creature_family_media_id, release=release,
                               locale='enus')
 
@@ -833,7 +833,7 @@ def test_guild_crest_components_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_guild_crest_components_index_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         guild_crest_components_index(region_tag, release=release, locale='enus')
 
 
@@ -856,7 +856,7 @@ def test_guild_crest_media_category_and_id(region_tag, release, category, crest_
 @pytest.mark.parametrize('region_tag, release, category, crest_id',
                          list(product(INVALID_REGIONS, Release.all(), ('border', 'emblem'), (1, '1'))))
 def test_guild_crest_media_category_id_invalid_region(region_tag, release, category, crest_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         guild_crest_media(region_tag, category, crest_id, release=release, locale='enus')
 
 
@@ -886,7 +886,7 @@ def test_item_class_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_item_class_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_class(region_tag, release=release, locale='enus')
 
 
@@ -909,7 +909,7 @@ def test_item_class_id(region_tag, release, item_class_id):
 @pytest.mark.parametrize('region_tag, release, item_class_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_item_class_id_invalid_region(region_tag, release, item_class_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_class(region_tag, class_id=item_class_id, release=release, locale='enus')
 
 
@@ -932,7 +932,7 @@ def test_item_set_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_item_set_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_set(region_tag, release=release, locale='enus')
 
 
@@ -955,7 +955,7 @@ def test_item_set_id(region_tag, release, item_set_id):
 @pytest.mark.parametrize('region_tag, release, item_set_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1'))))
 def test_item_set_id_invalid_region(region_tag, release, item_set_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_set(region_tag, set_id=item_set_id, release=release, locale='enus')
 
 
@@ -978,7 +978,7 @@ def test_item_subclass_id(region_tag, release, class_id, subclass_id):
 @pytest.mark.parametrize('region_tag, release, class_id, subclass_id',
                          list(product(INVALID_REGIONS, Release.all(), (0, 0), (0, 0))))
 def test_item_subclass_id_invalid_region(region_tag, release, class_id, subclass_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_subclass(region_tag, class_id, subclass_id, release=release, locale='enus')
 
 
@@ -1001,7 +1001,7 @@ def test_item_id(region_tag, release, item_id):
 @pytest.mark.parametrize('region_tag, release, item_id',
                          list(product(INVALID_REGIONS, Release.all(), (1019, '19019'))))
 def test_item_id_invalid_region(region_tag, release, item_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item(region_tag, item_id, release=release, locale='enus')
 
 
@@ -1024,7 +1024,7 @@ def test_item_media_id(region_tag, release, item_id):
 @pytest.mark.parametrize('region_tag, release, item_id',
                          list(product(INVALID_REGIONS, Release.all(), (1019, '19019'))))
 def test_item_media_id_invalid_region(region_tag, release, item_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_media(region_tag, item_id, release=release, locale='enus')
 
 
@@ -1060,7 +1060,7 @@ def test_item_search_invalid_region(region_tag, release):
         'orderby': 'id',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         item_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -1083,7 +1083,7 @@ def test_journal_expansion_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_journal_expansion_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_expansion(region_tag, release=release, locale='enus')
 
 
@@ -1106,7 +1106,7 @@ def test_journal_expansion_id(region_tag, release, expansion_id):
 @pytest.mark.parametrize('region_tag, release, expansion_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_journal_expansion_id_invalid_region(region_tag, release, expansion_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_expansion(region_tag, expansion_id, release=release, locale='enus')
 
 
@@ -1129,7 +1129,7 @@ def test_journal_encounter_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_journal_encounter_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_encounter(region_tag, release=release, locale='enus')
 
 
@@ -1152,7 +1152,7 @@ def test_journal_encounter_id(region_tag, release, encounter_id):
 @pytest.mark.parametrize('region_tag, release, encounter_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_journal_encounter_id_invalid_region(region_tag, release, encounter_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_encounter(region_tag, encounter_id, release=release, locale='enus')
 
 
@@ -1189,7 +1189,7 @@ def test_journal_encounter_search_invalid_region(region_tag, release):
         'orderby': 'id:desc',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_encounter_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -1212,7 +1212,7 @@ def test_journal_instance_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_journal_instance_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_instance(region_tag, release=release, locale='enus')
 
 
@@ -1235,7 +1235,7 @@ def test_journal_instance_id(region_tag, release, instance_id):
 @pytest.mark.parametrize('region_tag, release, instance_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_journal_instance_id_invalid_region(region_tag, release, instance_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_instance(region_tag, instance_id, release=release, locale='enus')
 
 
@@ -1258,7 +1258,7 @@ def test_journal_instance_media(region_tag, release, journal_instance_id):
 @pytest.mark.parametrize('region_tag, release, instance_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_journal_instance_media_id_invalid_region(region_tag, release, instance_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         journal_instance_media(region_tag, instance_id, release=release, locale='enus')
 
 
@@ -1294,7 +1294,7 @@ def test_media_search_invalid_region(region_tag, release):
         'orderby': 'id',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         media_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -1317,7 +1317,7 @@ def test_modified_crafting_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_modified_crafting_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         modified_crafting(region_tag, release=release, locale='enus')
 
 
@@ -1340,7 +1340,7 @@ def test_modified_crafting_category_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_modified_crafting_category_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         modified_crafting_category(region_tag, release=release, locale='enus')
 
 
@@ -1363,7 +1363,7 @@ def test_modified_crafting_category_id(region_tag, release, category_id):
 @pytest.mark.parametrize('region_tag, release, category_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_modified_crafting_category_id_invalid_region(region_tag, release, category_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         modified_crafting_category(region_tag, category_id=category_id, release=release, locale='enus')
 
 
@@ -1386,7 +1386,7 @@ def test_modified_crafting_reagent_slot_type_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_modified_crafting_reagent_slot_type_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         modified_crafting_reagent_slot_type(region_tag, release=release, locale='enus')
 
 
@@ -1410,7 +1410,7 @@ def test_modified_crafting_reagent_slot_type_id(region_tag, release, reagent_slo
 @pytest.mark.parametrize('region_tag, release, reagent_slot_type_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_modified_crafting_reagent_slot_type_id_invalid_region(region_tag, release, reagent_slot_type_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         modified_crafting_reagent_slot_type(region_tag, slot_type_id=reagent_slot_type_id, release=release,
                                             locale='enus')
 
@@ -1434,7 +1434,7 @@ def test_mount_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mount_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mount(region_tag, release=release, locale='enus')
 
 
@@ -1457,7 +1457,7 @@ def test_mount_id(region_tag, release, mount_id):
 @pytest.mark.parametrize('region_tag, release, mount_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mount_id_invalid_region(region_tag, release, mount_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mount(region_tag, mount_id=mount_id, release=release, locale='enus')
 
 
@@ -1493,7 +1493,7 @@ def test_mount_search_invalid_region(region_tag, release):
         'orderby': 'id',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mount_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -1516,7 +1516,7 @@ def test_mythic_keystone_affix_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mythic_keystone_affix_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_affix(region_tag, release=release, locale='enus')
 
 
@@ -1539,7 +1539,7 @@ def test_mythic_keystone_affix_id(region_tag, release, mythic_keystone_affix_id)
 @pytest.mark.parametrize('region_tag, release, mythic_keystone_affix_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mythic_keystone_affix_id_invalid_region(region_tag, release, mythic_keystone_affix_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_affix(region_tag, affix_id=mythic_keystone_affix_id, release=release, locale='enus')
 
 
@@ -1562,7 +1562,7 @@ def test_mythic_keystone_affix_media(region_tag, release, mythic_keystone_affix_
 @pytest.mark.parametrize('region_tag, release, mythic_keystone_affix_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mythic_keystone_affix_media_id_invalid_region(region_tag, release, mythic_keystone_affix_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_affix(region_tag, affix_id=mythic_keystone_affix_id, release=release, locale='enus')
 
 
@@ -1585,7 +1585,7 @@ def test_mythic_keystone_dungeon_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mythic_keystone_dungeon_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_dungeon(region_tag, release=release, locale='enus')
 
 
@@ -1608,7 +1608,7 @@ def test_mythic_keystone_dungeon_id(region_tag, release, mythic_keystone_dungeon
 @pytest.mark.parametrize('region_tag, release, mythic_keystone_dungeon_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mythic_keystone_dungeon_id_invalid_region(region_tag, release, mythic_keystone_dungeon_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_dungeon(region_tag, dungeon_id=mythic_keystone_dungeon_id, release=release, locale='enus')
 
 
@@ -1631,7 +1631,7 @@ def test_mythic_keystone_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mythic_keystone_index_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_index(region_tag, release=release, locale='enus')
 
 
@@ -1654,7 +1654,7 @@ def test_mythic_keystone_period_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mythic_keystone_period_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_period(region_tag, release=release, locale='enus')
 
 
@@ -1677,7 +1677,7 @@ def test_mythic_keystone_period_id(region_tag, release, mythic_keystone_period_i
 @pytest.mark.parametrize('region_tag, release, mythic_keystone_period_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mythic_keystone_period_id_invalid_region(region_tag, release, mythic_keystone_period_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_period(region_tag, period_id=mythic_keystone_period_id, release=release, locale='enus')
 
 
@@ -1700,7 +1700,7 @@ def test_mythic_keystone_season_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mythic_keystone_season_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_season(region_tag, release=release, locale='enus')
 
 
@@ -1723,7 +1723,7 @@ def test_mythic_keystone_season_id(region_tag, release, mythic_keystone_season_i
 @pytest.mark.parametrize('region_tag, release, mythic_keystone_season_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mythic_keystone_season_id_invalid_region(region_tag, release, mythic_keystone_season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_season(region_tag, season_id=mythic_keystone_season_id, release=release, locale='enus')
 
 
@@ -1746,7 +1746,7 @@ def test_mythic_keystone_leaderboard_default_index(region_tag, release, cr_id):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_mythic_keystone_leaderboard_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_leaderboard(region_tag, release=release, locale='enus')
 
 
@@ -1771,7 +1771,7 @@ def test_mythic_keystone_leaderboard_id(region_tag, release, cr_id, dungeon_id, 
 @pytest.mark.parametrize('region_tag, release, mythic_keystone_leaderboard_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_mythic_keystone_leaderboard_id_invalid_region(region_tag, release, mythic_keystone_leaderboard_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_keystone_leaderboard(region_tag, leaderboard_id=mythic_keystone_leaderboard_id, release=release,
                                     locale='enus')
 
@@ -1799,7 +1799,7 @@ def test_mythic_raid_leaderboard_id(region_tag, release, raid_name, faction):
                                       ('castle nathria', 'sanctum of domination', 'sepulcher of the first ones'),
                                       ('alliance', 'horde'))))
 def test_mythic_raid_leaderboard_id_invalid_region(region_tag, release, raid_name, faction):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         mythic_raid_leaderboard(region_tag, raid_name, faction, release=release, locale='enus')
 
 
@@ -1822,7 +1822,7 @@ def test_pet_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_pet_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pet(region_tag, release=release, locale='enus')
 
 
@@ -1845,7 +1845,7 @@ def test_pet_id(region_tag, release, pet_id):
 @pytest.mark.parametrize('region_tag, release, pet_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_pet_id_invalid_region(region_tag, release, pet_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pet(region_tag, pet_id=pet_id, release=release, locale='enus')
 
 
@@ -1868,7 +1868,7 @@ def test_pet_media(region_tag, release, pet_id):
 @pytest.mark.parametrize('region_tag, release, pet_id',
                          list(product(INVALID_REGIONS, Release.all(), (1019, '19019'))))
 def test_pet_media_id_invalid_region(region_tag, release, pet_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pet_media(region_tag, pet_id, release=release, locale='enus')
 
 
@@ -1891,7 +1891,7 @@ def test_pet_ability_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_pet_ability_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pet_ability(region_tag, release=release, locale='enus')
 
 
@@ -1914,7 +1914,7 @@ def test_pet_ability_id(region_tag, release, pet_ability_id):
 @pytest.mark.parametrize('region_tag, release, pet_ability_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_pet_ability_id_invalid_region(region_tag, release, pet_ability_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pet_ability(region_tag, pet_ability_id=pet_ability_id, release=release, locale='enus')
 
 
@@ -1937,7 +1937,7 @@ def test_pet_ability_media(region_tag, release, pet_ability_id):
 @pytest.mark.parametrize('region_tag, release, pet_ability_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_pet_ability_media_id_invalid_region(region_tag, release, pet_ability_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pet_ability_media(region_tag, pet_ability_id, release=release, locale='enus')
 
 
@@ -1960,7 +1960,7 @@ def test_playable_class_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_playable_class_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_class(region_tag, release=release, locale='enus')
 
 
@@ -1983,7 +1983,7 @@ def test_playable_class_id(region_tag, release, playable_class_id):
 @pytest.mark.parametrize('region_tag, release, class_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_playable_class_id_invalid_region(region_tag, release, class_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_class(region_tag, class_id=class_id, release=release, locale='enus')
 
 
@@ -2006,7 +2006,7 @@ def test_playable_class_media(region_tag, release, playable_class_id):
 @pytest.mark.parametrize('region_tag, release, class_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_playable_class_media_id_invalid_region(region_tag, release, class_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_class_media(region_tag, class_id, release=release, locale='enus')
 
 
@@ -2029,7 +2029,7 @@ def test_pvp_talent_slots_id(region_tag, release, class_id):
 @pytest.mark.parametrize('region_tag, release, class_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_pvp_talent_slots_id_invalid_region(region_tag, release, class_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_talent_slots(region_tag, class_id, release=release, locale='enus')
 
 
@@ -2052,7 +2052,7 @@ def test_playable_race_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_playable_race_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_race(region_tag, release=release, locale='enus')
 
 
@@ -2075,7 +2075,7 @@ def test_playable_race_id(region_tag, release, playable_race_id):
 @pytest.mark.parametrize('region_tag, release, race_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_playable_race_id_invalid_region(region_tag, release, race_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_race(region_tag, race_id=race_id, release=release, locale='enus')
 
 
@@ -2098,7 +2098,7 @@ def test_playable_spec_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_playable_spec_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_spec(region_tag, release=release, locale='enus')
 
 
@@ -2121,7 +2121,7 @@ def test_playable_spec_id(region_tag, release, playable_spec_id):
 @pytest.mark.parametrize('region_tag, release, spec_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_playable_spec_id_invalid_region(region_tag, release, spec_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_spec(region_tag, spec_id, release=release, locale='enus')
 
 
@@ -2144,7 +2144,7 @@ def test_playable_spec_media(region_tag, release, playable_spec_id):
 @pytest.mark.parametrize('region_tag, release, spec_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_playable_spec_media_id_invalid_region(region_tag, release, spec_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         playable_spec_media(region_tag, spec_id, release=release, locale='enus')
 
 
@@ -2167,7 +2167,7 @@ def test_power_type_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_power_type_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         power_type(region_tag, release=release, locale='enus')
 
 
@@ -2190,7 +2190,7 @@ def test_power_type_id(region_tag, release, power_type_id):
 @pytest.mark.parametrize('region_tag, release, type_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_power_type_id_invalid_region(region_tag, release, type_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         power_type(region_tag, type_id, release=release, locale='enus')
 
 
@@ -2213,7 +2213,7 @@ def test_profession_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_profession_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         profession(region_tag, release=release, locale='enus')
 
 
@@ -2236,7 +2236,7 @@ def test_profession_id(region_tag, release, profession_id):
 @pytest.mark.parametrize('region_tag, release, profession_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_profession_id_invalid_region(region_tag, release, profession_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         profession(region_tag, profession_id=profession_id, release=release, locale='enus')
 
 
@@ -2259,7 +2259,7 @@ def test_profession_media(region_tag, release, profession_id):
 @pytest.mark.parametrize('region_tag, release, profession_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_profession_media_id_invalid_region(region_tag, release, profession_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         profession_media(region_tag, profession_id, release=release, locale='enus')
 
 
@@ -2282,7 +2282,7 @@ def test_profession_skill_tier_skill_tier_id(region_tag, release, profession_id,
 @pytest.mark.parametrize('region_tag, release, profession_id, tier_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, '1', 1234, '1234'), (1, '1', 5, '10'))))
 def test_profession_skill_tier_id_invalid_region(region_tag, release, profession_id, tier_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         profession_skill_tier(region_tag, profession_id, tier_id, release=release, locale='enus')
 
 
@@ -2305,7 +2305,7 @@ def test_recipe_id(region_tag, release, recipe_id):
 @pytest.mark.parametrize('region_tag, release, recipe_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_recipe_id_invalid_region(region_tag, release, recipe_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         recipe(region_tag, recipe_id, release=release, locale='enus')
 
 
@@ -2328,7 +2328,7 @@ def test_recipe_media(region_tag, release, recipe_id):
 @pytest.mark.parametrize('region_tag, release, recipe_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, '1', 1234, '1234'))))
 def test_recipe_media_id_invalid_region(region_tag, release, recipe_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         recipe_media(region_tag, recipe_id, release=release, locale='enus')
 
 
@@ -2351,7 +2351,7 @@ def test_pvp_season_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_pvp_season_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_season(region_tag, release=release, locale='enus')
 
 
@@ -2374,7 +2374,7 @@ def test_pvp_season_id(region_tag, release, pvp_season_id):
 @pytest.mark.parametrize('region_tag, release, pvp_season_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_pvp_season_id_invalid_region(region_tag, release, pvp_season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_season(region_tag, season_id=pvp_season_id, release=release, locale='enus')
 
 
@@ -2397,7 +2397,7 @@ def test_pvp_region_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_pvp_regions_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_regions(region_tag, release=release, locale='enus')
 
 
@@ -2420,7 +2420,7 @@ def test_pvp_regional_season_default_index(region_tag, release, region_id):
 @pytest.mark.parametrize('region_tag, release, region_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_pvp_regional_season_default_index_invalid_region(region_tag, release, region_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_regional_season(region_tag, region_id, release=release, locale='enus')
 
 
@@ -2443,7 +2443,7 @@ def test_pvp_regional_season_id(region_tag, release, region_id, season_id):
 @pytest.mark.parametrize('region_tag, release, region_id, season_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, 3, 5), ('index', 1019, '19019'))))
 def test_pvp_regional_season_id_invalid_region(region_tag, release, region_id, season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_regional_season(region_tag, region_id, pvp_season_id=season_id, release=release, locale='enus')
 
 
@@ -2466,7 +2466,7 @@ def test_pvp_leaderboard_default_index(region_tag, release, region_id, season_id
 @pytest.mark.parametrize('region_tag, release, region_id, season_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, 2, 3, 4), (11, 22, 33, 44))))
 def test_pvp_leaderboard_default_index_invalid_region(region_tag, release, region_id, season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_leaderboard(region_tag, region_id, season_id, release=release, locale='enus')
 
 
@@ -2491,7 +2491,7 @@ def test_pvp_leaderboard_id(region_tag, release, region_id, season_id, bracket):
                          list(product(INVALID_REGIONS, Release.all(), (1, 2, 3, 4), ("index", 11, 22, 33, 44),
                                       ('index', '2v2', '3v3', '5v5', 'rbg'))))
 def test_pvp_leaderboard_id_invalid_region(region_tag, release, region_id, season_id, bracket):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_leaderboard(region_tag, region_id, season_id, pvp_bracket=bracket, release=release, locale='enus')
 
 
@@ -2514,7 +2514,7 @@ def test_pvp_reward_default_index(region_tag, release, region_id, season_id):
 @pytest.mark.parametrize('region_tag, release, region_id, season_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, 3, 5), (23, 45, 67, 108))))
 def test_pvp_rewards_index_invalid_region(region_tag, release, region_id, season_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_rewards_index(region_tag, region_id, pvp_season_id=season_id, release=release, locale='enus')
 
 
@@ -2537,7 +2537,7 @@ def test_pvp_tier_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_pvp_tier_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_tier(region_tag, release=release, locale='enus')
 
 
@@ -2560,7 +2560,7 @@ def test_pvp_tier_id(region_tag, release, pvp_tier_id):
 @pytest.mark.parametrize('region_tag, release, tier_id',
                          list(product(INVALID_REGIONS, Release.all(), (23, 45, 67, 108))))
 def test_pvp_tier_id_invalid_region(region_tag, release, tier_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_tier(region_tag, tier_id=tier_id, release=release, locale='enus')
 
 
@@ -2583,7 +2583,7 @@ def test_pvp_tier_media(region_tag, release, pvp_tier_id):
 @pytest.mark.parametrize('region_tag, release, tier_id',
                          list(product(INVALID_REGIONS, Release.all(), (23, 45, 67, 108))))
 def test_pvp_tier_media_id_invalid_region(region_tag, release, tier_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_tier_media(region_tag, tier_id, release=release, locale='enus')
 
 
@@ -2606,7 +2606,7 @@ def test_quest_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_quest_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest(region_tag, release=release, locale='enus')
 
 
@@ -2629,7 +2629,7 @@ def test_quest_id(region_tag, release, quest_id):
 @pytest.mark.parametrize('region_tag, release, quest_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1019, '19019'))))
 def test_quest_id_invalid_region(region_tag, release, quest_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest(region_tag, quest_id=quest_id, release=release, locale='enus')
 
 
@@ -2652,7 +2652,7 @@ def test_quest_category_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_quest_category_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest_category(region_tag, release=release, locale='enus')
 
 
@@ -2675,7 +2675,7 @@ def test_quest_category_id(region_tag, release, quest_category_id):
 @pytest.mark.parametrize('region_tag, release, quest_category_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_quest_category_id_invalid_region(region_tag, release, quest_category_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest_category(region_tag, quest_category_id=quest_category_id, release=release, locale='enus')
 
 
@@ -2698,7 +2698,7 @@ def test_quest_area_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_quest_area_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest_area(region_tag, release=release, locale='enus')
 
 
@@ -2721,7 +2721,7 @@ def test_quest_area_id(region_tag, release, quest_area_id):
 @pytest.mark.parametrize('region_tag, release, quest_area_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_quest_area_id_invalid_region(region_tag, release, quest_area_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest_area(region_tag, quest_area_id=quest_area_id, release=release, locale='enus')
 
 
@@ -2744,7 +2744,7 @@ def test_quest_type_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_quest_type_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest_type(region_tag, release=release, locale='enus')
 
 
@@ -2767,7 +2767,7 @@ def test_quest_type_id(region_tag, release, quest_type_id):
 @pytest.mark.parametrize('region_tag, release, quest_type_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_quest_type_id_invalid_region(region_tag, release, quest_type_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         quest_type(region_tag, quest_type_id=quest_type_id, release=release, locale='enus')
 
 
@@ -2790,7 +2790,7 @@ def test_realm_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_realm_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         realm(region_tag, release=release, locale='enus')
 
 
@@ -2815,7 +2815,7 @@ def test_realm_id(region_tag, release, realm_slug):
                          list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'))))
 def test_realm_id_invalid_region(region_tag, release, realm_slug):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         realm(region_tag, realm_slug=realm_slug, release=release, locale='enus')
 
 
@@ -2852,7 +2852,7 @@ def test_realm_search_invalid_region(region_tag, release):
         'orderby': 'name',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         realm_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -2875,7 +2875,7 @@ def test_region_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_region_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         region(region_tag, release=release, locale='enus')
 
 
@@ -2898,7 +2898,7 @@ def test_region_id(region_tag, release, region_req):
 @pytest.mark.parametrize('region_tag, release, region_req',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_region_id_invalid_region(region_tag, release, region_req):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         region(region_tag, region_req=region_req, release=release, locale='enus')
 
 
@@ -2921,7 +2921,7 @@ def test_reputation_faction_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_reputation_faction_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         reputation_faction(region_tag, release=release, locale='enus')
 
 
@@ -2944,7 +2944,7 @@ def test_reputation_faction_id(region_tag, release, faction_id):
 @pytest.mark.parametrize('region_tag, release, faction_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_reputation_faction_id_invalid_region(region_tag, release, faction_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         reputation_faction(region_tag, faction_id=faction_id, release=release, locale='enus')
 
 
@@ -2967,7 +2967,7 @@ def test_reputation_tier_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_reputation_tier_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         reputation_tier(region_tag, release=release, locale='enus')
 
 
@@ -2990,7 +2990,7 @@ def test_reputation_tier_id(region_tag, release, reputation_tier_id):
 @pytest.mark.parametrize('region_tag, release, tier_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_reputation_tier_id_invalid_region(region_tag, release, tier_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         reputation_tier(region_tag, tier_id=tier_id, release=release, locale='enus')
 
 
@@ -3013,7 +3013,7 @@ def test_spell_id(region_tag, release, spell_id):
 @pytest.mark.parametrize('region_tag, release, spell_id',
                          list(product(INVALID_REGIONS, Release.all(), (1, '1', 1234, '1234'))))
 def test_spell_id_invalid_region(region_tag, release, spell_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         spell(region_tag, spell_id, release=release, locale='enus')
 
 
@@ -3036,7 +3036,7 @@ def test_spell_media(region_tag, release, spell_id):
 @pytest.mark.parametrize('region_tag, release, spell_id',
                          list(product(INVALID_REGIONS, Release.all(), (1019, '19019'))))
 def test_spell_media_id_invalid_region(region_tag, release, spell_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         spell_media(region_tag, spell_id, release=release, locale='enus')
 
 
@@ -3072,7 +3072,7 @@ def test_spell_search_invalid_region(region_tag, release):
         'orderby': 'id',
         '_page': 1
     }
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         spell_search(region_tag, fields, release=release, locale='enus')
 
 
@@ -3095,7 +3095,7 @@ def test_talent_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_talent_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         talent(region_tag, release=release, locale='enus')
 
 
@@ -3118,7 +3118,7 @@ def test_talent_id(region_tag, release, talent_id):
 @pytest.mark.parametrize('region_tag, release, talent_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_talent_id_invalid_region(region_tag, release, talent_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         talent(region_tag, talent_id=talent_id, release=release, locale='enus')
 
 
@@ -3141,7 +3141,7 @@ def test_pvp_talent_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_pvp_talent_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_talent(region_tag, release=release, locale='enus')
 
 
@@ -3164,7 +3164,7 @@ def test_pvp_talent_id(region_tag, release, pvp_talent_id):
 @pytest.mark.parametrize('region_tag, release, pvp_talent_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_pvp_talent_id_invalid_region(region_tag, release, pvp_talent_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         pvp_talent(region_tag, pvp_talent_id=pvp_talent_id, release=release, locale='enus')
 
 
@@ -3187,7 +3187,7 @@ def test_tech_talent_tree_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_tech_talent_tree_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         tech_talent_tree(region_tag, release=release, locale='enus')
 
 
@@ -3210,7 +3210,7 @@ def test_tech_talent_tree_id(region_tag, release, tech_talent_tree_id):
 @pytest.mark.parametrize('region_tag, release, tech_talent_tree_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_tech_talent_tree_id_invalid_region(region_tag, release, tech_talent_tree_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         tech_talent_tree(region_tag, tree_id=tech_talent_tree_id, release=release, locale='enus')
 
 
@@ -3233,7 +3233,7 @@ def test_tech_talent_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_tech_talent_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         tech_talent(region_tag, release=release, locale='enus')
 
 
@@ -3256,7 +3256,7 @@ def test_tech_talent_id(region_tag, release, tech_talent_id):
 @pytest.mark.parametrize('region_tag, release, tech_talent_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_tech_talent_id_invalid_region(region_tag, release, tech_talent_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         tech_talent(region_tag, tree_id=tech_talent_id, release=release, locale='enus')
 
 
@@ -3279,7 +3279,7 @@ def test_tech_talent_media(region_tag, release, tech_talent_id):
 @pytest.mark.parametrize('region_tag, release, tech_talent_id',
                          list(product(INVALID_REGIONS, Release.all(), (1019, '19019'))))
 def test_tech_talent_media_id_invalid_region(region_tag, release, tech_talent_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         tech_talent_media(region_tag, tech_talent_id, release=release, locale='enus')
 
 
@@ -3302,7 +3302,7 @@ def test_title_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_title_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         title(region_tag, release=release, locale='enus')
 
 
@@ -3325,7 +3325,7 @@ def test_title_id(region_tag, release, title_id):
 @pytest.mark.parametrize('region_tag, release, title_id',
                          list(product(INVALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234'))))
 def test_title_id_invalid_region(region_tag, release, title_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         title(region_tag, title_id=title_id, release=release, locale='enus')
 
 
@@ -3348,5 +3348,5 @@ def test_wow_token_default_index(region_tag, release):
 @pytest.mark.parametrize('region_tag, release',
                          list(product(INVALID_REGIONS, Release.all())))
 def test_wow_token_index_default_index_invalid_region(region_tag, release):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         wow_token_index(region_tag, release=release, locale='enus')

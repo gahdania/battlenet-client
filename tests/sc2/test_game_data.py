@@ -3,7 +3,7 @@ from itertools import product
 import pytest
 
 from battlenet_client.constants import VALID_REGIONS
-from battlenet_client.exceptions import BNetRegionError
+from battlenet_client.exceptions import BNetRegionNotFoundError
 from battlenet_client.sc2.game_data import league_data
 from ..constants import INVALID_REGIONS
 
@@ -27,5 +27,5 @@ def test_league_data_id_valid_region_id(region_tag, season_id, queue_id, team_ty
                                       ('1', '2', '3', '4', '101', '102', '103', '104', '201', '202', '203', '204', '206'), ('0', '1'),
                                       ('0', '1', '2', '3', '4', '5', '6'))))
 def test_league_data_invalid_region_tag(region_tag, season_id, queue_id, team_type, league_id):
-    with pytest.raises(BNetRegionError):
+    with pytest.raises(BNetRegionNotFoundError):
         league_data(region_tag, season_id, queue_id, team_type, league_id, locale='enus')
