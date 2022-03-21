@@ -22,7 +22,7 @@ Using GIT
 
 .. code-block:: bash
 
-   git clone https://gitlab.com/battlenet1/battlenet-client.git
+   git clone https://github.com/gahdania/battlenet-client.git
 
 
 Usage
@@ -42,7 +42,6 @@ the North America server
 
    > from battlenet_client.wow.game_data import achievement_category
    > achievement_category('us', category_id=81)
-
    # ('https://us.api.blizzard.com/data/wow/achievement-category/81', {'locale': None, 'namespace': 'static-us'})
 
 Same as above but this time getting just the french localization for the achievement category
@@ -51,7 +50,6 @@ Same as above but this time getting just the french localization for the achieve
 
    > from battlenet_client.wow.game_data import achievement_category
    > achievement_category('us', category_id=81, locale='frfr')
-
    # ('https://us.api.blizzard.com/data/wow/achievement-category/81', {'locale': 'fr_FR', 'namespace': 'static-us'})
 
 The developer would then provide the output of the functions to the client of their choice
