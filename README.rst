@@ -1,3 +1,15 @@
+.. image:: https://img.shields.io/pypi/v/battlenet-client.svg
+   :target: `PyPI link`_
+
+.. image:: https://img.shields.io/pypi/pyversions/battlenet-client.svg
+   :target: `PyPI link`_
+
+.. _PyPI link: https://pypi.org/project/battlenet-client
+
+.. image:: https://gitlab.com/battlenet1/battlenet_client/workflows/tests/badge.svg
+   :target: https://gitlab.com/battlenet1/battlenet_client/actions?query=workflow%3A%22tests%22
+   :alt: tests
+
 # BattleNet Clients
 BattleNet Clients provide a uniform interface for Blizzard's Battle.net Developer Rest Application Programming
 Interface (BNET Rest API)
