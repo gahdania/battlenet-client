@@ -1,3 +1,8 @@
+<<<<<<< HEAD:docs/build/html/_sources/tutorials/dev_portal.rst.txt
+=======
+.. _Developer Portal Instructions:
+
+>>>>>>> dev:docs/source/dev_portal.rst
 =============================
 Developer Portal Instructions
 =============================
