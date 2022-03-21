@@ -1,0 +1,9 @@
+================================================
+Artisan API
+================================================
+
+.. moduleauthor:: David "Gahd" Couples
+
+.. autofunction::  battlenet_client.d3.community.artisan
+
+.. autofunction::  battlenet_client.d3.community.recipe
