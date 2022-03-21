@@ -1,6 +1,6 @@
 version: 2
 python:
   install:
-  - path: ./src
+  - path: .
     extra_requirements:
       - docs
