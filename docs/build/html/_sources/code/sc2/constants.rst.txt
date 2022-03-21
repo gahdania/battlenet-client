@@ -6,7 +6,12 @@ Constants
 
 .. py:currentmodule:: battlenet_client.sc2.constants
 
-.. autoclass:: SC2Region
+.. autoclass:: Region
+   :inherited-members:
+   :members:
+   :noindex:
+
+.. autoclass:: QueueID
    :inherited-members:
    :members:
    :noindex:

@@ -6,7 +6,7 @@ Constants
 
 .. py:currentmodule:: battlenet_client.hs.constants
 
-.. autoclass:: HSRegion
+.. autoclass:: Region
    :inherited-members:
    :members:
    :noindex:

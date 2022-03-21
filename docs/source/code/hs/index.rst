@@ -7,5 +7,7 @@ Hearthstone
    :caption: Contents:
 
    constants
-   exceptions
-   game_data
+   card
+   card_back
+   card_deck
+   metadata

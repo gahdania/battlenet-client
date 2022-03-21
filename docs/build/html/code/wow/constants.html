@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Constants &#8212; Battle.net API 3.0.0a1 documentation</title>
+    <title>Constants &#8212; Battle.net API 3.0.0a2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
 
@@ -17,7 +17,7 @@
 
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Exceptions" href="exceptions.html" />
+    <link rel="next" title="Utility Functions" href="utils.html" />
     <link rel="prev" title="World of Warcraft" href="index.html" />
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,12 +30,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="exceptions.html" title="Exceptions"
+          <a href="utils.html" title="Utility Functions"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="World of Warcraft"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">World of Warcraft</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Constants</a></li>
@@ -51,46 +51,84 @@
 <h1>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.constants.</span></span><span class="sig-name descname"><span class="pre">WoWRegion</span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.constants.</span></span><span class="sig-name descname"><span class="pre">Region</span></span></dt>
 <dd><dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Id</span></span></dt>
 <dd><p>Defines the Region IDs for World of Warcraft</p>
 <dl class="py attribute">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">CN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em></dt>
+<span class="sig-name descname"><span class="pre">CHINA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em></dt>
 <dd><p>Region ID for China</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">EU</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em></dt>
+<span class="sig-name descname"><span class="pre">EUROPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em></dt>
 <dd><p>Region ID for Europe</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">KR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em></dt>
+<span class="sig-name descname"><span class="pre">KOREA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em></dt>
 <dd><p>Region ID for Korea</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">TW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em></dt>
-<dd><p>Region ID for Taiwan</p>
+<span class="sig-name descname"><span class="pre">NORTH_AMERICA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em></dt>
+<dd><p>Region ID for North America</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">US</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em></dt>
-<dd><p>Region ID for North America</p>
+<span class="sig-name descname"><span class="pre">TAIWAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em></dt>
+<dd><p>Region ID for Taiwan</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Release</span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tag</span></span></dt>
+<dd><p>Defines the region’s abbreviation (tag)</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">CHINA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cn'</span></em></dt>
+<dd><p>Region abbreviation for China</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">EUROPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'eu'</span></em></dt>
+<dd><p>Region abbreviation for North Europe</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">KOREA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'kr'</span></em></dt>
+<dd><p>Region abbreviation for Korea</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">NORTH_AMERICA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'us'</span></em></dt>
+<dd><p>Region abbreviation for North America</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">TAIWAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'tw'</span></em></dt>
+<dd><p>Region abbreviation for Taiwan</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.constants.</span></span><span class="sig-name descname"><span class="pre">Release</span></span></dt>
 <dd><p>Defines the Release Names for World of Warcraft/World of Warcraft Classic</p>
 <dl class="py attribute">
 <dt class="sig sig-object py">
@@ -110,12 +148,18 @@
 <dd><p>Release name for the original World of Warcraft (v 1.0)</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
+<dl class="py method">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Tag</span></span></dt>
-<dd><p>Defines the region’s abbreviation (tag)</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span></dt>
+<dd><p>Returns the list of all releases</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of all releases</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -136,8 +180,8 @@
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="exceptions.html"
-                          title="next chapter">Exceptions</a></p>
+    <p class="topless"><a href="utils.html"
+                          title="next chapter">Utility Functions</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -170,12 +214,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="exceptions.html" title="Exceptions"
+          <a href="utils.html" title="Utility Functions"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="World of Warcraft"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="index.html" >World of Warcraft</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Constants</a></li>

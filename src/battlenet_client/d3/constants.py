@@ -1,18 +1,23 @@
-from battlenet_client.constants import Region
+"""Defines the Region for Diablo III
+
+Classes:
+    Region
+
+Misc Variables:
+    __version__
+    __author__
+
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
+"""
+from battlenet_client.constants import Region as BaseRegion
 
 
-class D3Region(Region):
-    class Id:
-        """Defines the Region IDs for Diablo III"""
+__version__ = '2.0.0'
+__author__ = 'David \'Gahd\' Couples'
 
-        #: Region ID for North America
-        US = 1
 
-        #: Region ID for Europe
-        EU = 2
-
-        #: Region ID for Korea and Taiwan
-        APAC = 3
-
-        #: Region ID for China
-        CN = 5
+class Region(BaseRegion):
+    """Defines the constants for regions"""
+    pass

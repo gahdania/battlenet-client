@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Utility Functions &#8212; Battle.net API 3.0.0a1 documentation</title>
+    <title>Utility Functions &#8212; Battle.net API 3.0.0a2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
 
@@ -17,8 +17,8 @@
 
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Game Data" href="game_data.html" />
-    <link rel="prev" title="Exceptions" href="exceptions.html" />
+    <link rel="next" title="Game Data APIs" href="game_data.html" />
+    <link rel="prev" title="Constants" href="constants.html" />
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,12 +30,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="game_data.html" title="Game Data"
+          <a href="game_data.html" title="Game Data APIs"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="exceptions.html" title="Exceptions"
+          <a href="constants.html" title="Constants"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">World of Warcraft</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Utility Functions</a></li>
@@ -49,10 +49,32 @@
 
   <section id="module-battlenet_client.wow.utils">
 <span id="utility-functions"></span><h1>Utility Functions<a class="headerlink" href="#module-battlenet_client.wow.utils" title="Permalink to this headline">¶</a></h1>
+<p>Miscellaneous functions to support for World of Warcraft</p>
+<dl class="simple">
+<dt>Functions:</dt><dd><p>namespace(api_type, release, region)</p>
+</dd>
+<dt>Misc Variables:</dt><dd><p>__version__
+__author__</p>
+</dd>
+</dl>
+<p>Author: David “Gahd” Couples
+License: GPL v3
+Copyright: February 24, 2022</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="battlenet_client.wow.utils.namespace">
-<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.utils.</span></span><span class="sig-name descname"><span class="pre">namespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.utils.namespace" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.utils.</span></span><span class="sig-name descname"><span class="pre">namespace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#battlenet_client.wow.utils.namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the namespace required by the WoW API endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the namespace string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../exceptions.html#battlenet_client.exceptions.BNetValueError" title="battlenet_client.exceptions.BNetValueError"><strong>BNetValueError</strong></a> – when api type is not of static, dynamic or profile, or an invalid release</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -66,13 +88,13 @@
         <div class="sphinxsidebarwrapper">
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="exceptions.html"
-                          title="previous chapter">Exceptions</a></p>
+    <p class="topless"><a href="constants.html"
+                          title="previous chapter">Constants</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="game_data.html"
-                          title="next chapter">Game Data</a></p>
+                          title="next chapter">Game Data APIs</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -105,12 +127,12 @@
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="game_data.html" title="Game Data"
+          <a href="game_data.html" title="Game Data APIs"
              >next</a> |</li>
         <li class="right" >
-          <a href="exceptions.html" title="Exceptions"
+          <a href="constants.html" title="Constants"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="index.html" >World of Warcraft</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Utility Functions</a></li>

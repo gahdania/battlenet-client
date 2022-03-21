@@ -5,14 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [3.0.0] - 2022-02-24
-### Added
-OpenID Connect Support
-Separate client crednetials code flow client to support backend updates
-
 ### Changed
-Moved all clients to one module
+All API endpoints now return a URL and parameters dictionary to be used by 3rd party clients.
+Unittests completed to check for the above.
 
-###
+### Removed
+Clients are not longer being actively maintained.
 
 
 ## [2.1.0] - 2022-02-02

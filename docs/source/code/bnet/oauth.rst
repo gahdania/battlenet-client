@@ -1,10 +1,9 @@
 ================================================
-OAuth
+User Info and Token Validation API
 ================================================
 
 .. moduleauthor:: David "Gahd" Couples
 
-.. py:currentmodule:: battlenet_client.bnet.oauth
+.. autofunction::  battlenet_client.bnet.oauth.user_info
 
-.. autoclass:: OAuth
-   :members:
+.. autofunction::  battlenet_client.bnet.oauth.token_validation

@@ -1,16 +1,11 @@
 ================================================
-Profile
+Profile APIs
 ================================================
 
-.. moduleauthor:: David "Gahd" Couples
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-.. py:currentmodule:: battlenet_client.wow.profile
-
-.. autoclass:: Account
-   :members:
-
-.. autoclass:: Character
-   :members:
-
-.. autoclass:: Guild
-   :members:
+   account
+   characters
+   guilds

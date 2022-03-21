@@ -1,11 +1,10 @@
 ================================================
-Battle.net
+OAuth v2
 ================================================
 
 .. toctree::
    :maxdepth: 2
 
-   exceptions
    oauth
 
 .. include:: ../../footer.rst

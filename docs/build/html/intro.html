@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Introduction &#8212; Battle.net API 3.0.0a1 documentation</title>
+    <title>Introduction &#8212; Battle.net API 3.0.0a2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
 
@@ -17,7 +17,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorials" href="tutorials/index.html" />
+    <link rel="next" title="Source Code" href="code/index.html" />
     <link rel="prev" title="Battle.net Client" href="index.html" />
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,12 +30,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tutorials/index.html" title="Tutorials"
+          <a href="code/index.html" title="Source Code"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Battle.net Client"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Introduction</a></li>
       </ul>
     </div>
@@ -67,55 +67,28 @@ the developer, to focus on writing your scripts without needing to worry about t
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>This client uses two flows to help the developer focus on the tasks at hand.  The first is the OAuth credential client
-flow, which uses just the developer’s client ID and secret to authenticate with the BNET API.  The other is the
-OAuth authorization code flow.  This one uses a combination of the developer’s client ID and secret, as well as the
-user’s authorization with Blizzard, to allow access to the those particular endpoints.  The examples below are from the
-wow branch of the package.  The other games’ endpoints work in the same way.</p>
+<p>The functions contained in this packages format the given parameters into a URL and a set of key/value pairs for the
+parameter (query string) of the GET requests.  This package does not actually provide the communication between the
+users and the Battle.net REST API</p>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>Note that you can still use the user authorization client, with the endpoints that accept the client credentials
-as well.</p></li>
-<li><p>Any OAuth v2 or OpenID Connect client will work with the endpoints.  The ones contained in the package are for
-convenience</p></li>
-<li><p>Authorization Code Flow will be the most common for user authentication, while credential client code flow
-will be for backend work, such as maintaining the persistent data, such as playable classes.</p></li>
-</ul>
-</div>
-<p>OAuth Credential Client Flow Example:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">battlenet_client.client</span> <span class="kn">import</span> <span class="n">Credential</span> <span class="n">Client</span>
-<span class="o">&gt;</span> <span class="n">client</span> <span class="o">=</span> <span class="n">wow</span><span class="o">.</span><span class="n">WoWClient</span><span class="p">(</span><span class="o">&lt;</span><span class="n">region</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">release</span><span class="o">=&lt;</span><span class="n">release</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=&lt;</span><span class="n">client_id</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">client_secret</span><span class="o">=&lt;</span><span class="n">client_secret</span><span class="o">&gt;</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">playable_class</span><span class="o">.</span><span class="n">playable_class</span><span class="p">(</span><span class="o">&lt;</span><span class="n">locale</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">id</span><span class="o">&gt;</span><span class="p">)</span>
+<p>The below example will generate the URL and parameter key/value pairs to retrieve the achievement category, using
+the North America server</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">battlenet_client.wow.game_data</span> <span class="kn">import</span> <span class="n">achievement_category</span>
+<span class="o">&gt;</span> <span class="n">achievement_category</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="mi">81</span><span class="p">)</span>
+
+<span class="c1"># (&#39;https://us.api.blizzard.com/data/wow/achievement-category/81&#39;, {&#39;locale&#39;: None, &#39;namespace&#39;: &#39;static-us&#39;})</span>
 </pre></div>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>A web server must be configured to accept the redirect back from the Blizzard authentication servers in order to
-use any endpoint that requires the authorization workflow enabled client.  They are listed on the
-<cite>Authorization Code Flow: &lt;https://develop.battle.net/documentation/guides/using-oauth/authorization-code-flow&gt;</cite></p>
-</div>
-<p>Oauth Authorization Code Flow Example:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">battlenet_client</span> <span class="kn">import</span> <span class="n">wow</span>
-<span class="o">&gt;</span> <span class="n">client</span> <span class="o">=</span> <span class="n">wow</span><span class="o">.</span><span class="n">WoWClient</span><span class="p">(</span><span class="o">&lt;</span><span class="n">region</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;wow.profile&#39;</span><span class="p">,],</span> <span class="n">redirect_uri</span><span class="o">=&lt;</span><span class="n">redirect_uri</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">release</span><span class="o">=&lt;</span><span class="n">release</span><span class="o">&gt;</span><span class="p">,</span>
-                         <span class="n">client_id</span><span class="o">=&lt;</span><span class="n">client_id</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">client_secret</span><span class="o">=&lt;</span><span class="n">client_secret</span><span class="o">&gt;</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="n">redirect</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">authorization_url</span><span class="p">())</span>
-<span class="o">&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">account_profile_summary</span><span class="p">(</span><span class="s1">&#39;en_US&#39;</span><span class="p">)</span>
-<span class="p">{</span><span class="s2">&quot;_links&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;self&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&quot;</span><span class="p">},</span> <span class="o">...</span>
+<p>Same as above but this time getting just the french localization for the achievement category</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">battlenet_client.wow.game_data</span> <span class="kn">import</span> <span class="n">achievement_category</span>
+<span class="o">&gt;</span> <span class="n">achievement_category</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="mi">81</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="s1">&#39;frfr&#39;</span><span class="p">)</span>
+
+<span class="c1"># (&#39;https://us.api.blizzard.com/data/wow/achievement-category/81&#39;, {&#39;locale&#39;: &#39;fr_FR&#39;, &#39;namespace&#39;: &#39;static-us&#39;})</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Oauth authorization code flow will also work for the API endpoints that works with the credential code flow
-without the need to create a credential code flow client instance.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The are some caveats that are covered in the tutorials for <a class="reference external" href="cred-code-flow">Credential Code Flow</a> and
-<a class="reference external" href="auth-code-flow">Authorization Code Flow</a>.</p>
-</div>
+<p>The developer would then provide the output of the functions to the client of their choice</p>
+<p>Please see <a class="reference internal" href="dev_portal.html#developer-portal-instructions"><span class="std std-ref">Developer Portal Instructions</span></a> for further details</p>
 </section>
 </section>
 </section>
@@ -152,8 +125,8 @@ without the need to create a credential code flow client instance.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="tutorials/index.html"
-                          title="next chapter">Tutorials</a></p>
+    <p class="topless"><a href="code/index.html"
+                          title="next chapter">Source Code</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -186,12 +159,12 @@ without the need to create a credential code flow client instance.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tutorials/index.html" title="Tutorials"
+          <a href="code/index.html" title="Source Code"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Battle.net Client"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Introduction</a></li>
       </ul>
     </div>

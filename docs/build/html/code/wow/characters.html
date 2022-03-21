@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Character Profile API &#8212; Battle.net API 3.0.0a2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Guild API" href="guilds.html" />
+    <link rel="prev" title="Account Profile API" href="account.html" />
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="guilds.html" title="Guild API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account Profile API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >World of Warcraft</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="profile.html" accesskey="U">Profile APIs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Character Profile API</a></li>
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+
+  <section id="character-profile-api">
+<h1>Character Profile API<a class="headerlink" href="#character-profile-api" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.achievement_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">achievement_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">statistics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.achievement_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of the achievements a character has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>statistics</strong> (<em>bool</em>) – Boolean to determine to display the statistics or not</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.appearance_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">appearance_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.appearance_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of a character’s appearance settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.collections">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">collections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.collections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an index of collection types for a character, a summary of the mounts
+a character has obtained, or a summary of the battle pets a character has obtained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>category</strong> (<em>str</em>) – category to retrieve. options are pets or mounts, or None (default).  None will
+provide both</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.encounters">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">encounters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.encounters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of all of a character’s encounters, just dungeon encounters,
+or just raid encounters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>category</strong> (<em>str</em>) – category to retrieve.  options are ‘dungeons’,
+‘raids’, or None (default).  None will access both dungeons and raids</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.equipment_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">equipment_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.equipment_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of the items equipped by a character.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.hunter_pets_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">hunter_pets_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.hunter_pets_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the character is a hunter, returns a summary of the character’s hunter pets.
+Otherwise, returns an HTTP 404 Not Found error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.media_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">media_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.media_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of the media assets available for a character (such as an avatar render).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.mythic_keystone">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">mythic_keystone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">season_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.mythic_keystone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Mythic Keystone profile index for a character,
+or the Mythic Keystone season details for a character.</p>
+<p>Returns a 404 Not Found for characters that have not yet completed
+a Mythic Keystone dungeon for the specified season.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>season_id</strong> (<em>int</em><em> or </em><em>None</em>) – season id or None (default).  None
+accesses the list of seasons for the current expansion</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.professions_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">professions_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.professions_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of professions for a character.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.profile">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a profile summary for a character, or the status and a unique ID for a character.</p>
+<p>A should delete information about a character from their application if
+any of the following conditions occur:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>an HTTP 404 Not Found error is returned</p></li>
+<li><p>the is_valid value is false</p></li>
+<li><dl class="simple">
+<dt>the returned character ID doesn’t match the previously recorded</dt><dd><p>value for the character</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+<dl class="simple">
+<dt>The following example illustrates how to use this endpoint:</dt><dd><p>1) A requests and stores information about a character, including
+its unique character ID and the timestamp of the request.
+2) After 30 days, the makes a request to the status endpoint to
+verify if the character information is still valid.
+3) If character cannot be found, is not valid, or the characters IDs do
+not match, the removes the information from their application.
+4) If the character is valid and the character IDs match, the retains
+the data for another 30 days.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>status</strong> (<em>bool</em>) – flag to request a profile summary (False default) or status (True)</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.pvp">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">pvp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pvp_bracket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.pvp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the PvP bracket statistics for a character, or a PvP summary for a character.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>pvp_bracket</strong> (<em>str</em><em> or </em><em>None</em>) – ‘2v2’, ‘3v3’, ‘rbg’, None (default).
+None returns a summary of pvp activity</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.quests">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">quests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.quests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a character’s active quests as well as a link to the character’s completed quests, or
+a list of quests that a character has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>completed</strong> (<em>bool</em>) – To show all quests (False), or to show only
+completed quests (True)</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.reputations_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">reputations_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.reputations_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of a character’s reputations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.soulbinds">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">soulbinds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.soulbinds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a character’s soulbinds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.specializations_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">specializations_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.specializations_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of a character’s specializations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.statistics_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">statistics_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.statistics_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a statistics summary for a character.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.wow.profile.title_summary">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.wow.profile.</span></span><span class="sig-name descname"><span class="pre">title_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">realm_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'retail'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.wow.profile.title_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a summary of titles a character has obtained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>realm_name</strong> (<em>str</em>) – the slug for the character’s realm</p></li>
+<li><p><strong>character_name</strong> (<em>str</em>) – name of character</p></li>
+<li><p><strong>release</strong> (<em>str</em>) – release of the game (ie classic1x, classic, retail)</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="account.html"
+                          title="previous chapter">Account Profile API</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="guilds.html"
+                          title="next chapter">Guild API</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/code/wow/characters.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="guilds.html" title="Guild API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account Profile API"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >World of Warcraft</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="profile.html" >Profile APIs</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Character Profile API</a></li>
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, David &#34;Gahd&#34; Couples.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

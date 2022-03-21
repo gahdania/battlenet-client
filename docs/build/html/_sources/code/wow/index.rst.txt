@@ -7,7 +7,6 @@ World of Warcraft
    :caption: Contents:
 
    constants
-   exceptions
    utils
    game_data
    profile

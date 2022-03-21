@@ -5,7 +5,6 @@ Battle.net
 .. toctree::
    :maxdepth: 2
 
-   exceptions
    oauth
 
 .. include:: ../../footer.rst

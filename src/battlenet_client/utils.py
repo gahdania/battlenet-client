@@ -1,22 +1,41 @@
-"""Miscellaneous functions to support world of warcraft
+"""Miscellaneous functions to support for Battle.net
 
 Functions:
-    currency_convertor
+    currency_convertor(value)
+    slugify(value)
+    localize(locale)
+    api_host(region_tag)
+    auth_host(region_tag)
+    render_host(region_tag)
+
+Misc Variables:
+    WOW_CLASSICS
+
+
+Misc Variables:
+    __version__
+    __author__
+
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
 """
 from typing import Tuple, Optional, Union
 
 
-WOW_CLASSICS = ("classic1x", "classic")
+
+__version__ = '1.0.0'
+__author__ = 'David \'Gahd\' Couples'
 
 
 def currency_convertor(value: int) -> Tuple[int, int, int]:
     """Returns the value into gold, silver and copper
 
     Args:
-        value (int/str): the value to be converted
+        value (int): the value to be converted
 
     Returns:
-        tuple: gold, silver and copper values
+        tuple: gold (int), silver (int) and copper (int)
     """
     value = int(value)
 
@@ -26,15 +45,18 @@ def currency_convertor(value: int) -> Tuple[int, int, int]:
     return value // 10000, (value % 10000) // 100, value % 100
 
 
-def slugify(value: str) -> str:
-    """Returns the 'slugified' string
+def slugify(value: Union[str, int]) -> Union[str, int]:
+    """Returns value as a slug
 
     Args:
         value (str): the string to be converted into a slug
 
     Returns:
-        str: the slug of :value:
+        str: the slug
     """
+    if isinstance(value, int):
+        return value
+
     return value.lower().replace("'", "").replace(" ", "-")
 
 
@@ -45,7 +67,7 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
         locale (str): the locality to be standardized
 
     Returns:
-        str: the locale in the format of "<lang>_<COUNTRY>"
+        str: the locale in the format of "<language>_<COUNTRY>"
 
     Raise:
         TypeError: when locale is not a string
@@ -58,7 +80,7 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
         raise TypeError("Locale must be a string")
 
     if locale[:2].lower() not in ("en", "es", "pt", "fr", "ru", "de", "it", "ko", "zh"):
-        raise ValueError("Invalid language bnet")
+        raise ValueError("Invalid language")
 
     if locale[-2:].lower() not in (
         "us",
@@ -75,30 +97,54 @@ def localize(locale: Optional[str] = None) -> Union[None, str]:
         "tw",
         "cn",
     ):
-        raise ValueError("Invalid country bnet")
+        raise ValueError("Invalid country")
 
     return f"{locale[:2].lower()}_{locale[-2:].upper()}"
 
 
-def api_host(region: str):
-    if region.lower() == "cn":
+def api_host(region_tag: str) -> str:
+    """Returns the API endpoint hostname and protocol
+
+    Args:
+        region_tag (str): the region abbreviation
+
+    Returns:
+        str: The API endpoint hostname and protocol
+    """
+    if region_tag.lower() == "cn":
         return "https://gateway.battlenet.com.cn"
 
-    return f"https://{region.lower()}.api.blizzard.com"
+    return f"https://{region_tag.lower()}.api.blizzard.com"
 
 
-def auth_host(region: str):
-    if region.lower() == "cn":
+def auth_host(region_tag: str):
+    """Returns the authorization endpoint hostname and protocol
+
+    Args:
+        region_tag (str): the region abbreviation
+
+    Returns:
+        str: The authorization endpoint hostname and protocol
+    """
+    if region_tag.lower() == "cn":
         return "https://www.battlenet.com.cn"
 
-    if region.lower() in ("kr", "tw"):
+    if region_tag.lower() in ("kr", "tw"):
         return "https://apac.battle.net"
 
-    return f"https://{region.lower()}.battle.net"
+    return f"https://{region_tag.lower()}.battle.net"
 
 
-def render_host(region: str):
-    if region.lower() == "cn":
+def render_host(region_tag: str):
+    """Returns the render endpoint hostname and protocol
+
+    Args:
+        region_tag (str): the region abbreviation
+
+    Returns:
+        str: The render endpoint hostname and protocol
+    """
+    if region_tag.lower() == "cn":
         return "https://render.worldofwarcraft.com.cn"
 
-    return f"https://render-{region.lower()}.worldofwarcraft.com"
+    return f"https://render-{region_tag.lower()}.worldofwarcraft.com"

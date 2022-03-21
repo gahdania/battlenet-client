@@ -1,289 +1,285 @@
-"""Defines the classes that handle the community APIs for Diablo III"""
+"""Defines the functions that handle the community APIs for Diablo III
 
-from typing import Optional
+Functions:
+    act(region_tag, act_id, locale)
+    artisan(region_tag, artisan_slug, locale)
+    recipe(region_tag, artisan_slug, recipe_slug, locale)
+    follower(region_tag, follower_slug, locale)
+    character_class(region_tag, class_slug, locale)
+    api_skill(region_tag, class_slug, skill_slug, locale)
+    item_type(region_tag, item_type_slug, locale)
+    item(region_tag, item_slug, locale)
+    api_account(region_tag, bnet_tag, locale)
+    api_hero(region_tag, bnet_tag, hero_id, category, locale)
 
-from urllib.parse import quote
+Misc Variables:
+    __version__
+    __author__
 
-from battlenet_client import utils
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
+"""
+from typing import Union, Optional
+from urllib.parse import quote as urlquote
+
+from ..decorators import verify_region
+from ..exceptions import BNetValueError
+from ..utils import slugify, localize, api_host
 
 
-class Community:
-    """Defines the methods to communicate with the Community API"""
+__version__ = "2.0.0"
+__author__ = "David \"Gahd\" Couples"
 
-    @staticmethod
-    def act(
-        client,
-        region_tag: str,
-        *,
-        act_id: Optional[int] = None,
-        locale: Optional[str] = None,
-    ):
-        """Returns the list of acts, or the act by :act_id:
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            act_id (int, optional): the act's ID to retrieve its data
+@verify_region
+def act(
+    region_tag: str,
+    *,
+    act_id: Optional[Union[int, str]] = None,
+    locale: Optional[str] = None,
+):
+    """Returns the index of acts, or the act by ID
 
-        Returns:
-            dict: the dict containing the list of acts or the details of the specified :act_id:
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/act"
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        act_id (int, optional): the act's ID to retrieve its data
 
-        if act_id:
-            uri += f"/{act_id}"
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
 
-        params = {"locale": utils.localize(locale)}
+    uri = f"{api_host(region_tag)}/d3/data/act"
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+    if act_id:
+        uri += f"/{act_id}"
 
-    @staticmethod
-    def artisan(
-        client, region_tag: str, artisan_slug: str, locale: Optional[str] = None
-    ):
-        """Returns the artisan by the slug
+    params = {"locale": localize(locale)}
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            artisan_slug (str): the slug of the artisan
+    return uri, params
 
-        Returns:
-            dict: the dict containing data of the artisan
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/artisan/{utils.slugify(artisan_slug)}"
-        params = {"locale": utils.localize(locale)}
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+@verify_region
+def artisan(
+    region_tag: str, artisan_slug: str, locale: Optional[str] = None
+):
+    """Returns a single artisan by the slug
 
-    @staticmethod
-    def recipe(
-        client,
-        region_tag: str,
-        artisan_slug: str,
-        recipe_slug: str,
-        locale: Optional[str] = None,
-    ):
-        """Returns a single recipe by the by slug for the specified artisan
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        artisan_slug (str): the slug of the artisan
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            artisan_slug (str): the slug of the artisan
-            recipe_slug (str): the slug of the recipe
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
 
-        Returns:
-            dict: the dict containing for the recipe
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/artisan/{utils.slugify(artisan_slug)}/recipe"
-        uri += f"/{utils.slugify(recipe_slug)}"
-        params = {"locale": utils.localize(locale)}
+    uri = f"{api_host(region_tag)}/d3/data/artisan/{slugify(artisan_slug)}"
+    params = {"locale": localize(locale)}
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+    return uri, params
 
-    @staticmethod
-    def follower(
-        client, region_tag: str, follower_slug: str, locale: Optional[str] = None
-    ):
-        """Returns the follower by slug
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            follower_slug (str): the slug of a follower
+@verify_region
+def recipe(
+    region_tag: str,
+    artisan_slug: str,
+    recipe_slug: str,
+    locale: Optional[str] = None,
+):
+    """Returns a single recipe by slug for the specified artisan.
 
-        Returns:
-            dict: the dict containing for the follower
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/follower/{utils.slugify(follower_slug)}"
-        params = {"locale": utils.localize(locale)}
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        artisan_slug (str): the slug of the artisan
+        recipe_slug (str): the slug of the recipe
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
 
-    @staticmethod
-    def character_class(
-        client, region_tag: str, class_slug: str, locale: Optional[str] = None
-    ):
-        """Returns a single character class by slug
+    uri = f"{api_host(region_tag)}/d3/data/artisan/{slugify(artisan_slug)}/recipe"
+    uri += f"/{slugify(recipe_slug)}"
+    params = {"locale": localize(locale)}
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_slug (str): the slug of a character class
+    return uri, params
 
-        Returns:
-            dict: the dict containing for the character class
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/hero/{utils.slugify(class_slug)}"
-        params = {"locale": utils.localize(locale)}
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+@verify_region
+def follower(
+    region_tag: str, follower_slug: str, locale: Optional[str] = None
+):
+    """Returns a single follower by slug.
 
-    @staticmethod
-    def api_skill(
-        client,
-        region_tag: str,
-        class_slug: str,
-        skill_slug: str,
-        locale: Optional[str] = None,
-    ):
-        """Returns a single skill by the by slug for the specified character class
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        follower_slug (str): the slug of a follower
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_slug (str): the slug of a character class
-            skill_slug (str):
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
 
-        Returns:
-            dict: the dict containing for the skill
-        """
+    uri = f"{api_host(region_tag)}/d3/data/follower/{slugify(follower_slug)}"
+    params = {"locale": localize(locale)}
 
-        uri = f"{utils.api_host(region_tag)}/d3/data/hero/{utils.slugify(class_slug)}"
-        uri += f"/skill/{utils.slugify(skill_slug)}"
-        params = {"locale": utils.localize(locale)}
+    return uri, params
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
 
-    @staticmethod
-    def item_type(
-        client,
-        region_tag: str,
-        *,
-        item_slug: Optional[str] = None,
-        locale: Optional[str] = None,
-    ):
-        """Returns the index of item types, or a specific item type
+@verify_region
+def character_class(
+    region_tag: str, class_slug: str, locale: Optional[str] = None
+):
+    """Returns a single character class by slug.
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            item_slug (str, optional): the slug of an item type
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        class_slug (str): the slug of a character class
 
-        Returns:
-            dict: the dict containing for the item type
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/item-type"
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
 
-        if item_slug:
-            uri += f"/{utils.slugify(item_slug)}"
+    uri = f"{api_host(region_tag)}/d3/data/hero/{slugify(class_slug)}"
+    params = {"locale": localize(locale)}
 
-        params = {"locale": utils.localize(locale)}
+    return uri, params
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
 
-    @staticmethod
-    def item(client, region_tag: str, item_slug: str, locale: Optional[str] = None):
-        """Returns the item by slug
+@verify_region
+def api_skill(
+    region_tag: str,
+    class_slug: str,
+    skill_slug: str,
+    locale: Optional[str] = None,
+):
+    """Returns a single skill by slug for a specific character class.
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            item_slug (str): the slug of the item
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        class_slug (str): the slug of a character class
+        skill_slug (str):
 
-        Returns:
-            dict: the dict containing for the item
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/data/item/{utils.slugify(item_slug)}"
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{api_host(region_tag)}/d3/data/hero/{slugify(class_slug)}"
+    uri += f"/skill/{slugify(skill_slug)}"
+    params = {"locale": localize(locale)}
 
-        params = {"locale": utils.localize(locale)}
+    return uri, params
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
 
-    @staticmethod
-    def api_account(
-        client, region_tag: str, bnet_tag: str, locale: Optional[str] = None
-    ):
-        """Returns the specified account profile
+@verify_region
+def item_type(
+    region_tag: str,
+    *,
+    item_type_slug: Optional[str] = None,
+    locale: Optional[str] = None,
+):
+    """Returns an index of item types, or a single item type by slug
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            bnet_tag (str): bnet tag of the user
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        item_type_slug (str, optional): the slug of an item type
 
-        Returns:
-            dict: the dict containing for the account
-        """
-        uri = f"{utils.api_host(region_tag)}/d3/profile/{bnet_tag}"
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{api_host(region_tag)}/d3/data/item-type"
 
-        params = {"locale": utils.localize(locale)}
+    if item_type_slug:
+        uri += f"/{slugify(item_type_slug)}"
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+    params = {"locale": localize(locale)}
 
-    @staticmethod
-    def api_hero(
-        client,
-        region_tag: str,
-        locale: str,
-        bnet_tag: str,
-        hero_id: str,
-        category: Optional[str] = None,
-    ):
-        """Returns the follower by slug
+    return uri, params
 
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            bnet_tag (str): BNet tag for the account
-            hero_id (str):  Hero's ID
-            category (str): category to retrieve if specified ('items', 'follower-items')
 
-        Returns:
-            dict: the dict containing for the hero, items, or follower's items
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/d3/profile/{quote(bnet_tag)}/hero/{hero_id}"
-        )
+@verify_region
+def item(region_tag: str, item_slug: str, locale: Optional[str] = None):
+    """Returns a single item by item slug and ID.
 
-        if category:
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        item_slug (str): the slug of the item
 
-            if category not in ("items", "follower-items"):
-                raise ValueError(
-                    "Invalid category;  Valid categories are 'items' and 'follower-items'"
-                )
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
 
-            uri += f"/{category.lower()}"
+    uri = f"{api_host(region_tag)}/d3/data/item/{item_slug}"
+    print(uri)
+    params = {"locale": localize(locale)}
 
-        params = {"locale": utils.localize(locale)}
+    return uri, params
 
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_proctected_resource(uri, "GET", params=params)
+
+@verify_region
+def api_account(
+    region_tag: str, bnet_tag: str, locale: Optional[str] = None
+):
+    """Returns the specified account profile.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        bnet_tag (str): bnet tag of the user
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+
+    uri = f"{api_host(region_tag)}/d3/profile/{urlquote(bnet_tag)}/"
+
+    params = {"locale": localize(locale)}
+
+    return uri, params
+
+
+@verify_region
+def api_hero(
+    region_tag: str,
+    bnet_tag: str,
+    hero_id: str,
+    *,
+    category: Optional[str] = None,
+    locale: Optional[str] = None
+):
+    """Returns a single hero, a list of items for the specified hero, or
+    list of items for the specified hero's followers.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        bnet_tag (str): BNet tag for the account
+        hero_id (str):  Hero's ID
+        category (str): category to retrieve if specified ('items', 'follower-items')
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetValueError: category is not None and not 'items' or 'follower-items'
+    """
+    uri = f"{api_host(region_tag)}/d3/profile/{urlquote(bnet_tag)}/"
+    uri += f'hero/{hero_id}'
+
+    params = {"locale": localize(locale)}
+
+    if category:
+
+        if category not in ("items", "follower-items"):
+            raise BNetValueError(
+                "Invalid category;  Valid categories are 'items' and 'follower-items'"
+            )
+
+        uri += f"/{category.lower()}"
+
+    return uri, params

@@ -5,8 +5,8 @@
    :caption: Contents:
 
    intro
-   tutorials/index
    code/index
+   dev_portal
    references
 
 Indices and tables

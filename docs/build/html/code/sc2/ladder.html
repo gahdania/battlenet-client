@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Ladder API - NA, APAC, EU &#8212; Battle.net API 3.0.0a2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Account API - NA, APAC, EU" href="account.html" />
+    <link rel="prev" title="Profile API - NA, APAC, EU" href="profile.html" />
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account API - NA, APAC, EU"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="profile.html" title="Profile API - NA, APAC, EU"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Starcraft 2</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Ladder API - NA, APAC, EU</a></li>
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+
+  <section id="ladder-api-na-apac-eu">
+<h1>Ladder API - NA, APAC, EU<a class="headerlink" href="#ladder-api-na-apac-eu" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.sc2.community.grandmaster">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.sc2.community.</span></span><span class="sig-name descname"><span class="pre">grandmaster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.sc2.community.grandmaster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns ladder data for the current season’s grandmaster leaderboard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>region_id</strong> (<em>int</em>) – region for the profile, or use sc2.constants</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../exceptions.html#battlenet_client.exceptions.BNetRegionError" title="battlenet_client.exceptions.BNetRegionError"><strong>BNetRegionError</strong></a> – when the region tag is ‘cn’</p></li>
+<li><p><a class="reference internal" href="../exceptions.html#battlenet_client.exceptions.BNetValueError" title="battlenet_client.exceptions.BNetValueError"><strong>BNetValueError</strong></a> – when region ID is not valid</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.sc2.community.season">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.sc2.community.</span></span><span class="sig-name descname"><span class="pre">season</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.sc2.community.season" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns data about the current season.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>region_id</strong> (<em>int</em>) – region for the profile, or use sc2.constants</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../exceptions.html#battlenet_client.exceptions.BNetRegionError" title="battlenet_client.exceptions.BNetRegionError"><strong>BNetRegionError</strong></a> – when the region tag is ‘cn’</p></li>
+<li><p><a class="reference internal" href="../exceptions.html#battlenet_client.exceptions.BNetValueError" title="battlenet_client.exceptions.BNetValueError"><strong>BNetValueError</strong></a> – when region ID is not valid</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="ladder-api-cn">
+<h1>Ladder API - CN<a class="headerlink" href="#ladder-api-cn" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.sc2.community_cn.ladder">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.sc2.community_cn.</span></span><span class="sig-name descname"><span class="pre">ladder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ladder_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.sc2.community_cn.ladder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a ladder summary, or specific ladder for an individual SC2 profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_tag</strong> (<em>str</em>) – region_tag abbreviation</p></li>
+<li><p><strong>locale</strong> (<em>str</em>) – which locale to use for the request</p></li>
+<li><p><strong>ladder_id</strong> (<em>int</em>) – region for the profile, or use sc2.constants</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The URL (str) and parameters (dict)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="../exceptions.html#battlenet_client.exceptions.BNetRegionError" title="battlenet_client.exceptions.BNetRegionError"><strong>BNetRegionError</strong></a> – when the region tag is not ‘cn’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Ladder API - NA, APAC, EU</a></li>
+<li><a class="reference internal" href="#ladder-api-cn">Ladder API - CN</a></li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="profile.html"
+                          title="previous chapter">Profile API - NA, APAC, EU</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="account.html"
+                          title="next chapter">Account API - NA, APAC, EU</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/code/sc2/ladder.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account API - NA, APAC, EU"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="profile.html" title="Profile API - NA, APAC, EU"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Source Code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Starcraft 2</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Ladder API - NA, APAC, EU</a></li>
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, David &#34;Gahd&#34; Couples.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

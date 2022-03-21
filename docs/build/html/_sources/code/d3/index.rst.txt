@@ -7,6 +7,11 @@ Diablo III
    :caption: Contents:
 
    constants
-   exceptions
-   community
-   game_data
+   acts
+   artisans
+   followers
+   classes
+   items
+   profiles
+   seasons
+   eras

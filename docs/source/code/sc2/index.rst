@@ -7,6 +7,8 @@ Starcraft 2
    :caption: Contents:
 
    constants
-   exceptions
-   community
-   game_data
+   profile
+   ladder
+   account
+   legacy
+   league_data

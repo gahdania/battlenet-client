@@ -6,7 +6,12 @@ Constants
 
 .. py:currentmodule:: battlenet_client.wow.constants
 
-.. autoclass:: WoWRegion
+.. autoclass:: Region
+   :inherited-members:
+   :members:
+   :noindex:
+
+.. autoclass:: Release
    :inherited-members:
    :members:
    :noindex:

@@ -1,2954 +1,2676 @@
-"""This module contains the classes for accessing game data related utils.apis"""
+"""Defines the functions that handle the community APIs for World of Warcraft
+
+Functions:
+    achievement(region_tag, achievement_id, release, locale)
+    achievement_category(region_tag, category_id, release, locale)
+    achievement_media(region_tag, achievement_id, release, locale)
+    auction(region_tag, connected_realm_id, auction_house_id, release, locale)
+    azerite_essence(region_tag, essence_id, release, locale)
+    azerite_essence_media(region_tag, essence_id, release, locale)
+    azerite_essence_search(region_tag, field_values, release, locale)
+    conduit(region_tag, conduit_id, release, locale)
+    connected_realm(region_tag, connected_realm_id, release, locale)
+    connected_realm_search(region_tag, field_values, release, locale)
+    covenant(region_tag, covenant_id, release, locale)
+    covenant_media(region_tag, covenant_id, release, locale)
+    creature(region_tag, creature_id, release, locale)
+    creature_display_media(region_tag, display_id, release, locale)
+    creature_family(region_tag, family_id, release, locale)
+    creature_family_media(region_tag, family_id, release, locale)
+    creature_search(region_tag, field_values, release, locale)
+    creature_type(region_tag, type_id, release, locale)
+    guild_crest_components_index(region_tag, release, locale)
+    guild_crest_media(region_tag, emblem_id, release, locale)
+    item(region_tag, item_id, release, locale)
+    item_class(region_tag, class_id, release, locale)
+    item_media(region_tag, item_id, release, locale)
+    item_search(region_tag, field_values, release, locale)
+    item_set(region_tag, set_id, release, locale)
+    item_subclass(region_tag, class_id, subclass_id, release, locale)
+    journal_encounter(region_tag, encounter_id, release, locale)
+    journal_encounter_search(region_tag, field_values, release, locale)
+    journal_expansion(region_tag, expansion_id, release, locale)
+    journal_instance(region_tag, instance_id, release, locale)
+    journal_instance_media(region_tag, instance_id, release, locale)
+    media_search(region_tag, field_values, release, locale)
+    modified_crafting(region_tag, release, locale)
+    modified_crafting_category(region_tag, category_id, release, locale)
+    modified_crafting_reagent_slot_type(region_tag, slot_type_id, release, locale)
+    mount(region_tag, mount_id, release, locale)
+    mount_search(region_tag, field_values, release, locale)
+    mythic_keystone_affix(region_tag, affix_id, release, locale)
+    mythic_keystone_affix_media(region_tag, affix_id, release, locale)
+    mythic_keystone_dungeon(region_tag, dungeon_id, release, locale)
+    mythic_keystone_index(region_tag, release, locale)
+    mythic_keystone_leaderboard(region_tag, connected_realm_id, dungeon_id, period_id, release, locale)
+    mythic_keystone_period(region_tag, period_id, release, locale)
+    mythic_keystone_season(region_tag, season_id, release, locale)
+    mythic_raid_leaderboard(region_tag, raid_name, faction, release, locale)
+    pet(region_tag, pet_id, release, locale)
+    pet_ability(region_tag, pet_ability_id, release, locale)
+    pet_ability_media(region_tag, ability_id, release, locale)
+    pet_media(region_tag, pet_id, release, locale)
+    playable_class(region_tag, class_id, release, locale)
+    playable_class_media(region_tag, class_id, release, locale)
+    playable_race(region_tag, race_id, release, locale)
+    playable_spec(region_tag, spec_id, release, locale)
+    playable_spec_media(region_tag, spec_id, release, locale)
+    power_type(region_tag, power_id, release, locale)
+    profession(region_tag, profession_id, release, locale)
+    profession_media(region_tag, profession_id, release, locale)
+    profession_skill_tier(region_tag, profession_id, skill_tier_id, release, locale)
+    pvp_leader_board(region_tag, season_id, pvp_bracket, release, locale)
+    pvp_rewards_index(region_tag, season_id, release, locale)
+    pvp_season(region_tag, season_id, release, locale)
+    pvp_talent(region_tag, pvp_talent_id, release, locale)
+    pvp_talent_slots(region_tag, class_id, release, locale)
+    pvp_tier(region_tag, tier_id, release, locale)
+    pvp_tier_media(region_tag, tier_id, release, locale)
+    quest(region_tag, quest_id, release, locale)
+    quest_area(region_tag, quest_area_id, release, locale)
+    quest_category(region_tag, quest_category_id, release, locale)
+    quest_type(region_tag, quest_type_id, release, locale)
+    realm(region_tag, realm_slug, release, locale)
+    realm_search(region_tag, field_values, release, locale)
+    recipe(region_tag, recipe_id, release, locale)
+    recipe_media(region_tag, recipe_id, release, locale)
+    region(region_tag, region_req, release, locale)
+    reputation_faction(region_tag, faction_id, release, locale)
+    reputation_tier(region_tag, tier_id, release, locale)
+    soulbind(region_tag, soulbind_id, release, locale)
+    spell(region_tag, spell_id, release, locale)
+    spell_media(region_tag, spell_id, release, locale)
+    spell_search(region_tag, field_values, release, locale, )
+    talent(region_tag, talent_id, release, locale)
+    tech_talent(region_tag, talent_id, release, locale)
+    tech_talent_media(region_tag, talent_id, release, locale)
+    tech_talent_tree(region_tag, tree_id, release, locale)
+    title(region_tag, title_id, release, locale)
+    wow_token_index(region_tag, release, locale)
+
+Misc Variables:
+    __version__
+    __author__
+
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
+"""
 from typing import Optional, Any, Dict, Union
 
-from .exceptions import WoWReleaseError
-from battlenet_client import utils
-
-from battlenet_client.wow.utils import namespace
-
-
-class Achievement:
-    @staticmethod
-    def achievement_category(
-        client,
-        region_tag: str,
-        *,
-        release: Optional[str] = "retail",
-        category_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-    ):
-        """Accesses a list achievement categories or specific achievement
-        category if :category_id: is provided
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            category_id (int, optional): the achievement's category ID or None (default).
-                None will retrieve the entire list of achievement categories
-
-        Returns:
-
-            dict: json decoded data for the index/individual achievement categories
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/achievement-category/{category_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def achievement(
-        client,
-        region_tag: str,
-        *,
-        achievement_id: Optional[int] = "index",
-        release: Optional[str] = "retail",
-        locale: Optional[str] = None,
-    ):
-        """Returns an index of achievements, or a specific achievements
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            achievement_id (int, optional): the achievement ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual achievements
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/achievement/{achievement_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def achievement_media(
-        client,
-        region_tag: str,
-        achievement_id: int,
-        *,
-        release: Optional[str] = "retail",
-        locale: Optional[str] = None,
-    ):
-        """Returns media for an achievement's icon.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            achievement_id (int): the achievement ID or the word 'index'
-
-        Returns:
-            dict: json decoded media data for the achievement
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/{achievement_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Auction:
-    @staticmethod
-    def auction(
-        client,
-        region_tag: str,
-        connected_realm_id: int,
-        *,
-        release: Optional[str] = "retail",
-        auction_house_id: Optional[int] = None,
-        locale: Optional[str] = None,
-    ):
-        """Returns auction data.  With retail client, region_tag, it returns all the auctions for the given connected
-        realm. For classic titles, the results can be either the entire list, or the individual auctions
-
-        See the Connected Realm utils.api for information about retrieving a list of
-        connected realm IDs.
-
-        Auction house data updates at a set interval. The value was initially set
-        at 1 hour; however, it might change over time without notice.
-
-        Depending on the number of active auctions on the specified connected realm,
-        the response from this game_data may be rather large, sometimes exceeding
-        10 MB.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            connected_realm_id (int): the id of the connected realm
-            auction_house_id (int, optional): the ID of the auction house
-
-        Returns:
-            dict: json decoded data for the index/individual auction(s)
-
-        Raises:
-            WoWReleaseError: when an AH ID is used for the retail client
-        Notes:
-            Auction house functionality is not available for WoW 1.x (Vanilla Classic)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}/"
-        if release == "retail" and auction_house_id is None:
-            uri += "auctions"
-
-        if release != "retail" and auction_house_id is None:
-            uri += "auctions/index"
-
-        if release != "retail" and auction_house_id is not None:
-            uri += "auctions"
-
-        if release == "retail" and auction_house_id is not None:
-            raise WoWReleaseError("Auction House ID provided for retail")
-
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class AzeriteEssence:
-    @staticmethod
-    def azerite_essence(
-        client,
-        region_tag: str,
-        *,
-        essence_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of Azerite Essences, or a specific Azerite Essence
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            essence_id (int, optional): the Azerite essence ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual azerite essence(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/azerite-essence/{essence_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def azerite_essence_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches for azerite essences that match `field_values`
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): search criteria, as key/value pairs
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/azerite-essence"
-
-        # adding locale and namespace key/values pairs for a complete parameters list for the request
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-    @staticmethod
-    def azerite_essence_media(
-        client,
-        region_tag: str,
-        essence_id: int,
-        *,
-        release: Optional[str] = "retail",
-        locale: Optional[str] = None,
-    ):
-        """Returns media data for an azerite essence.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            essence_id (int): the azerite essence ID
-
-        Returns:
-            dict: json decoded media data for the azerite essence
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/media/azerite-essence/{essence_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class ConnectedRealm:
-    @staticmethod
-    def connected_realm(
-        client,
-        region_tag: str,
-        *,
-        connected_realm_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of connected realms, or a specific connected realm. Connected realm is a group of standard
-        realms that act as one large realm
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            connected_realm_id (int, optional): the ID of the connected realm
-
-        Returns:
-            dict: json decoded data for the index/individual connected realms
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def connected_realm_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches the connected realm utils.api for connected realm(s) that match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): field/value pairs
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/connected_realm"
-
-        # adding locale and namespace key/values pairs for a complete parameters list for the request
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-
-class Covenant:
-    @staticmethod
-    def covenant(
-        client,
-        region_tag: str,
-        *,
-        covenant_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of covenants, or a specific covenant
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            covenant_id (int, optional): the ID of the covenant or the default 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual covenant
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/covenant/{covenant_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def covenant_media(
-        client,
-        region_tag: str,
-        covenant_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a covenant.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            covenant_id (int, optional): the covenant ID
-
-        Returns:
-            dict: json decoded media data for the covenant
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/covenant{covenant_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def soulbind(
-        client,
-        region_tag: str,
-        *,
-        soulbind_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of soulbinds, or a specific soulbind
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            soulbind_id (int, optional): the ID of the soulbind or the word of 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual soulbind
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/covenant/soulbind/{soulbind_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def conduit(
-        client,
-        region_tag: str,
-        *,
-        conduit_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of conduits, or a specific conduit
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            conduit_id (int, optional): the ID of the conduit or the word of 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual conduit
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/covenant/conduit/{conduit_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Creature:
-    @staticmethod
-    def creature_family(
-        client,
-        region_tag: str,
-        *,
-        family_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of creature families, or a specific creature family
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            family_id (int, optional): the creature family ID or the default 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual creature family/families
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/creature-family/{family_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def creature_type(
-        client,
-        region_tag: str,
-        *,
-        type_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of creature types, or a specific creature type
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            type_id (int, optional): the creature type ID or the default 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual creature type(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/creature-type/{type_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def creature(
-        client,
-        region_tag: str,
-        creature_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of creatures, or a specific creature
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            creature_id (int, optional): the creature ID
-
-        Returns:
-            dict: json decoded data for the index/individual creature(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/creature/{creature_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def creature_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches the creature utils.api for creatures that match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): matching criteria in key/value pairs
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/creature"
-
-        #  adding locale and namespace key/values pairs for a complete parameters list for the request
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-    @staticmethod
-    def creature_display_media(
-        client,
-        region_tag: str,
-        display_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a creature display.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            display_id (int, optional): the creature display ID
-
-        Returns:
-            dict: json decoded media data for the creature display
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/media/creature-display/{display_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def creature_family_media(
-        client,
-        region_tag: str,
-        family_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a creature family.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            family_id (int, optional): the creature family ID
-
-        Returns:
-            dict: json decoded media data for the creature family
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/media/creature-display/{family_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class GuildCrest:
-    @staticmethod
-    def guild_crest_components_index(
-        client,
-        region_tag: str,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of guild crest components.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data for the index of guild crest components
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/guild-crest/index"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def guild_crest_border_media(
-        client,
-        region_tag: str,
-        border_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a specific guild crest border.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            border_id (int): the border ID
-
-        Returns:
-            dict: json decoded media data for the guild border
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/border/{border_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def guild_crest_emblem_media(
-        client,
-        region_tag: str,
-        emblem_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a specific guild crest emblem.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            emblem_id (int): the border ID
-
-        Returns:
-            dict: json decoded media data for the guild crest
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/emblem/{emblem_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Item:
-    @staticmethod
-    def item_class(
-        client,
-        region_tag: str,
-        *,
-        class_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of item classes, or a specific item class
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_id (int, optional): item class ID or the default 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual item class(es)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def item_set(
-        client,
-        region_tag: str,
-        *,
-        set_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of item sets, or a specific item set
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            set_id (int, optional): the item class ID or the default 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual item set(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/item-set/{set_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def item_subclass(
-        client,
-        region_tag: str,
-        class_id: int,
-        subclass_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of item subclasses, or a specific item subclass
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_id (int): the item class ID
-            subclass_id (int, optional): the item's subclass ID
-
-        Returns:
-            dict: json decoded data for the item's subclass
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}/item-subclass/{subclass_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def item(
-        client,
-        region_tag: str,
-        item_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of items, or a specific item
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            item_id (int, optional): the item class ID
-
-        Returns:
-            dict: json decoded data for the individual item
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/item/{item_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def item_media(
-        client,
-        region_tag: str,
-        item_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for an item.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            item_id (int): the creature family ID
-
-        Returns:
-            dict: json decoded media data for the item
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/item/{item_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def item_search(
-        client,
-        region_tag,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches the item utils.api for items that match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): search criteria as key/value pairs
-
-        Returns:
-             dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/item"
-
-        #  adding locale and namespace key/values pairs to field_values to make a complete params list
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-
-class Journal:
-    @staticmethod
-    def journal_expansion(
-        client,
-        region_tag: str,
-        *,
-        expansion_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of journal expansions, or a specific journal expansion
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            expansion_id (int, optional): the encounter ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual journal expansion(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/journal-expansion/{expansion_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def journal_encounter(
-        client,
-        region_tag: str,
-        *,
-        encounter_id: Optional[int] = None,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of journal (boss) encounters, or a specific journal (boss) encounters
-
-        Notes:
-            This replaced the Boss endpoint of the community REST API
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            encounter_id (int, optional): the encounter ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual journal encounter(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{encounter_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def journal_encounter_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches for azerite essences that match `field_values`
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): search criteria, as key/value pairs
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/journal-encounter"
-
-        #  adding locale and namespace key/values pairs to field_values to make a complete params list
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-    @staticmethod
-    def journal_instance(
-        client,
-        region_tag: str,
-        *,
-        instance_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of journal instances (dungeons), or a specific journal instance (dungeon)
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            instance_id (int, optional): the encounter ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual journal instance(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{instance_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def journal_instance_media(
-        client,
-        region_tag: str,
-        instance_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for an instance.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            instance_id (int): the creature family ID
-
-        Returns:
-            dict: json decoded media data for the instance
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/journal-instance/{instance_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Media:
-    @staticmethod
-    def media_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches the media utils.api match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): fields and values for the search criteria
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/media"
-
-        #  adding locale and namespace key/values pairs to field_values to make a complete params list
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-
-class ModifiedCrafting:
-    @staticmethod
-    def modified_crafting(
-        client,
-        region_tag: str,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of modified crafting recipes
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data for the index of modified crafting
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def modified_crafting_category(
-        client,
-        region_tag: str,
-        *,
-        category_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of modified crafting category index, or a specific modified crafting category
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            category_id (int, optional): the encounter ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual modified crafting category/categories
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/category/{category_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def modified_crafting_reagent_slot_type(
-        client,
-        region_tag: str,
-        *,
-        slot_type_id: Optional[int] = None,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of modified crafting reagent slot type, or a specific reagent slot type
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            slot_type_id (int, optional): the encounter ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual modified crafting reagent slot type(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/reagent-slot-type/{slot_type_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Mount:
-    @staticmethod
-    def mount(
-        client,
-        region_tag: str,
-        *,
-        mount_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mounts, or a specific mount
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            mount_id (int, optional): the mount ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual mount(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/mount/{mount_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mount_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches the mount utils.api that match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): fields and values for the search criteria
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/mount"
-
-        #  adding locale and namespace key/values pairs to field_values to make a complete params list
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-
-class MythicKeystone:
-    @staticmethod
-    def mythic_keystone_affix(
-        client,
-        region_tag: str,
-        *,
-        affix_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mythic keystone affixes, or a specific mythic keystone affix
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            affix_id (int, optional): the affix's ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual mythic keystone affix(es)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/keystone-affix/{affix_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mythic_keystone_affix_media(
-        client,
-        region_tag: str,
-        affix_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a mythic keystone affix.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            affix_id (int): the affix's ID
-
-        Returns:
-            dict: json decoded media data for the mythic keystone affix(es)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/keystone-affix/{affix_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mythic_keystone_dungeon(
-        client,
-        region_tag: str,
-        *,
-        dungeon_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mythic keystone dungeons, or a specific mythic keystone dungeon
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            dungeon_id (int, optional): the dungeon's ID or 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual mythic keystone dungeon(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/dungeon/{dungeon_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mythic_keystone_index(
-        client,
-        region_tag: str,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of links to other documents related to Mythic Keystone dungeons.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data for the index of the mythic keystone dungeon documents
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/index"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mythic_keystone_period(
-        client,
-        region_tag: str,
-        *,
-        period_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mythic keystone periods, or a specific mythic keystone period
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            period_id (int, optional): the keystone's period ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual for mythic keystone period(s)
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/period/{period_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mythic_keystone_season(
-        client,
-        region_tag: str,
-        *,
-        season_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mythic keystone seasons, or a specific mythic keystone seasons
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            season_id (int, optional): the keystone's season ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual mythic keystone season(s)
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/season/{season_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def mythic_keystone_leader_board(
-        client,
-        region_tag: str,
-        connected_realm_id: int,
-        *,
-        dungeon_id: Optional[int] = None,
-        period_id: Optional[int] = None,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mythic keystone leader boards, or a specific mythic keystone leader board
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            connected_realm_id (int): the connected realm's id
-            dungeon_id (int, optional): the particular dungeon's ID or the word 'index'
-            period_id (int, optional): the particular period to search or None when looking for the index
-
-        Returns:
-            dict: json decoded data for the index/individual mythic keystone leaderboard(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}/mythic-leaderboard/"
-
-        if dungeon_id and period_id:
-            uri += "{dungeon_id}/period/{period_id}"
-        else:
-            uri += "index"
-
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class MythicRaid:
-    @staticmethod
-    def mythic_raid_leaderboard(
-        client,
-        region_tag: str,
-        raid_name: str,
-        faction: str,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of mythic keystone affixes, or a specific mythic keystone affix
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            raid_name (str): name of the raid
-            faction (str): horde or alliance, defaults to alliance
-
-        Returns:
-            dict: json decoded data for the index/individual mythic raid
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/leaderboard/hall-of-fame/"
-        uri += f"{utils.slugify(raid_name)}/{utils.slugify(faction)}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Pet:
-    @staticmethod
-    def pet(
-        client,
-        region_tag: str,
-        *,
-        pet_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of pets, or the data about the specified pet
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            pet_id (int, optional): the pet ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual pet(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pet/{pet_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pet_media(
-        client,
-        region_tag: str,
-        pet_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a pet
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            pet_id (int): the azerite pet ID
-
-        Returns:
-            dict: json decoded media data for the for pet
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/pet/{pet_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pet_ability(
-        client,
-        region_tag: str,
-        *,
-        pet_ability_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of pets, or the data about the specified pet
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            pet_ability_id (int, optional): the pet ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual pet ability/abilities
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pet-ability/{pet_ability_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pet_ability_media(
-        client,
-        region_tag: str,
-        ability_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for an azerite ability.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            ability_id (int): the azerite ability ID
-
-        Returns:
-            dict: json decoded media data for the pet ability
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/pet-ability/{ability_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class PlayableClass:
-    @staticmethod
-    def playable_class(
-        client,
-        region_tag: str,
-        *,
-        class_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of playable classes, or a specific playable class
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_id (int, optional): the class ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual playable class(es)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def playable_class_media(
-        client,
-        region_tag: str,
-        class_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a playable class by ID.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_id (int ): class id
-
-        Returns:
-            dict: json decoded media data for the playable class(es)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-class/{class_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pvp_talent_slots(
-        client,
-        region_tag: str,
-        class_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns the PvP talent slots for a playable class by ID.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            class_id (int): class id
-
-        Returns:
-            dict: json decoded data for the index of PvP Talent slots
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}/pvp-talent-slots"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class PlayableRace:
-    @staticmethod
-    def playable_race(
-        client,
-        region_tag: str,
-        *,
-        race_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of playable races, or a specific playable race
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            race_id (int, optional): the playable race's ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual playable race(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/playable-race/{race_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class PlayableSpec:
-    @staticmethod
-    def playable_spec(
-        client,
-        region_tag: str,
-        *,
-        spec_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-
-        """Returns an index of playable specialization, or a specific playable specialization
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            spec_id (int, optional): the playable specialization's ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual playable specialization(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/playable-specialization/{spec_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def playable_spec_media(
-        client,
-        region_tag: str,
-        spec_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a playable specialization by ID.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            spec_id (int): specialization id
-
-        Returns:
-            dict: json decoded media data for the playable specialization
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-specialization/{spec_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class PowerType:
-    @staticmethod
-    def power_type(
-        client,
-        region_tag: str,
-        *,
-        power_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of power types, or a specific power type
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            power_id (int, optional): the power type's ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual power types
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/power-type/{power_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Profession:
-    @staticmethod
-    def profession(
-        client,
-        region_tag: str,
-        *,
-        profession_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of achievements, or a specific achievements
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            profession_id (int, optional): the profession ID or the word 'index'
-
-        Returns:
-            dict: json decoded dict for the profession or the index of the achievements
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def profession_media(
-        client,
-        region_tag: str,
-        profession_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a creature display.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            profession_id (str):  profession ID
-
-        Returns:
-            dict: the media assets for the given creature display ID
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/profession/{profession_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def profession_skill_tier(
-        client,
-        region_tag: str,
-        profession_id: int,
-        skill_tier_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of achievements, or a specific achievements
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            profession_id (int): the profession ID
-            skill_tier_id (int): the skill tier ID
-
-        Returns:
-            dict: json decoded dict for the profession or the index of the achievements
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}/skill-tier/{skill_tier_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def recipe(
-        client,
-        region_tag: str,
-        recipe_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of achievements, or a specific achievements
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            recipe_id (str): the recipe ID
-
-        Returns:
-            dict: json decoded dict for the profession or the index of the achievements
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/recipe/{recipe_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def recipe_media(
-        client,
-        region_tag: str,
-        recipe_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a creature display.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            recipe_id (int): the profession ID
-
-        Returns:
-            dict: the media assets for the given creature display ID
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/recipe/{recipe_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class PVP:
-    @staticmethod
-    def pvp_season(
-        client,
-        region_tag: str,
-        *,
-        season_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of pvp seasons, or a specific pvp season
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            season_id (int, optional): the power type's ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual PvP season(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pvp_leader_board(
-        client,
-        region_tag,
-        season_id: int,
-        *,
-        pvp_bracket: Optional[str] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of pvp leader boards, or a specific pvp leader board
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            season_id (int): pvp season's ID
-            pvp_bracket (int, optional): the PvP bracket to view ('2v2', '3v3', '5v5', 'rbg') or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index of the PvP leader board
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}/pvp-leaderboard/{pvp_bracket}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pvp_rewards_index(
-        client,
-        region_tag: str,
-        season_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of pvp rewards, or a specific pvp reward
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            season_id (int): the season ID for the rewards or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index of PvP rewards
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}/pvp-reward/index"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pvp_tier(
-        client,
-        region_tag: str,
-        *,
-        tier_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of pvp tier, or a specific pvp tier
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            tier_id (int, optional): the pvp tier ID or the default 'index'
-
-        Returns:
-            dict: the index or data for the pvp tier
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pvp-tier/{tier_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pvp_tier_media(
-        client,
-        region_tag,
-        tier_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a PvP tier by ID.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            tier_id (int): pvp tier id
-
-        Returns:
-            dict: json decoded media data for the PvP tier
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/pvp-tier/{tier_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Quest:
-    @staticmethod
-    def quest(
-        client,
-        region_tag: str,
-        *,
-        quest_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of quests, or a specific quest
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            quest_id (int, optional): the quest ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual quest(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/quest/{quest_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def quest_category(
-        client,
-        region_tag: str,
-        *,
-        quest_category_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of quest categories, or a specific quest category
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            quest_category_id (int, optional): the quest category ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual quest category/categories
-        """
-        uri = (
-            f"{utils.api_host(region_tag)}/data/wow/quest/category/{quest_category_id}"
-        )
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def quest_area(
-        client,
-        region_tag: str,
-        *,
-        quest_area_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of quest areas, or a specific quest area
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            quest_area_id (int, optional): the quest area ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual quest area(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/quest/area/{quest_area_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def quest_type(
-        client,
-        region_tag: str,
-        *,
-        quest_type_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of quest types, or a specific quest type
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            quest_type_id (int, optional): the quest type ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual quest type(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/quest/type/{quest_type_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Realm:
-    @staticmethod
-    def realm(
-        client,
-        region_tag: str,
-        *,
-        realm_slug: Optional[Union[str, int]] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of realms, or a specific realm
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            realm_slug (str/int, optional): the pvp tier ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual realm(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/realm/{realm_slug}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def realm_search(
-        client,
-        region_tag,
-        field_values: Dict[str, Any],
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-
-        """Searches the creature utils.api for connected realm(s) that match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): search criteria, as key/value pairs
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/realm"
-
-        #  adding locale and namespace key/values pairs to field_values to make a complete params list
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-
-class Region:
-    @staticmethod
-    def region(
-        client,
-        region_tag: str,
-        *,
-        region_req: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of region_tags, or a specific region_tag
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            region_req (int, optional): the region_tag ID or the word 'index'
-
-        Returns:
-            dict: json decoded data for the index/individual region_tag(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/region/{region_req}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Reputation:
-    @staticmethod
-    def reputation_faction(
-        client,
-        region_tag: str,
-        *,
-        faction_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-
-        """Returns an index of reputation factions, or a specific reputation fa
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            faction_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual reputation faction(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/reputation-faction/{faction_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def reputation_tier(
-        client,
-        region_tag: str,
-        *,
-        tier_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of reputation factions, or a specific reputation fa
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            tier_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual reputation tier(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/reputation-tiers/{tier_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Spell:
-    @staticmethod
-    def spell(
-        client,
-        region_tag: str,
-        spell_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of spells, or a specific spell
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            spell_id (int): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual spell(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/spell/{spell_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def spell_media(
-        client,
-        region_tag,
-        spell_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a spell by ID.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            spell_id (int): pvp tier id
-
-        Returns:
-            dict: json decoded media data for the spell
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/spell/{spell_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def spell_search(
-        client,
-        region_tag: str,
-        field_values: Dict[str, Any] = None,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Searches the creature utils.api for items that match the criteria
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            field_values (dict): search criteria, as key/value pairs
-
-        Returns:
-            dict: json decoded search results that match `field_values`
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/search/spell"
-
-        #  adding locale and namespace key/values pairs to field_values to make a complete params list
-        field_values.update(
-            {
-                "locale": utils.localize(locale),
-                "namespace": namespace("static", release, region_tag),
-            }
-        )
-
-        try:
-            return client.get(uri, params=field_values)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=field_values)
-
-
-class Talent:
-    @staticmethod
-    def talent(
-        client,
-        region_tag: str,
-        *,
-        talent_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of spells, or a specific spell
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            talent_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual talent(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/talent/{talent_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def pvp_talent(
-        client,
-        region_tag: str,
-        *,
-        pvp_talent_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-
-        """Returns an index of spells, or a specific spell
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            pvp_talent_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the talent index or individual talent
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/pvp-talent/{pvp_talent_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class TechTalent:
-    @staticmethod
-    def tech_talent_tree(
-        client,
-        region_tag: str,
-        *,
-        tree_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of tech talent trees or a tech talent tree by ID
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            tree_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual tech talent tree(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent-tree/{tree_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def tech_talent(
-        client,
-        region_tag: str,
-        *,
-        talent_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of tech talents or a tech talent by ID
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            talent_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual tech talent(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent/{talent_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-    @staticmethod
-    def tech_talent_media(
-        client,
-        region_tag: str,
-        talent_id: int,
-        *,
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns media for a spell by ID.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            talent_id (int): pvp tier id
-
-        Returns:
-            dict: json decoded media data for the tech talent
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/media/tech-talent/{talent_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class Title:
-    @staticmethod
-    def title(
-        client,
-        region_tag: str,
-        *,
-        title_id: Optional[int] = "index",
-        locale: Optional[str] = None,
-        release: Optional[str] = "retail",
-    ):
-        """Returns an index of spells, or a specific spell
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-            title_id (int, optional): the slug or ID of the region_tag requested
-
-        Returns:
-            dict: json decoded data for the index/individual title(s)
-        """
-        uri = f"{utils.api_host(region_tag)}/data/wow/title/{title_id}"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
-
-
-class WoWToken:
-    @staticmethod
-    def wow_token_index(
-        client,
-        region_tag,
-        release: Optional[str] = "retail",
-        locale: Optional[str] = None,
-    ):
-        """Returns the WoW Token index.
-
-        Args:
-            client (obj: oauth): OpenID/OAuth instance
-            release (str): release of the game (ie classic1x, classic, retail)
-            region_tag (str): region_tag abbreviation
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data for the index/individual wow token
-        """
-        if release in utils.WOW_CLASSICS and region_tag.lower() != "cn":
-            raise WoWReleaseError(
-                "WoW Token API only available on retail, and CN classic markets"
-            )
-
-        uri = f"{utils.api_host(region_tag)}/data/wow/token/index"
-        params = {
-            "locale": utils.localize(locale),
-            "namespace": namespace("static", release, region_tag),
-        }
-
-        try:
-            return client.get(uri, params=params)
-        except AttributeError:
-            return client.fetch_protected_resource(uri, "GET", params=params)
+from . import utils
+from .. import exceptions
+from .. import utils
+from ..decorators import verify_region
+
+
+__version__ = '3.0.0'
+__author__ = 'David \'Gahd\' Couples'
+
+
+@verify_region
+def achievement_category(
+    region_tag: str,
+    *,
+    category_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of achievement categories, or an achievement category by ID
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        category_id (int, optional): the achievement's category ID or None (default).
+            None will retrieve the entire list of achievement categories
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/achievement-category/{category_id}"
+    )
+
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    return uri, params
+
+
+@verify_region
+def achievement(
+    region_tag: str,
+    *,
+    achievement_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of achievements, or an achievement by ID
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        achievement_id (int, optional): the achievement ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/achievement/{achievement_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    return uri, params
+
+
+@verify_region
+def achievement_media(
+    region_tag: str,
+    achievement_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for an achievement by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        achievement_id (int): the achievement ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/achievement/{achievement_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def auction(
+    region_tag: str,
+    connected_realm_id: int,
+    *,
+    auction_house_id: Optional[int] = None,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns all active auctions for a connected realm.
+
+    See the Connected Realm API for information about retrieving a list of connected realm IDs.
+    Auction house data updates at a set interval. The value was initially set at 1 hour;
+    however, it might change over time without notice.
+
+    Depending on the number of active auctions on the specified connected realm, the response
+    from this endpoint may be rather large, sometimes exceeding 10 MB.
+
+    See the Connected Realm utils.api for information about retrieving a list of
+    connected realm IDs.
+
+    Auction house data updates at a set interval. The value was initially set
+    at 1 hour; however, it might change over time without notice.
+
+    Depending on the number of active auctions on the specified connected realm,
+    the response from this game_data may be rather large, sometimes exceeding
+    10 MB.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        connected_realm_id (int): the id of the connected realm
+        auction_house_id (int, optional): the ID of the auction house
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        exceptions.BNetReleaseError: when an AH ID is used for the retail
+
+    Notes:
+        Auction house functionality is not available for WoW 1.x (Vanilla Classic)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}/"
+
+    if release == "retail" and auction_house_id is None:
+        uri += "auctions"
+
+    if release != "retail" and not auction_house_id:
+        uri += "auctions/index"
+
+    if release != "retail" and auction_house_id:
+        uri += f"auctions/{auction_house_id}"
+
+    if release == "retail" and auction_house_id:
+        raise exceptions.BNetReleaseError("Auction House ID not available for retail")
+
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "dynamic", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def azerite_essence(
+    region_tag: str,
+    *,
+    essence_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of azerite essences, or an azerite essence by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        essence_id (int, optional): the Azerite essence ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/azerite-essence/{essence_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def azerite_essence_search(
+    region_tag: str,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of azerite essences. For more detail see the search guide at:
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): search criteria, as key/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/azerite-essence"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    params.update(field_values)
+
+    return uri, params
+
+
+@verify_region
+def azerite_essence_media(
+    region_tag: str,
+    essence_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for an azerite essence by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        essence_id (int): the azerite essence ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/media/azerite-essence/{essence_id}"
+    )
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def connected_realm(
+    region_tag: str,
+    *,
+    connected_realm_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of connected realms, or a connected realm by ID.
+
+    A connected realm is a collection of realms operating as one larger realm
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        connected_realm_id (int, optional): the ID of the connected realm
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "dynamic", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def connected_realm_search(
+    region_tag: str,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of connected realms. For more detail see the search guide:
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): field/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/connected-realm"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "dynamic", release)
+    }
+    params.update(field_values)
+    return uri, params
+
+
+@verify_region
+def covenant(
+    region_tag: str,
+    *,
+    covenant_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of covenants, or a covenant by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        covenant_id (int, optional): the ID of the covenant or the default 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/covenant/{covenant_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def covenant_media(
+    region_tag: str,
+    covenant_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a covenant by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        covenant_id (int, optional): the covenant ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/covenant/{covenant_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def soulbind(
+    region_tag: str,
+    *,
+    soulbind_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of soulbinds, or a soulbind by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        soulbind_id (int, optional): the ID of the soulbind or the word of 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/covenant/soulbind/{soulbind_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def conduit(
+    region_tag: str,
+    *,
+    conduit_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of conduits, or a conduit by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        conduit_id (int, optional): the ID of the conduit or the word of 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/covenant/conduit/{conduit_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def creature_family(
+    region_tag: str,
+    *,
+    family_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of creature families, or a creature family by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        family_id (int, optional): the creature family ID or the default 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/creature-family/{family_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def creature_type(
+    region_tag: str,
+    *,
+    type_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of creature types, or a creature type by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        type_id (int, optional): the creature type ID or the default 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/creature-type/{type_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def creature(
+    region_tag: str,
+    creature_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns a creature by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        creature_id (int, optional): the creature ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/creature/{creature_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def creature_search(
+    region_tag: str,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of creatures. For more detail see the search guide
+     https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): matching criteria in key/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/creature"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    params.update(field_values)
+    return uri, params
+
+
+@verify_region
+def creature_display_media(
+    region_tag: str,
+    display_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a creature display by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        display_id (int, optional): the creature display ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/media/creature-display/{display_id}"
+    )
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def creature_family_media(
+    region_tag: str,
+    family_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a creature family by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        family_id (int, optional): the creature family ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/media/creature-family/{family_id}"
+    )
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def guild_crest_components_index(
+    region_tag: str,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of guild crest media.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/guild-crest/index"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def guild_crest_media(
+    region_tag: str,
+    category: str,
+    icon_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a guild crest border by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        category (str): either 'border' or 'emblem'
+        icon_id (int): the border ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    if category and category not in ('border', 'emblem'):
+        raise exceptions.BNetValueError("Improper category")
+
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/guild-crest/{category}/{icon_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def item_class(
+    region_tag: str,
+    *,
+    class_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of item classes, or an item class by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        class_id (int, optional): item class ID or the default 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def item_set(
+    region_tag: str,
+    *,
+    set_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of item sets, or an item set by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        set_id (int, optional): the item class ID or the default 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/item-set/{set_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def item_subclass(
+    region_tag: str,
+    class_id: int,
+    subclass_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an item subclass by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        class_id (int): the item class ID
+        subclass_id (int, optional): the item's subclass ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/item-class/{class_id}/item-subclass/{subclass_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def item(
+    region_tag: str,
+    item_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an item by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        item_id (int, optional): the item class ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/item/{item_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def item_media(
+    region_tag: str,
+    item_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an item by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        item_id (int): the creature family ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/item/{item_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def item_search(
+    region_tag,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of items. For more detail see the search guide.
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): search criteria as key/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+         tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/item"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    #  adding locale and namespace key/values pairs to field_values to make a complete params list
+    params.update(field_values)
+
+    return uri, params
+
+
+@verify_region
+def journal_expansion(
+    region_tag: str,
+    *,
+    expansion_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of journal expansions, or a journal expansion by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        expansion_id (int, optional): the encounter ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/journal-expansion/{expansion_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def journal_encounter(
+    region_tag: str,
+    *,
+    encounter_id: Optional[Union[int, str]] = 'index',
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of journal encounters, or a journal encounter by ID.
+
+    Notes:
+        This replaced the Boss endpoint of the community REST API
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        encounter_id (int, optional): the encounter ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/journal-encounter/{encounter_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def journal_encounter_search(
+    region_tag: str,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of journal encounters.  For more detail see the Search Guide.
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): search criteria, as key/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/journal-encounter"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    params.update(field_values)
+    return uri, params
+
+
+@verify_region
+def journal_instance(
+    region_tag: str,
+    *,
+    instance_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of journal instances, or a journal instance.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        instance_id (int, optional): the encounter ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/journal-instance/{instance_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def journal_instance_media(
+    region_tag: str,
+    instance_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a journal instance by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        instance_id (int): the creature family ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/journal-instance/{instance_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def media_search(
+    region_tag: str,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of all types of media documents. For more detail see the Search Guide.
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): fields and values for the search criteria
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/media"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    #  adding locale and namespace key/values pairs to field_values to make a complete params list
+    params.update(field_values)
+
+    return uri, params
+
+
+@verify_region
+def modified_crafting(
+    region_tag: str,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the parent index for Modified Crafting.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def modified_crafting_category(
+    region_tag: str,
+    *,
+    category_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the index of Modified Crafting categories, or a Modified Crafting category by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        category_id (int, optional): the encounter ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/category/{category_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def modified_crafting_reagent_slot_type(
+    region_tag: str,
+    *,
+    slot_type_id: Optional[Union[int, str]] = 'index',
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the index of Modified Crafting reagent slot types, or a Modified Crafting reagent slot type by ID
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        slot_type_id (int, optional): the encounter ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/modified-crafting/reagent-slot-type/{slot_type_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mount(
+    region_tag: str,
+    *,
+    mount_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of mounts, or a mount by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        mount_id (int, optional): the mount ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/mount/{mount_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mount_search(
+    region_tag: str,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of mounts. For more detail see the Search Guide.
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): fields and values for the search criteria
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/mount"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    #  adding locale and namespace key/values pairs to field_values to make a complete params list
+    params.update(field_values)
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_affix(
+    region_tag: str,
+    *,
+    affix_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of mythic keystone affixes. or a mythic keystone affix by ID
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        affix_id (int, optional): the affix's ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/keystone-affix/{affix_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_affix_media(
+    region_tag: str,
+    affix_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a mythic keystone affix by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        affix_id (int): the affix's ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/keystone-affix/{affix_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_dungeon(
+    region_tag: str,
+    *,
+    dungeon_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of Mythic Keystone dungeons, or a Mythic Keystone dungeon by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        dungeon_id (int, optional): the dungeon's ID or 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/dungeon/{dungeon_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_index(
+    region_tag: str,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of links to other documents related to Mythic Keystone dungeons.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/index"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_period(
+    region_tag: str,
+    *,
+    period_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of Mythic Keystone periods, or a Mythic Keystone period by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        period_id (int, optional): the keystone's period ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/period/{period_id}"
+    )
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_season(
+    region_tag: str,
+    *,
+    season_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of Mythic Keystone seasons, or a Mythic Keystone season by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        season_id (int, optional): the keystone's season ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/season/{season_id}"
+    )
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_keystone_leaderboard(
+    region_tag: str,
+    connected_realm_id: int,
+    *,
+    dungeon_id: Optional[Union[int, str]] = None,
+    period_id: Optional[Union[int, str]] = None,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of Mythic Keystone Leaderboard dungeon instances for a connected realm,
+    or a weekly Mythic Keystone Leaderboard by period.
+
+    Args:
+        release (str): release of the game (ie classic1x, classic, retail)
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        connected_realm_id (int): the connected realm's id
+        dungeon_id (int, optional): the particular dungeon's ID or the word 'index'
+        period_id (int, optional): the particular period to search or None when looking for the index
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/connected-realm/{connected_realm_id}/mythic-leaderboard/"
+
+    if dungeon_id and period_id:
+        uri += f"{dungeon_id}/period/{period_id}"
+    else:
+        uri += "index"
+
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def mythic_raid_leaderboard(
+    region_tag: str,
+    raid_name: str,
+    faction: str,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the leaderboard for a given raid and faction.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        raid_name (str): name of the raid
+        faction (str): horde or alliance, defaults to alliance
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/leaderboard/hall-of-fame/"
+    uri += f"{utils.slugify(raid_name)}/{utils.slugify(faction)}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pet(
+    region_tag: str,
+    *,
+    pet_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of battle pets, or a battle pet by ID.
+
+    Args:
+        release (str): release of the game (ie classic1x, classic, retail)
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        pet_id (int, optional): the pet ID or the word 'index'
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pet/{pet_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pet_media(
+    region_tag: str,
+    pet_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a battle pet by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        pet_id (int): the azerite pet ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/pet/{pet_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pet_ability(
+    region_tag: str,
+    *,
+    pet_ability_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of pet abilities, or a pet ability by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        pet_ability_id (int, optional): the pet ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pet-ability/{pet_ability_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pet_ability_media(
+    region_tag: str,
+    ability_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a pet ability by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        ability_id (int): the azerite ability ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/pet-ability/{ability_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def playable_class(
+    region_tag: str,
+    *,
+    class_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of playable classes, or a playable class by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        class_id (int, optional): the class ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def playable_class_media(
+    region_tag: str,
+    class_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a playable class by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        class_id (int ): class id
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-class/{class_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_talent_slots(
+    region_tag: str,
+    class_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the PvP talent slots for a playable class by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        class_id (int): class id
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/playable-class/{class_id}/pvp-talent-slots"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def playable_race(
+    region_tag: str,
+    *,
+    race_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of playable races, or a playable race by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        race_id (int, optional): the playable race's ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/playable-race/{race_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def playable_spec(
+    region_tag: str,
+    *,
+    spec_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+
+    """Returns an index of playable specializations, or a playable specialization by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        spec_id (int, optional): the playable specialization's ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/playable-specialization/{spec_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def playable_spec_media(
+    region_tag: str,
+    spec_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a playable specialization by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        spec_id (int): specialization id
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/playable-specialization/{spec_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def power_type(
+    region_tag: str,
+    *,
+    power_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of power types, or a power type by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        power_id (int, optional): the power type's ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/power-type/{power_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def profession(
+    region_tag: str,
+    *,
+    profession_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """RReturns an index of professions, or a profession by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        profession_id (int, optional): the profession ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def profession_media(
+    region_tag: str,
+    profession_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a profession by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        profession_id (str):  profession ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/profession/{profession_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def profession_skill_tier(
+    region_tag: str,
+    profession_id: int,
+    skill_tier_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns a skill tier for a profession by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        profession_id (int): the profession ID
+        skill_tier_id (int): the skill tier ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/profession/{profession_id}/skill-tier/{skill_tier_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def recipe(
+    region_tag: str,
+    recipe_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns a recipe by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        recipe_id (str): the recipe ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/recipe/{recipe_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def recipe_media(
+    region_tag: str,
+    recipe_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a recipe by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        recipe_id (int): the profession ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/recipe/{recipe_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_season(
+    region_tag: str,
+    *,
+    season_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of PvP seasons, or a PvP season by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        season_id (int, optional): the power type's ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-season/{season_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_regions(
+        region_tag: str,
+        *,
+        release: Optional[str] = "retail",
+        locale: Optional[str] = None
+):
+    """Returns an index of PvP regions
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/index"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_regional_season(
+        region_tag: str,
+        pvp_region_id: int,
+        *,
+        pvp_season_id: Optional[Union[int, str]] = 'index',
+        release: Optional[str] = "retail",
+        locale: Optional[str] = None
+):
+    """Returns an index of PvP regions
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        pvp_region_id (int): the regional PVP ID (use pvp_regions)
+        pvp_season_id (int): the pvp season ID
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/{pvp_region_id}/pvp-season/{pvp_season_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_leaderboard(
+    region_tag,
+    pvp_region_id: int,
+    season_id: int,
+    *,
+    pvp_bracket: Optional[str] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of PvP leaderboards for a PvP season, or
+    the PvP leaderboard of a specific PvP bracket for a PvP season.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        pvp_region_id (int): the regional PVP ID (use pvp_regions)
+        season_id (int): pvp season's ID
+        pvp_bracket (int, optional): the PvP bracket to view ('2v2', '3v3', '5v5', 'rbg') or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/{pvp_region_id}/pvp-season/"
+    uri += f"{season_id}/pvp-leaderboard/{pvp_bracket}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_rewards_index(
+    region_tag: str,
+    pvp_region_id: int,
+    season_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of PvP rewards for a PvP season.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        pvp_region_id (int): the regional PVP ID (use pvp_regions)
+        season_id (int): the season ID for the rewards or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-region/{pvp_region_id}/pvp-season/{season_id}/pvp-reward/index"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_tier(
+    region_tag: str,
+    *,
+    tier_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of PvP tiers, or a PvP tier by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        tier_id (int, optional): the pvp tier ID or the default 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-tier/{tier_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_tier_media(
+    region_tag,
+    tier_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a PvP tier by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        tier_id (int): pvp tier id
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/pvp-tier/{tier_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def quest(
+    region_tag: str,
+    *,
+    quest_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the parent index for quests, or a quest by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        quest_id (int, optional): the quest ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/quest/{quest_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def quest_category(
+    region_tag: str,
+    *,
+    quest_category_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of quest categories (such as quests for a specific class, profession, or storyline),
+    or a quest category by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        quest_category_id (int, optional): the quest category ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = (
+        f"{utils.api_host(region_tag)}/data/wow/quest/category/{quest_category_id}"
+    )
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def quest_area(
+    region_tag: str,
+    *,
+    quest_area_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of quest areas, or a quest area by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        quest_area_id (int, optional): the quest area ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/quest/area/{quest_area_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def quest_type(
+    region_tag: str,
+    *,
+    quest_type_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of quest types (such as PvP quests, raid quests, or account quests),
+    or a quest type by ID.
+
+    Args:
+        release (str): release of the game (ie classic1x, classic, retail)
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        quest_type_id (int, optional): the quest type ID or the word 'index'
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/quest/type/{quest_type_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def realm(
+    region_tag: str,
+    *,
+    realm_slug: Optional[Union[str, int]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of realms, or a single realm by slug or ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        realm_slug (str/int, optional): the pvp tier ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/realm/{utils.slugify(realm_slug)}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def realm_search(
+    region_tag,
+    field_values: Dict[str, Any],
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+
+    """Performs a search of realms. For more detail see the Search Guide.
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): search criteria, as key/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/realm"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    params.update(field_values)
+    return uri, params
+
+
+@verify_region
+def region(
+    region_tag: str,
+    *,
+    region_req: Optional[int] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of regions, or a region by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        region_req (int, optional): the region_tag ID or the word 'index'
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/region/{region_req}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def reputation_faction(
+    region_tag: str,
+    *,
+    faction_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+
+    """Returns an index of reputation factions, or a single reputation faction by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        faction_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/reputation-faction/{faction_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def reputation_tier(
+    region_tag: str,
+    *,
+    tier_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of reputation tiers, or a single set of reputation tiers by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        tier_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/reputation-tiers/{tier_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def spell(
+    region_tag: str,
+    spell_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns a spell by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        spell_id (int): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/spell/{spell_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def spell_media(
+    region_tag,
+    spell_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a spell by ID.
+
+    Args:
+        release (str): release of the game (ie classic1x, classic, retail)
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        spell_id (int): pvp tier id
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/spell/{spell_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def spell_search(
+    region_tag: str,
+    field_values: Dict[str, Any] = None,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Performs a search of spells. For more detail see the Search Guide.
+    https://develop.battle.net/documentation/world-of-warcraft/guides/search
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        field_values (dict): search criteria, as key/value pairs
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/search/spell"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+    #  adding locale and namespace key/values pairs to field_values to make a complete params list
+    params.update(field_values)
+    return uri, params
+
+
+@verify_region
+def talent(
+    region_tag: str,
+    *,
+    talent_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of talents, or a talent by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        talent_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/talent/{talent_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def pvp_talent(
+    region_tag: str,
+    *,
+    pvp_talent_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+
+    """Returns an index of PvP talents, or a PvP talent by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        pvp_talent_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/pvp-talent/{pvp_talent_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def tech_talent_tree(
+    region_tag: str,
+    *,
+    tree_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of tech talent trees, or a tech talent tree by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        tree_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent-tree/{tree_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def tech_talent(
+    region_tag: str,
+    *,
+    talent_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of tech talents, or a tech talent by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        talent_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/tech-talent/{talent_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def tech_talent_media(
+    region_tag: str,
+    talent_id: int,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns media for a tech talent by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        talent_id (int): pvp tier id
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/media/tech-talent/{talent_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def title(
+    region_tag: str,
+    *,
+    title_id: Optional[Union[int, str]] = "index",
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns an index of titles, or a title by ID.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        title_id (int, optional): the slug or ID of the region_tag requested
+        release (str): release of the game (ie classic1x, classic, retail)
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/title/{title_id}"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params
+
+
+@verify_region
+def wow_token_index(
+    region_tag,
+    *,
+    release: Optional[str] = "retail",
+    locale: Optional[str] = None
+):
+    """Returns the WoW Token index.
+
+    Args:
+        release (str): release of the game (ie classic1x, classic, retail)
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    uri = f"{utils.api_host(region_tag)}/data/wow/token/index"
+    params = {
+        "locale": utils.localize(locale),
+        "namespace": utils.namespace(region_tag, "static", release)
+    }
+
+    return uri, params

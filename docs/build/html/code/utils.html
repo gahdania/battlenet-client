@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Global Utility Functions &#8212; Battle.net API 3.0.0a1 documentation</title>
+    <title>Global Utility Functions &#8212; Battle.net API 3.0.0a2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
 
@@ -17,8 +17,8 @@
 
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="References" href="../references.html" />
-    <link rel="prev" title="Profile" href="wow/profile.html" />
+    <link rel="next" title="Developer Portal Instructions" href="../dev_portal.html" />
+    <link rel="prev" title="Decorators" href="decorators.html" />
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,12 +30,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../references.html" title="References"
+          <a href="../dev_portal.html" title="Developer Portal Instructions"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="wow/profile.html" title="Profile"
+          <a href="decorators.html" title="Decorators"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Source Code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Global Utility Functions</a></li>
       </ul>
@@ -46,26 +46,38 @@
         <div class="bodywrapper">
           <div class="body" role="main">
 
-  <section id="module-battlenet_client.utils">
-<span id="global-utility-functions"></span><h1>Global Utility Functions<a class="headerlink" href="#module-battlenet_client.utils" title="Permalink to this headline">¶</a></h1>
-<p>Miscellaneous functions to support world of warcraft</p>
-<dl class="simple">
-<dt>Functions:</dt><dd><p>currency_convertor</p>
-</dd>
-</dl>
+  <section id="global-utility-functions">
+<h1>Global Utility Functions<a class="headerlink" href="#global-utility-functions" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="battlenet_client.utils.currency_convertor">
 <span class="sig-prename descclassname"><span class="pre">battlenet_client.utils.</span></span><span class="sig-name descname"><span class="pre">currency_convertor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#battlenet_client.utils.currency_convertor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the value into gold, silver and copper</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>int/str</em>) – the value to be converted</p>
+<dd class="field-odd"><p><strong>value</strong> (<em>int</em>) – the value to be converted</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>gold, silver and copper values</p>
+<dd class="field-even"><p>gold (int), silver (int) and copper (int)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.utils.slugify">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.utils.</span></span><span class="sig-name descname"><span class="pre">slugify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#battlenet_client.utils.slugify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns value as a slug</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string to be converted into a slug</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the slug</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -79,7 +91,7 @@
 <dd class="field-odd"><p><strong>locale</strong> (<em>str</em>) – the locality to be standardized</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the locale in the format of “&lt;lang&gt;_&lt;COUNTRY&gt;”</p>
+<dd class="field-even"><p>the locale in the format of “&lt;language&gt;_&lt;COUNTRY&gt;”</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
@@ -94,15 +106,49 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="battlenet_client.utils.slugify">
-<span class="sig-prename descclassname"><span class="pre">battlenet_client.utils.</span></span><span class="sig-name descname"><span class="pre">slugify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#battlenet_client.utils.slugify" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the ‘slugified’ string</p>
+<dt class="sig sig-object py" id="battlenet_client.utils.api_host">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.utils.</span></span><span class="sig-name descname"><span class="pre">api_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#battlenet_client.utils.api_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the API endpoint hostname and protocol</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – the string to be converted into a slug</p>
+<dd class="field-odd"><p><strong>region_tag</strong> (<em>str</em>) – the region abbreviation</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the slug of :value:</p>
+<dd class="field-even"><p>The API endpoint hostname and protocol</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.utils.auth_host">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.utils.</span></span><span class="sig-name descname"><span class="pre">auth_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.utils.auth_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the authorization endpoint hostname and protocol</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>region_tag</strong> (<em>str</em>) – the region abbreviation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The authorization endpoint hostname and protocol</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="battlenet_client.utils.render_host">
+<span class="sig-prename descclassname"><span class="pre">battlenet_client.utils.</span></span><span class="sig-name descname"><span class="pre">render_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#battlenet_client.utils.render_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the render endpoint hostname and protocol</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>region_tag</strong> (<em>str</em>) – the region abbreviation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The render endpoint hostname and protocol</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
@@ -121,13 +167,13 @@
         <div class="sphinxsidebarwrapper">
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="wow/profile.html"
-                          title="previous chapter">Profile</a></p>
+    <p class="topless"><a href="decorators.html"
+                          title="previous chapter">Decorators</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../references.html"
-                          title="next chapter">References</a></p>
+    <p class="topless"><a href="../dev_portal.html"
+                          title="next chapter">Developer Portal Instructions</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -160,12 +206,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../references.html" title="References"
+          <a href="../dev_portal.html" title="Developer Portal Instructions"
              >next</a> |</li>
         <li class="right" >
-          <a href="wow/profile.html" title="Profile"
+          <a href="decorators.html" title="Decorators"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Battle.net API 3.0.0a1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Source Code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Global Utility Functions</a></li>
       </ul>

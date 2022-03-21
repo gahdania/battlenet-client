@@ -10,4 +10,7 @@ Source Code
    hs/index
    sc2/index
    wow/index
+   constants
+   exceptions
+   decorators
    utils
