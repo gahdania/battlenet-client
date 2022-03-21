@@ -1,365 +1,534 @@
-"""Defines the classes that handle the community APIs for Starcraft 2
+"""Defines the functions that handle the community APIs for Starcraft 2
+for the non-chinese regions
 
-Classes:
-    Community
-    CommunityCN
+Functions:
+    static(region_tag, region_id, locale)
+    metadata(region_tag, region_id, realm_id, profile_id, locale)
+    profile(region_tag, region_id, realm_id, profile_id, locale)
+    ladder(region_tag, region_id, realm_id, profile_id, ladder_id, locale)
+    grandmaster(region_tag, region_id, locale)
+    season(region_tag, region_id, locale)
+    player(region_tag, account_id, locale)
+    legacy_profile(region_tag, region_id, realm_id, profile_id, locale)
+    legacy_ladders(region_tag, region_id, realm_id, profile_id, locale)
+    legacy_match_history( region_tag, region_id, realm_id, profile_id, locale)
+    legacy_ladder( region_tag, region_id, ladder_id, locale)
+    legacy_achievements( region_tag, region_id, locale)
+    legacy_rewards(region_tag, region_id, locale)
 
-Disclaimer:
-    All rights reserved, Blizzard is the intellectual property owner of Starcraft 2 and any data
-    retrieved from this API.
+Misc Variables:
+    __version__
+    __author__
+
+Author: David "Gahd" Couples
+License: GPL v3
+Copyright: February 24, 2022
 """
 
-from typing import TYPE_CHECKING, Optional
-
-from requests import Response
-
-if TYPE_CHECKING:
-    from .client import SC2Client
-
-from .exceptions import SC2ClientError, SC2RegionError
-
-
-class Profile:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def static(self, locale: str, region_id: int) -> Response:
-        """Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-
-        Returns:
-            dict: dict containing the static profile data
-        """
-
-        return self.__client.community(locale, "static", "profile", region_id)
-
-    def metadata(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Response:
-        """Returns metadata for an individual's profile.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            realm_id (int): the realm of the profile (1 or 2)
-            profile_id (int): the profile ID
-
-        Returns:
-            dict: dict containing the requested metadata
-        """
-        return self.__client.community(
-            locale, "metadata", "profile", region_id, realm_id, profile_id
-        )
-
-    def profile(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Response:
-        """Returns data about an individual SC2 profile.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            realm_id (int): the realm of the profile (1 or 2)
-            profile_id (int): the profile ID
-
-        Returns:
-            dict: dict containing the requested profile data
-        """
-        return self.__client.community(
-            locale, "profile", region_id, realm_id, profile_id
-        )
-
-    def ladder(
-        self,
-        locale: str,
-        region_id: int,
-        realm_id: int,
-        profile_id: int,
-        ladder_id: Optional[int] = None,
-    ) -> Response:
-        """Returns a ladder summary, or specific ladder for an individual SC2 profile.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            realm_id (int): the realm of the profile (1 or 2)
-            profile_id (int): the profile ID
-            ladder_id (int, optional): the ID of a specific ladder, if desired
-
-        Returns:
-            dict: dict containing the requested profile data
-        """
-        if ladder_id:
-            return self.__client.community(
-                locale, "profile", region_id, realm_id, profile_id, "ladder", "summary"
-            )
-
-        return self.__client.community(
-            locale, "profile", region_id, realm_id, profile_id, "ladder", ladder_id
-        )
-
-
-class Ladder:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def grandmaster(self, locale: str, region_id: int) -> Response:
-        """Returns ladder data for the current season's grandmaster leaderboard.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-
-        Returns:
-            dict: dict containing info about the grandmaster leaderboard
-        """
-        return self.__client.community(locale, "ladder", "grandmaster", region_id)
-
-    def season(self, locale: str, region_id: int) -> Response:
-        """Returns data about the current season.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-
-        Returns:
-            dict: dict containing info about the current season
-        """
-        return self.__client.community(locale, "ladder", "season", region_id)
-
-
-class Account:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def player(self, locale: str, account_id: str) -> Response:
-        """Returns the player data for the provided `account_id`.
-
-        Args:
-            locale (str): which locale to use for the request
-            account_id (int): the account ID to request
-
-        Returns:
-            dict: json decoded data of the account
-        """
-        if not self.__client.auth_flow:
-            raise SC2ClientError("Requires the authorized workflow")
-
-        return self.__client.community(locale, "player", account_id)
-
-
-class Legacy:
-    def __init__(self, client: "SC2Client") -> None:
-        self.__client = client
-
-    def profile(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Response:
-        """Retrieves data about an individual SC2 profile.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            realm_id (int): the realm of the profile (1 or 2)
-            profile_id (int): the profile ID
-
-        Returns:
-             dict: json decoded data of the profile
-        """
-        return self.__client.community(
-            locale, "legacy", "profile", region_id, realm_id, profile_id
-        )
-
-    def ladders(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Response:
-        """Retrieves data about an individual SC2 profile's ladders.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            realm_id (int): the realm of the profile (1 or 2)
-            profile_id (int): the profile ID
-
-        Returns:
-            dict: json decoded data of the profile's ladders
-        """
-        return self.__client.community(
-            locale, "legacy", "profile", region_id, realm_id, profile_id, "ladders"
-        )
-
-    def match_history(
-        self, locale: str, region_id: int, realm_id: int, profile_id: int
-    ) -> Response:
-        """Returns data about an individual SC2 profile's match history.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            realm_id (int): the realm of the profile (1 or 2)
-            profile_id (int): the profile ID
-
-        Returns:
-            dict: json decoded data of the profile's match history
-        """
-        return self.__client.community(
-            locale, "legacy", "profile", region_id, realm_id, profile_id, "matches"
-        )
-
-    def ladder(self, locale: str, region_id: int, ladder_id: int) -> Response:
-        """Returns data about an individual SC2 profile's match history.
-
-        Args:
-            locale (str): localization being requested of the API
-            region_id (int): region for the profile, or use sc2.constants
-            ladder_id (int): ladder ID for the request
-
-        Returns:
-            dict: json decoded data of the profile's data for the specified ladder
-        """
-        return self.__client.community(locale, "legacy", "ladder", region_id, ladder_id)
-
-    def achievements(self, locale: str, region_id: int) -> Response:
-        """Returns the player data for the provided `account_id`.
-
-        Args:
-            locale (str): which locale to use for the request
-            region_id (int): the account ID to request
-
-        Returns:
-            dict: json decoded data of the profile's achievements
-        """
-        return self.__client.community(
-            locale, "legacy", "data", "achievements", region_id
-        )
-
-    def rewards(self, locale: str, region_id: int) -> Response:
-        """Returns the player data for the provided `account_id`.
-
-        Args:
-            locale (str): which locale to use for the request
-            region_id (int): the account ID to request
-
-        Returns:
-            dict: json decoded data of the profile's rewards
-        """
-        return self.__client.community(locale, "legacy", "data", "rewards", region_id)
-
-
-class ProfileCN:
-    def __init__(self, client: "SC2Client") -> None:
-        if client.tag != "cn":
-            raise SC2RegionError("Invalid region for API")
-
-        self.__client = client
-
-    def profile(self, locale: str, profile_id: str, region: str, name: str) -> Response:
-        """Retrieves data about an individual SC2 profile.
-
-        Args:
-            locale (str): localization being requested of the API
-            profile_id (int): the profile ID
-            region (str): region for the profile
-            name (str): name of the profile
-
-        Returns:
-             dict: json decoded data of the profile
-        """
-        if self.__client.tag != 5:
-            raise SC2RegionError("This API is not available in this region")
-
-        return self.__client.community(locale, "profile", profile_id, region, name)
-
-    def ladders(self, locale: str, profile_id: str, region: str, name: str) -> Response:
-        """Returns data about an individual SC2 profile's ladders.
-
-        Args:
-            locale (str): localization being requested of the API
-            profile_id (int): the profile ID
-            region (str): region for the profile
-            name (str): name of the profile
-
-        Returns:
-            dict: json decoded data of the profile's ladders
-        """
-
-        if self.__client.tag != 5:
-            raise SC2RegionError("This API is not available in this region")
-
-        return self.__client.community(
-            locale, "profile", profile_id, region, name, "ladders"
-        )
-
-    def match_history(
-        self, locale: str, profile_id: str, region: str, name: str
-    ) -> Response:
-        """Returns data about an individual SC2 profile's match history.
-
-        Args:
-            locale (str): localization being requested of the API
-            profile_id (int): the profile ID
-            region (str): region for the profile
-            name (str): name of the profile
-
-        Returns:
-            dict: json decoded data of the profile's ladders
-        """
-        if self.__client.tag != 5:
-            raise SC2RegionError("This API is not available in this region")
-
-        return self.__client.community(
-            locale, "profile", profile_id, region, name, "matches"
-        )
-
-
-class LadderCN:
-    def __init__(self, client: "SC2Client") -> None:
-        if client.tag != "cn":
-            raise SC2RegionError("Invalid region for API")
-
-        self.__client = client
-
-    def ladder(self, locale: str, ladder_id: str) -> Response:
-        """Returns data about an SC2 ladder.
-
-        Args:
-            locale (str): The locale to use in the response.
-            ladder_id (str): The ID of the ladder to retrieve.
-
-        Returns:
-            dict: dict with data of the ladder
-        """
-        return self.__client.community(locale, "ladder", ladder_id)
-
-
-class DataResourceCN:
-    def __init__(self, client: "SC2Client") -> None:
-        if client.tag != "cn":
-            raise SC2RegionError("Invalid region for API")
-
-        self.__client = client
-
-    def achievements(self, locale: str) -> Response:
-        """Returns the achievements for Starcraft II
-
-        Args:
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data of the guild's achievement summary
-        """
-        return self.__client.community(locale, "data", "achievements")
-
-    def rewards(self, locale: str) -> Response:
-        """Returns the rewards of the achievements in Starcraft II
-
-        Args:
-            locale (str): which locale to use for the request
-
-        Returns:
-            dict: json decoded data of the guild's achievement summary
-        """
-        return self.__client.community(locale, "data", "rewards")
+from typing import Optional, Union
+
+from .. import utils
+from ..decorators import verify_region
+from ..exceptions import BNetRegionError, BNetValueError
+
+
+__version__ = '2.0.0'
+__author__ = 'David \'Gahd\' Couples'
+
+
+@verify_region
+def static(
+    region_tag: str,
+    region_id: int,
+    locale: Optional[str] = None,
+):
+    """Returns all static SC2 profile data (achievements, categories, criteria, and rewards).
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (str): region for the profile, or use sc2.constants  (used outside CN only)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    if int(region_id) not in (1, 2, 3, 5):
+        raise BNetValueError("Region ID Invalid")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/static/profile/{region_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def metadata(
+    region_tag: str,
+    region_id: int,
+    realm_id: int,
+    profile_id: int,
+    locale: Optional[str] = None,
+):
+    """Returns metadata for an individual's profile.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        realm_id (int): the realm of the profile (1 or 2)
+        profile_id (int): the profile ID
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/metadata/profile/{region_id}/{realm_id}/{profile_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def profile(
+    region_tag: str,
+    region_id: int,
+    realm_id: int,
+    profile_id: int,
+    locale: Optional[str] = None
+):
+    """Returns data about an individual SC2 profile.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        realm_id (int): the realm of the profile (1 or 2)
+        profile_id (int): the profile ID
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    if region_tag == 'cn':
+        raise BNetRegionError('CN not allowed')
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    uri = f"{utils.api_host(region_tag)}/sc2/profile/{region_id}/{realm_id}/{profile_id}"
+
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def ladder(
+    region_tag: str,
+    region_id: int,
+    realm_id: int,
+    profile_id: int,
+    *,
+    ladder_id: Optional[Union[int, str]] = "summary",
+    locale: Optional[str] = None,
+):
+    """Returns a ladder summary, or specific ladder for an individual SC2 profile.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        realm_id (int): the realm of the profile (1 or 2)
+        profile_id (int): the profile ID
+        ladder_id (int, optional): the ID of a specific ladder, if desired
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("CN not allowed for this endpoint")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/profile/{region_id}/{realm_id}/{profile_id}/ladder/{ladder_id}"
+
+    params = {"locale": utils.localize(locale)}
+
+    return uri, params
+
+
+@verify_region
+def grandmaster(
+    region_tag: str, region_id: int, locale: Optional[str] = None
+):
+    """Returns ladder data for the current season's grandmaster leaderboard.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/ladder/grandmaster/{region_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def season(region_tag: str, region_id: int, locale: Optional[str] = None):
+    """Returns data about the current season.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/ladder/season/{region_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def player(region_tag: str, account_id: str, locale: Optional[str] = None):
+    """Returns the player data for the provided `account_id`.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        account_id (int): the account ID to request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+    """
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/player/{account_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def legacy_profile(
+    region_tag: str,
+    region_id: int,
+    realm_id: int,
+    profile_id: int,
+    locale: Optional[str] = None,
+):
+    """Retrieves data about an individual SC2 profile.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        realm_id (int): the realm of the profile (1 or 2)
+        profile_id (int): the profile ID
+
+    Returns:
+         tuple: The URL (str) and parameters (dict)
+
+     Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+   """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def legacy_ladders(
+    region_tag: str,
+    region_id: int,
+    realm_id: int,
+    profile_id: int,
+    locale: Optional[str] = None,
+):
+    """Retrieves data about an individual SC2 profile's ladders.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        realm_id (int): the realm of the profile (1 or 2)
+        profile_id (int): the profile ID
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}/ladders"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def legacy_match_history(
+    region_tag: str,
+    region_id: int,
+    realm_id: int,
+    profile_id: int,
+    locale: Optional[str] = None,
+):
+    """Returns data about an individual SC2 profile's match history.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        realm_id (int): the realm of the profile (1 or 2)
+        profile_id (int): the profile ID
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/legacy/profile/{region_id}/{realm_id}/{profile_id}/matches"
+
+    params = {"locale": utils.localize(locale)}
+
+    return uri, params
+
+
+@verify_region
+def legacy_ladder(
+    region_tag: str,
+    region_id: int,
+    ladder_id: int,
+    locale: Optional[str] = None,
+):
+    """Returns data about an individual SC2 profile's match history.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): region for the profile, or use sc2.constants
+        ladder_id (int): ladder ID for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/legacy/ladder/{region_id}/{ladder_id}"
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def legacy_achievements(
+    region_tag: str, region_id: int, locale: Optional[str] = None
+):
+    """Returns the player data for the provided `account_id`.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): the account ID to request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/legacy/data/achievements/{region_id}"
+
+    params = {"locale": utils.localize(locale)}
+    return uri, params
+
+
+@verify_region
+def legacy_rewards(region_tag: str, region_id: int, locale: Optional[str] = None):
+    """Returns the player data for the provided `account_id`.
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+        region_id (int): the account ID to request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+
+    Raises:
+        BNetRegionError: when the region tag is 'cn'
+        BNetValueError: when region ID is not valid
+    """
+
+    try:
+        if region_id not in (1, 2, 3, 5):
+            raise BNetValueError("Invalid Region")
+    except ValueError as error:
+        raise BNetValueError(error)
+
+    if region_tag == 'cn':
+        raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
+
+    uri = f"{utils.api_host(region_tag)}/sc2/legacy/data/rewards/{region_id}"
+
+    params = {"locale": utils.localize(locale)}
+    return uri, params

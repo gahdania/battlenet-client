@@ -12,12 +12,10 @@ Windows, OS X & Linux:
 Clone the latest version: https://gitlab.com/battlenet1/battlenet-client.git
 
 ## Usage Example
-    # client_id and client_secret found in your battle.net developer account
-    from battlenet_client.client import BattleNetClient
-    from battlenet_client.constants import UNITED_STATES, WOW
-    client = BattleNetClient(UNITED_STATES, WOW, <client_id>, <client_secret>)
-    client.api_get(f'{client.api_host}/data/wow/playable-class/1', 'en_US',
-        headers={'Battlenet-Namespace': 'static-us'})
+    > from battlenet_client.wow.game_data import achievement_category
+    > achievement_category('us', category_id=81)
+    # ('https://us.api.blizzard.com/data/wow/achievement-category/81', {'locale': None, 'namespace': 'static-us'})
+
 
 For more information, please the [wiki][wiki]
 
@@ -28,7 +26,7 @@ Please change log for complete history
 
 ## Meta
 
-David "Gahd" Couples – [@gahdania][twitter] – gahdania@gahd.io
+David "Gahd" Couples – [@gahdania][twitter] [Twitch][twitch] – gahdania@gahd.io
 
 Distributed under the GPL v3+ license. See ``LICENSE`` for more information.
 
@@ -43,8 +41,8 @@ Distributed under the GPL v3+ license. See ``LICENSE`` for more information.
 5. Create a new Pull Request
 
 <!-- Markdown link & img dfn's -->
-[wiki]: https://battlenet1.gitlab.io/battlenet-client
+[wiki]: https://gitlab.com/battlenet1/battlenet-client/-/wikis/home
 [twitter]: https://twitter.com/gahdania
+[twitch]: https://www.twitch.tv/gahd
 [gitlab]: https://gitlab.com/battlenet1/battlenet-client
 [fork]: https://gitlab.com/battlenet1/battlenet-client/-/forks/new
-[header]: https://gilab.com/

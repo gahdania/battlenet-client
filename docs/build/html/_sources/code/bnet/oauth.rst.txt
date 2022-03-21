@@ -1,0 +1,9 @@
+================================================
+OAuth v2
+================================================
+
+.. moduleauthor:: David "Gahd" Couples
+
+.. autofunction::  battlenet_client.bnet.oauth.user_info
+
+.. autofunction::  battlenet_client.bnet.oauth.token_validation

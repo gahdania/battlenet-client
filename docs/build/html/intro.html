@@ -4,336 +4,173 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Introduction &#8212; BattleNet Client 0.0.3a5 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
-
-
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-
-
-
-
+    <title>Introduction &#8212; Battle.net API 3.0.0a2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
-
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorials" href="tutorials/index.html" />
+    <link rel="next" title="Source Code" href="code/index.html" />
     <link rel="prev" title="Battle.net Client" href="index.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-
-  </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-
-    <div class="container-fluid" id="banner"></div>
-
-
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-
-
-<a class="navbar-brand" href="index.html">
-<p class="title">BattleNet Client</p>
-</a>
-
-
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 current active nav-item">
- <a class="current reference internal nav-link" href="#">
-  Introduction
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="tutorials/index.html">
-  Tutorials
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="code/index.html">
-  Modules
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="references.html">
-  References
- </a>
-</li>
-
-
-</ul>
-      </div>
-
-    </div>
-
-    <div id="navbar-end">
-
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="code/index.html" title="Source Code"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Battle.net Client"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Introduction</a></li>
       </ul>
-      </div>
-
     </div>
-  </div>
-</div>
-    </nav>
 
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
 
-    <div class="container-xl">
-      <div class="row">
-
-
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
-
-  </div>
-</nav>
-            </div>
-
-
-
-
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-
-
-              <div class="toc-item">
-
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Introduction
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#installation">
-   Installation
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-windows-os-x-and-linux">
-     For Windows, OS X and Linux
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-git">
-     Using GIT
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#usage">
-   Usage
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#client-credential-flow">
-     Client Credential Flow
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#authorization-code-flow">
-     Authorization Code Flow
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#utility-function-examples">
-     Utility Function Examples
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-</nav>
-              </div>
-
-              <div class="toc-item">
-
-              </div>
-
-
-          </div>
-
-
-
-
-
-
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-
-              <div>
-
-  <div class="section" id="introduction">
+  <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>BattleNet Client was developed to provide a uniform access point for the other Battle.net projects that connect to
-Blizzard’s <a class="reference external" href="https://develop.battle.net">Battle.net Developer Portal</a>. The other packages,
-<a class="reference external" href="https://gitlab.com/battlenet1/wow-api">WoW API</a>, <a class="reference external" href="https://gitlab.com/battlenet1/heartstone-api">Hearthstone API</a>,
-<a class="reference external" href="https://gitlab.com/battlenet1/starcraft2-api">Starcraft2 API</a> extends the Battle.Net Client for the respective game</p>
-</div>
-<div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>To install the Battle.net Client package, all you have to do use your favorite python package installation utility, or use git</p>
-<div class="section" id="for-windows-os-x-and-linux">
-<h2>For Windows, OS X and Linux<a class="headerlink" href="#for-windows-os-x-and-linux" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install battlenet-client
+<p>The Battle.net REST API wrappers is package to make interfacing with the Battle.net API much easier.  It allows you,
+the developer, to focus on writing your scripts without needing to worry about the boiler plate code.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To install this package is use your favorite python package installation utility, or use git</p>
+<section id="for-windows-os-x-and-linux">
+<h3>For Windows, OS X, and Linux<a class="headerlink" href="#for-windows-os-x-and-linux" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install battlenet_client
 </pre></div>
 </div>
-</div>
-<div class="section" id="using-git">
-<h2>Using GIT<a class="headerlink" href="#using-git" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="using-git">
+<h3>Using GIT<a class="headerlink" href="#using-git" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/battlenet1/battlenet-client.git
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>This package requires a developer portal account. For more information, please see the
-<a class="reference external" href="https://develop.battle.net">Developer Portal</a>.  As for the regions and localizations that are available,
-you can view that information at <a class="reference external" href="https://develop.battle.net/documentation/guides/regionality-partitions-and-localization">Blizzard’s Regionality, Partitions, and Localization</a></p>
-<div class="section" id="client-credential-flow">
-<h2>Client Credential Flow<a class="headerlink" href="#client-credential-flow" title="Permalink to this headline">¶</a></h2>
-<p>Below is a typical example in using the client credential flow.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">battlenet_client.client</span> <span class="kn">import</span> <span class="n">BattleNetClient</span>
-<span class="kn">from</span> <span class="nn">battlenet_client.constants</span> <span class="kn">import</span> <span class="n">UNITED_STATES</span><span class="p">,</span> <span class="n">WOW</span>
-<span class="c1"># &lt;region_tag&gt;: use the constant appropriate for your region</span>
-<span class="c1"># &lt;client ID&gt;: the client ID from the Developer Portal</span>
-<span class="c1"># &lt;client secret&gt;: the client secret from the Developer Portal</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">BattleNetClient</span><span class="p">(</span><span class="n">UNITED_STATES</span><span class="p">,</span> <span class="n">WOW</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">client</span> <span class="n">ID</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">client</span> <span class="n">secret</span><span class="o">&gt;</span><span class="p">)</span>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The functions contained in this packages format the given parameters into a URL and a set of key/value pairs for the
+parameter (query string) of the GET requests.  This package does not actually provide the communication between the
+users and the Battle.net REST API</p>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>The below example will generate the URL and parameter key/value pairs to retrieve the achievement category, using
+the North America server</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">battlenet_client.wow.game_data</span> <span class="kn">import</span> <span class="n">achievement_category</span>
+<span class="o">&gt;</span> <span class="n">achievement_category</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="mi">81</span><span class="p">)</span>
 
-<span class="c1"># &lt;method&gt;:  Typically use &#39;api_get&#39; or &#39;api_post&#39; depending on the API endpoint being reached</span>
-<span class="c1"># &lt;api_uri&gt;: The API endpoint URL w/o the scheme, or host</span>
-<span class="c1"># &lt;locale&gt;: the desired localization to use if something other than when the client was created</span>
-<span class="c1"># &lt;namespace&gt;: the namespace expected by the :api_uri:</span>
-<span class="n">client</span><span class="o">.</span><span class="n">api_get</span><span class="p">(</span><span class="o">&lt;</span><span class="n">api_uri</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">locale</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Battlenet-Namespace&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">namespace</span><span class="o">&gt;-&lt;</span><span class="n">region_tag</span><span class="o">&gt;</span><span class="p">})</span>
+<span class="c1"># (&#39;https://us.api.blizzard.com/data/wow/achievement-category/81&#39;, {&#39;locale&#39;: None, &#39;namespace&#39;: &#39;static-us&#39;})</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="authorization-code-flow">
-<h2>Authorization Code Flow<a class="headerlink" href="#authorization-code-flow" title="Permalink to this headline">¶</a></h2>
-<p id="id1">Below is a typical example of using the authorization code flow.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Reminder:  this requires the code to operate within a web server</p>
-</div>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">battlenet_client</span> <span class="kn">import</span> <span class="n">BattleNetClient</span>
-<span class="c1"># &lt;region_tag&gt;: region for the user, ie us, eu, tw, kr or cn</span>
-<span class="c1"># &lt;scope&gt;: the scope need to for your site</span>
-<span class="c1"># &lt;redirect&gt;: the URI where you want users to return after successfully authenticating with Battle.net</span>
-<span class="c1"># &lt;client ID&gt;: the client ID from the Developer Portal</span>
-<span class="c1"># &lt;client secret&gt;: the client secret from the Developer Portal</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">BattleNetClient</span><span class="p">(</span><span class="n">UNITED_STATES</span><span class="p">,</span> <span class="n">WOW</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">CLIENT</span> <span class="n">ID</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">CLIENT</span> <span class="n">SECRET</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="p">[</span><span class="n">wow</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="p">],</span>
-    <span class="n">redirect_uri</span><span class="o">=&lt;</span><span class="n">REDIRECT</span> <span class="n">URL</span><span class="o">&gt;</span><span class="p">)</span>
-<span class="n">redirect</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">authorization_url</span><span class="p">)</span>
+<p>Same as above but this time getting just the french localization for the achievement category</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">battlenet_client.wow.game_data</span> <span class="kn">import</span> <span class="n">achievement_category</span>
+<span class="o">&gt;</span> <span class="n">achievement_category</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="mi">81</span><span class="p">,</span> <span class="n">locale</span><span class="o">=</span><span class="s1">&#39;frfr&#39;</span><span class="p">)</span>
 
-<span class="c1"># user goes to Blizzard&#39;s authentication site on battle.net and successfully logs in</span>
-<span class="c1"># Battle.net redirects the user to &lt;redirect&gt;</span>
-<span class="c1"># &lt;method&gt;:  Typically &#39;get&#39; or &#39;post&#39; with &#39;get&#39; being the most frequent</span>
-<span class="c1"># &lt;api_uri&gt;: The API endpoint URL w/o the scheme, or host</span>
-<span class="c1"># &lt;locale&gt;: the desired localization to use</span>
-<span class="c1"># &lt;namespace&gt;: the namespace expected by the :api_uri:</span>
-<span class="c1"># for the endpoints that use the GET method</span>
-<span class="n">client</span><span class="o">.</span><span class="n">api_get</span><span class="p">(</span><span class="o">&lt;</span><span class="n">api_uri</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">locale</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Battlenet-Namespace&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">namespace</span><span class="o">&gt;-&lt;</span><span class="n">region_tag</span><span class="o">&gt;</span><span class="p">})</span>
-<span class="c1"># for the endpoints that use the POST method</span>
-<span class="n">client</span><span class="o">.</span><span class="n">api_post</span><span class="p">(</span><span class="o">&lt;</span><span class="n">api_uri</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">locale</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Battlenet-Namespace&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">namespace</span><span class="o">&gt;-&lt;</span><span class="n">region_tag</span><span class="o">&gt;</span><span class="p">})</span>
+<span class="c1"># (&#39;https://us.api.blizzard.com/data/wow/achievement-category/81&#39;, {&#39;locale&#39;: &#39;fr_FR&#39;, &#39;namespace&#39;: &#39;static-us&#39;})</span>
 </pre></div>
 </div>
-<p>For more detailed instructions please see the <a class="reference internal" href="tutorials/index.html#tutorials-index"><span class="std std-ref">tutorials index</span></a></p>
-<p>For a complete list of the classes, functions, and parameters go to <a class="reference internal" href="code/client.html#clients-code"><span class="std std-ref">BattleNet Class Index</span></a></p>
-<p>To use the utility functions, simply import the required ones and pass then call them as any normal function</p>
-</div>
-<div class="section" id="utility-function-examples">
-<h2>Utility Function Examples<a class="headerlink" href="#utility-function-examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">battlenet_client.util</span> <span class="kn">import</span> <span class="n">currency_convertor</span><span class="p">,</span> <span class="n">slugify</span><span class="p">,</span> <span class="n">localize</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">currency_convertor</span><span class="p">(</span><span class="mi">4912309</span><span class="p">))</span>
-<span class="c1"># {&#39;gold&#39;: 491, &#39;silver&#39;: 23, &#39;copper&#39;: 9}</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">slugify</span><span class="p">(</span><span class="s2">&quot;Zul&#39;jin&quot;</span><span class="p">)</span>
-<span class="c1"># &#39;zuljin&#39;</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">localize</span><span class="p">(</span><span class="s2">&quot;enus&quot;</span><span class="p">)</span>
-<span class="c1"># &#39;en_US&#39;</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/gahd_logo.png"><img alt="Logo of Gahd" class="align-right" src="_images/gahd_logo.png" style="width: 100px; height: 100px;" /></a>
-</div>
-</div>
+<p>The developer would then provide the output of the functions to the client of their choice</p>
+<p>Please see <a class="reference internal" href="dev_portal.html#developer-portal-instructions"><span class="std std-ref">Developer Portal Instructions</span></a> for further details</p>
+</section>
+</section>
+</section>
 
 
-              </div>
-
-
-              <div class='prev-next-bottom'>
-
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">Battle.net Client</a>
-    <a class='right-next' id="next-link" href="tutorials/index.html" title="next page">Tutorials</a>
-
-              </div>
-
-          </main>
-
-
+            <div class="clearer"></div>
+          </div>
+        </div>
       </div>
-    </div>
-
-  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
-  <div class="container">
-
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2020, David &#34;Gahd&#34; Couples.<br/>
-</p>
-    </div>
-
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
-</p>
-    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#for-windows-os-x-and-linux">For Windows, OS X, and Linux</a></li>
+<li><a class="reference internal" href="#using-git">Using GIT</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
   </div>
-</footer>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Battle.net Client</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="code/index.html"
+                          title="next chapter">Source Code</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intro.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="code/index.html" title="Source Code"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Battle.net Client"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Battle.net API 3.0.0a2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Introduction</a></li>
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, David &#34;Gahd&#34; Couples.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
   </body>
 </html>
