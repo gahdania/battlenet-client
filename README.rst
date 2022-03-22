@@ -6,8 +6,8 @@
 
 .. _PyPI link: https://pypi.org/project/battlenet-client
 
-.. image:: https://gitlab.com/battlenet1/battlenet_client/workflows/tests/badge.svg
-   :target: https://github/gahdania/battlenet_client/actions?query=workflow%3A%22tests%22
+.. image:: https://github.com/gahdania/battlenet-client/actions/workflows/tests.yaml/badge.svg?branch=v3.0.0
+   :target: https://github.com/gahdania/battlenet-client/actions/workflows/tests.yaml
    :alt: tests
 
 # BattleNet Clients

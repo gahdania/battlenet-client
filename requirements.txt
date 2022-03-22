@@ -1,5 +1,0 @@
-requests
-oauthlib
-requests-oauthlib
-python-decouple
-oic

@@ -55,7 +55,8 @@ def test_artisan(region_tag, artisan_name):
     assert data[1]['locale'] == 'en_US'
 
 
-@pytest.mark.parametrize('region_tag, artisan_name', list(product(INVALID_REGIONS, ('Blacksmith', 'Jeweler', 'Mystic'))))
+@pytest.mark.parametrize('region_tag, artisan_name', list(product(INVALID_REGIONS,
+                                                                  ('Blacksmith', 'Jeweler', 'Mystic'))))
 def test_artisan_invalid_region(region_tag, artisan_name):
     with pytest.raises(BNetRegionNotFoundError):
         artisan(region_tag, artisan_slug=artisan_name, locale="enus")
@@ -152,7 +153,7 @@ def test_item_type_index(region_tag):
     data = item_type(region_tag, locale="enus")
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'd3/data/item-type')
+    assert data[0].endswith('d3/data/item-type')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'en_US'

@@ -14,7 +14,7 @@ License: GPL v3
 Copyright: February 24, 2022
 """
 
-from typing import Optional
+from typing import Optional, Tuple, Dict
 
 from .. import utils
 from ..decorators import verify_region
@@ -25,25 +25,8 @@ __author__ = "David \"Gahd\" Couples"
 
 
 @verify_region
-def user_info(region_tag: str, locale: Optional[str] = None) -> tuple:
-    """Returns the user info
-
-    Args:
-        region_tag (str): region_tag abbreviation
-        locale (str): which locale to use for the request
-
-    Returns:
-        tuple: The URL (str) and parameters (dict)
-    """
-    url = f"{utils.auth_host(region_tag)}/oauth/userinfo"
-
-    params = {"locale": utils.localize(locale)}
-
-    return url, params
-
-
-@verify_region
-def token_validation(region_tag: str,  token: str, locale: Optional[str] = None) -> tuple:
+def token_validation(region_tag: str,  token: str, locale: Optional[str] = None
+                     ) -> Tuple[str, Dict[str, Optional[str]]]:
     """Returns if the token is still valid or not
 
     Args:
@@ -57,5 +40,23 @@ def token_validation(region_tag: str,  token: str, locale: Optional[str] = None)
     url = f"{utils.auth_host(region_tag)}/oauth/check_token"
 
     params = {"locale": utils.localize(locale), 'token': token}
+
+    return url, params
+
+
+@verify_region
+def user_info(region_tag: str, locale: Optional[str] = None) -> Tuple[str, Dict[str, Optional[str]]]:
+    """Returns the user info
+
+    Args:
+        region_tag (str): region_tag abbreviation
+        locale (str): which locale to use for the request
+
+    Returns:
+        tuple: The URL (str) and parameters (dict)
+    """
+    url = f"{utils.auth_host(region_tag)}/oauth/userinfo"
+
+    params = {"locale": utils.localize(locale)}
 
     return url, params

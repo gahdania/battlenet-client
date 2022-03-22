@@ -590,7 +590,7 @@ def quests(
     uri += f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/quests"
 
     if completed:
-        uri += f"/completed"
+        uri += "/completed"
 
     params = {
         "locale": utils.localize(locale),

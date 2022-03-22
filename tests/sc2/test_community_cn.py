@@ -122,7 +122,7 @@ def test_ladder_unknown_region_tag(region_tag, ladder_id):
 
 @pytest.mark.parametrize('region_tag, ladder_id',
                          list(product(INVALID_REGIONS, (984393, 208709586, 827894))))
-def test_ladder_unknown_region_tag(region_tag, ladder_id):
+def test_ladder_invalid_region_tag(region_tag, ladder_id):
     with pytest.raises(BNetRegionError):
         ladder(region_tag, ladder_id, locale='zhcn')
 
@@ -132,7 +132,7 @@ def test_achievements_valid_region_id(region_tag):
     data = achievements(region_tag, locale='zhcn')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'sc2/data/achievements')
+    assert data[0].endswith('sc2/data/achievements')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'zh_CN'
@@ -155,7 +155,7 @@ def test_rewards_valid_region_id(region_tag):
     data = rewards(region_tag, locale='zhcn')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'sc2/data/rewards')
+    assert data[0].endswith('sc2/data/rewards')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'zh_CN'

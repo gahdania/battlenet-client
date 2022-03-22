@@ -12,6 +12,8 @@ Author: David "Gahd" Couples
 License: GPL v3
 Copyright: February 24, 2022
 """
+from typing import Tuple
+
 from ..constants import Region as BaseRegion
 
 
@@ -52,7 +54,7 @@ class Release:
     RETAIL = "retail"
 
     @classmethod
-    def all(cls) -> list:
+    def all(cls: object) -> Tuple[str, ...]:
         """Returns the list of all releases
 
         Returns:
@@ -67,4 +69,4 @@ class Release:
             if isinstance(obj, str):
                 all_list.append(obj)
 
-        return all_list
+        return tuple(all_list)

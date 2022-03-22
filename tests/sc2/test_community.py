@@ -121,7 +121,7 @@ def test_profile_invalid_region_tag(region_tag, region_id, realm_id, profile_id)
 @pytest.mark.parametrize('region_tag, region_id, realm_id, profile_id',
                          list(product(('cn',), (1, 3), (1788, 9138, 1093),
                                       (3, 123, 187389))))
-def test_profile_invalid_region_tag(region_tag, region_id, realm_id, profile_id):
+def test_profile_invalid_region_tag_cn(region_tag, region_id, realm_id, profile_id):
     with pytest.raises(BNetRegionError):
         profile(region_tag, region_id, realm_id, profile_id, locale='enus')
 
@@ -340,14 +340,6 @@ def test_legacy_ladders_id_valid_region_id(region_tag, region_id, realm_id, prof
                                       (3, 123, 187389))))
 def test_legacy_ladders_explicit_legacy_ladders_invalid_region_id(region_tag, region_id, realm_id, profile_id):
     with pytest.raises(BNetValueError):
-        legacy_ladders(region_tag, region_id, realm_id, profile_id, locale='enus')
-
-
-@pytest.mark.parametrize('region_tag, region_id, realm_id, profile_id',
-                         list(product(INVALID_REGIONS, (1, 3, 5), (1788, 9138, 1093),
-                                      (3, 123, 187389))))
-def test_legacy_ladders_explicit_legacy_ladders_invalid_region_tag(region_tag, region_id, realm_id, profile_id):
-    with pytest.raises(BNetRegionNotFoundError):
         legacy_ladders(region_tag, region_id, realm_id, profile_id, locale='enus')
 
 

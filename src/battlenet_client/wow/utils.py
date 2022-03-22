@@ -11,6 +11,7 @@ Author: David "Gahd" Couples
 License: GPL v3
 Copyright: February 24, 2022
 """
+from typing import Optional
 from ..exceptions import BNetValueError
 from .constants import Release
 
@@ -19,7 +20,7 @@ __version__ = '1.0.0'
 __author__ = 'David \'Gahd\' Couples'
 
 
-def namespace(region: str, api_type: str, release: str) -> str:
+def namespace(region: str, api_type: str, release: Optional[str]) -> str:
     """Returns the namespace required by the WoW API endpoint
 
     Returns:
@@ -32,10 +33,11 @@ def namespace(region: str, api_type: str, release: str) -> str:
     if api_type.lower() not in ('static', 'dynamic', 'profile'):
         raise BNetValueError('Invalid API type: needs to be static, dynamic, or profile')
 
-    if release.lower() not in Release.all():
-        raise BNetValueError(f"Invalid Release: needs to be one of: {','.join(Release.all())}")
+    if release:
+        if release.lower() not in Release.all():
+            raise BNetValueError(f"Invalid Release: needs to be one of: {','.join(Release.all())}")
 
-    if release.lower() != "retail":
-        return f"{api_type}-{release.lower()}-{region.lower()}"
+        if release.lower() != "retail":
+            return f"{api_type}-{release.lower()}-{region.lower()}"
 
     return f"{api_type}-{region.lower()}"

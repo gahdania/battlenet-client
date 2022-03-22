@@ -12,7 +12,7 @@ def test_season_index(region_tag):
     data = season(region_tag, locale="enus")
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'/d3/season/')
+    assert data[0].endswith('/d3/season/')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'en_US'
@@ -71,7 +71,7 @@ def test_era_index(region_tag):
     data = era(region_tag, locale="enus")
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'd3/era/')
+    assert data[0].endswith('d3/era/')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'en_US'

@@ -1,8 +1,6 @@
-from itertools import product
-
 import pytest
 from battlenet_client.wow import utils
-from battlenet_client.exceptions import BNetValueError, BNetRegionNotFoundError
+from battlenet_client.exceptions import BNetValueError
 
 
 @pytest.mark.parametrize(('api_type', 'release', 'expected'),

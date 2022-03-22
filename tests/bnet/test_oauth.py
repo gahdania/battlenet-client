@@ -15,7 +15,7 @@ def test_user_info(region_tag):
     if region_tag == 'cn':
         assert data[0] == "https://www.battlenet.com.cn/oauth/userinfo"
     elif region_tag in ('tw', 'kr'):
-        assert data[0] == f"https://apac.battle.net/oauth/userinfo"
+        assert data[0] == "https://apac.battle.net/oauth/userinfo"
     else:
         assert data[0] == f'https://{region_tag.lower()}.battle.net/oauth/userinfo'
     assert 'locale' in data[1]
@@ -37,7 +37,7 @@ def test_token_validation(region_tag):
     if region_tag == 'cn':
         assert data[0] == "https://www.battlenet.com.cn/oauth/check_token"
     elif region_tag in ('tw', 'kr'):
-        assert data[0] == f"https://apac.battle.net/oauth/check_token"
+        assert data[0] == "https://apac.battle.net/oauth/check_token"
     else:
         assert data[0] == f'https://{region_tag.lower()}.battle.net/oauth/check_token'
     assert isinstance(data[1], dict)

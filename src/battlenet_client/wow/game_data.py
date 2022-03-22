@@ -2315,7 +2315,7 @@ def realm_search(
 def region(
     region_tag: str,
     *,
-    region_req: Optional[int] = "index",
+    region_req: Optional[Union[str, int]] = "index",
     release: Optional[str] = "retail",
     locale: Optional[str] = None
 ):
@@ -2455,7 +2455,7 @@ def spell_media(
 @verify_region
 def spell_search(
     region_tag: str,
-    field_values: Dict[str, Any] = None,
+    field_values: Dict[str, Any],
     release: Optional[str] = "retail",
     locale: Optional[str] = None
 ):
@@ -2477,7 +2477,9 @@ def spell_search(
         "namespace": namespace(region_tag, "static", release)
     }
     #  adding locale and namespace key/values pairs to field_values to make a complete params list
-    params.update(field_values)
+    for k, v in field_values.items():
+        params[k] = v
+
     return uri, params
 
 

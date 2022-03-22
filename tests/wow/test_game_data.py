@@ -248,7 +248,7 @@ def test_auction_auction_house_id(region_tag, release, connected_realm_id, house
 def test_azerite_essence_default_index(region_tag, release):
     data = azerite_essence(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/azerite-essence/index')
+    assert data[0].endswith('wow/azerite-essence/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -264,7 +264,7 @@ def test_azerite_essence_default_index(region_tag, release):
 def test_azerite_essence_default_index_all_locales(region_tag, release):
     data = azerite_essence(region_tag, release=release)
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/azerite-essence/index')
+    assert data[0].endswith('wow/azerite-essence/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -316,7 +316,7 @@ def test_azerite_essence_search(region_tag, release):
 
     data = azerite_essence_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/azerite-essence')
+    assert data[0].endswith('wow/search/azerite-essence')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -370,7 +370,7 @@ def test_azerite_essence_media_id_invalid_region(region_tag, release, essence_id
 def test_connected_realm_default_index(region_tag, release):
     data = connected_realm(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/connected-realm/index')
+    assert data[0].endswith('wow/connected-realm/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -424,7 +424,7 @@ def test_connected_realm_search(region_tag, release):
     }
     data = connected_realm_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/connected-realm')
+    assert data[0].endswith('wow/search/connected-realm')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -456,7 +456,7 @@ def test_connected_realm_search_invalid_region(region_tag, release):
 def test_covenant_default_index(region_tag, release):
     data = covenant(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/covenant/index')
+    assert data[0].endswith('wow/covenant/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -525,7 +525,7 @@ def test_covenant_media_id_invalid_region(region_tag, release, covenant_id):
 def test_soulbind_default_index(region_tag, release):
     data = soulbind(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/covenant/soulbind/index')
+    assert data[0].endswith('wow/covenant/soulbind/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -571,7 +571,7 @@ def test_soulbind_id_invalid_region(region_tag, release, soulbind_id):
 def test_conduit_default_index(region_tag, release):
     data = conduit(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/covenant/conduit/index')
+    assert data[0].endswith('wow/covenant/conduit/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -617,7 +617,7 @@ def test_conduit_id_invalid_region(region_tag, release, conduit_id):
 def test_creature_family_default_index(region_tag, release):
     data = creature_family(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/creature-family/index')
+    assert data[0].endswith('wow/creature-family/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -663,7 +663,7 @@ def test_creature_family_id_invalid_region(region_tag, release, creature_family_
 def test_creature_type_default_index(region_tag, release):
     data = creature_type(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/creature-type/index')
+    assert data[0].endswith('wow/creature-type/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -738,7 +738,7 @@ def test_creature_search(region_tag, release):
 
     data = creature_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/creature')
+    assert data[0].endswith('wow/search/creature')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -819,7 +819,7 @@ def test_creature_family_media_id_invalid_region(region_tag, release, creature_f
 def test_guild_crest_components_default_index(region_tag, release):
     data = guild_crest_components_index(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/guild-crest/index')
+    assert data[0].endswith('wow/guild-crest/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -872,7 +872,7 @@ def test_guild_crest_media_category_id_invalid_category(region_tag, release, cat
 def test_item_class_default_index(region_tag, release):
     data = item_class(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/item-class/index')
+    assert data[0].endswith('wow/item-class/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -918,7 +918,7 @@ def test_item_class_id_invalid_region(region_tag, release, item_class_id):
 def test_item_set_default_index(region_tag, release):
     data = item_set(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/item-set/index')
+    assert data[0].endswith('wow/item-set/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1038,7 +1038,7 @@ def test_item_search(region_tag, release):
     }
     data = item_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/item')
+    assert data[0].endswith('wow/search/item')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1069,7 +1069,7 @@ def test_item_search_invalid_region(region_tag, release):
 def test_journal_expansion_default_index(region_tag, release):
     data = journal_expansion(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/journal-expansion/index')
+    assert data[0].endswith('wow/journal-expansion/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1115,7 +1115,7 @@ def test_journal_expansion_id_invalid_region(region_tag, release, expansion_id):
 def test_journal_encounter_default_index(region_tag, release):
     data = journal_encounter(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/journal-encounter/index')
+    assert data[0].endswith('wow/journal-encounter/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1167,7 +1167,7 @@ def test_journal_encounter_search(region_tag, release):
 
     data = journal_encounter_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/journal-encounter')
+    assert data[0].endswith('wow/search/journal-encounter')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1198,7 +1198,7 @@ def test_journal_encounter_search_invalid_region(region_tag, release):
 def test_journal_instance_default_index(region_tag, release):
     data = journal_instance(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/journal-instance/index')
+    assert data[0].endswith('wow/journal-instance/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1272,7 +1272,7 @@ def test_media_search(region_tag, release):
     }
     data = media_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/media')
+    assert data[0].endswith('wow/search/media')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1303,7 +1303,7 @@ def test_media_search_invalid_region(region_tag, release):
 def test_modified_crafting_default_index(region_tag, release):
     data = modified_crafting(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/modified-crafting')
+    assert data[0].endswith('wow/modified-crafting')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1326,7 +1326,7 @@ def test_modified_crafting_default_index_invalid_region(region_tag, release):
 def test_modified_crafting_category_default_index(region_tag, release):
     data = modified_crafting_category(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/modified-crafting/category/index')
+    assert data[0].endswith('wow/modified-crafting/category/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1372,7 +1372,7 @@ def test_modified_crafting_category_id_invalid_region(region_tag, release, categ
 def test_modified_crafting_reagent_slot_type_default_index(region_tag, release):
     data = modified_crafting_reagent_slot_type(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/modified-crafting/reagent-slot-type/index')
+    assert data[0].endswith('wow/modified-crafting/reagent-slot-type/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1420,7 +1420,7 @@ def test_modified_crafting_reagent_slot_type_id_invalid_region(region_tag, relea
 def test_mount_default_index(region_tag, release):
     data = mount(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/mount/index')
+    assert data[0].endswith('wow/mount/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1471,7 +1471,7 @@ def test_mount_search(region_tag, release):
     }
     data = mount_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/mount')
+    assert data[0].endswith('wow/search/mount')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1502,7 +1502,7 @@ def test_mount_search_invalid_region(region_tag, release):
 def test_mythic_keystone_affix_default_index(region_tag, release):
     data = mythic_keystone_affix(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/keystone-affix/index')
+    assert data[0].endswith('wow/keystone-affix/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1571,7 +1571,7 @@ def test_mythic_keystone_affix_media_id_invalid_region(region_tag, release, myth
 def test_mythic_keystone_dungeon_default_index(region_tag, release):
     data = mythic_keystone_dungeon(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/mythic-keystone/dungeon/index')
+    assert data[0].endswith('wow/mythic-keystone/dungeon/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1617,7 +1617,7 @@ def test_mythic_keystone_dungeon_id_invalid_region(region_tag, release, mythic_k
 def test_mythic_keystone_index(region_tag, release):
     data = mythic_keystone_index(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/mythic-keystone/index')
+    assert data[0].endswith('wow/mythic-keystone/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1640,7 +1640,7 @@ def test_mythic_keystone_index_default_index_invalid_region(region_tag, release)
 def test_mythic_keystone_period_default_index(region_tag, release):
     data = mythic_keystone_period(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/mythic-keystone/period/index')
+    assert data[0].endswith('wow/mythic-keystone/period/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1686,7 +1686,7 @@ def test_mythic_keystone_period_id_invalid_region(region_tag, release, mythic_ke
 def test_mythic_keystone_season_default_index(region_tag, release):
     data = mythic_keystone_season(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/mythic-keystone/season/index')
+    assert data[0].endswith('wow/mythic-keystone/season/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1808,7 +1808,7 @@ def test_mythic_raid_leaderboard_id_invalid_region(region_tag, release, raid_nam
 def test_pet_default_index(region_tag, release):
     data = pet(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/pet/index')
+    assert data[0].endswith('wow/pet/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1877,7 +1877,7 @@ def test_pet_media_id_invalid_region(region_tag, release, pet_id):
 def test_pet_ability_default_index(region_tag, release):
     data = pet_ability(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/pet-ability/index')
+    assert data[0].endswith('wow/pet-ability/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -1946,7 +1946,7 @@ def test_pet_ability_media_id_invalid_region(region_tag, release, pet_ability_id
 def test_playable_class_default_index(region_tag, release):
     data = playable_class(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/playable-class/index')
+    assert data[0].endswith('wow/playable-class/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2038,7 +2038,7 @@ def test_pvp_talent_slots_id_invalid_region(region_tag, release, class_id):
 def test_playable_race_default_index(region_tag, release):
     data = playable_race(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/playable-race/index')
+    assert data[0].endswith('wow/playable-race/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2153,7 +2153,7 @@ def test_playable_spec_media_id_invalid_region(region_tag, release, spec_id):
 def test_power_type_default_index(region_tag, release):
     data = power_type(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/power-type/index')
+    assert data[0].endswith('wow/power-type/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2199,7 +2199,7 @@ def test_power_type_id_invalid_region(region_tag, release, type_id):
 def test_profession_default_index(region_tag, release):
     data = profession(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/profession/index')
+    assert data[0].endswith('wow/profession/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2337,7 +2337,7 @@ def test_recipe_media_id_invalid_region(region_tag, release, recipe_id):
 def test_pvp_season_default_index(region_tag, release):
     data = pvp_season(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/pvp-season/index')
+    assert data[0].endswith('wow/pvp-season/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2383,7 +2383,7 @@ def test_pvp_season_id_invalid_region(region_tag, release, pvp_season_id):
 def test_pvp_region_default_index(region_tag, release):
     data = pvp_regions(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/pvp-region/index')
+    assert data[0].endswith('wow/pvp-region/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2523,7 +2523,7 @@ def test_pvp_rewards_index_invalid_region(region_tag, release, region_id, season
 def test_pvp_tier_default_index(region_tag, release):
     data = pvp_tier(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/pvp-tier/index')
+    assert data[0].endswith('wow/pvp-tier/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2592,7 +2592,7 @@ def test_pvp_tier_media_id_invalid_region(region_tag, release, tier_id):
 def test_quest_default_index(region_tag, release):
     data = quest(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/quest/index')
+    assert data[0].endswith('wow/quest/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2638,7 +2638,7 @@ def test_quest_id_invalid_region(region_tag, release, quest_id):
 def test_quest_category_default_index(region_tag, release):
     data = quest_category(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/quest/category/index')
+    assert data[0].endswith('wow/quest/category/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2684,7 +2684,7 @@ def test_quest_category_id_invalid_region(region_tag, release, quest_category_id
 def test_quest_area_default_index(region_tag, release):
     data = quest_area(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/quest/area/index')
+    assert data[0].endswith('wow/quest/area/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2730,7 +2730,7 @@ def test_quest_area_id_invalid_region(region_tag, release, quest_area_id):
 def test_quest_type_default_index(region_tag, release):
     data = quest_type(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/quest/type/index')
+    assert data[0].endswith('wow/quest/type/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2776,7 +2776,7 @@ def test_quest_type_id_invalid_region(region_tag, release, quest_type_id):
 def test_realm_default_index(region_tag, release):
     data = realm(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/realm/index')
+    assert data[0].endswith('wow/realm/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2830,7 +2830,7 @@ def test_realm_search(region_tag, release):
 
     data = realm_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/realm')
+    assert data[0].endswith('wow/search/realm')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2861,7 +2861,7 @@ def test_realm_search_invalid_region(region_tag, release):
 def test_region_default_index(region_tag, release):
     data = region(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/region/index')
+    assert data[0].endswith('wow/region/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2907,7 +2907,7 @@ def test_region_id_invalid_region(region_tag, release, region_req):
 def test_reputation_faction_default_index(region_tag, release):
     data = reputation_faction(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/reputation-faction/index')
+    assert data[0].endswith('wow/reputation-faction/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -2953,7 +2953,7 @@ def test_reputation_faction_id_invalid_region(region_tag, release, faction_id):
 def test_reputation_tier_default_index(region_tag, release):
     data = reputation_tier(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/reputation-tiers/index')
+    assert data[0].endswith('wow/reputation-tiers/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3050,7 +3050,7 @@ def test_spell_search(region_tag, release):
     }
     data = spell_search(region_tag, fields, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/search/spell')
+    assert data[0].endswith('wow/search/spell')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3081,7 +3081,7 @@ def test_spell_search_invalid_region(region_tag, release):
 def test_talent_default_index(region_tag, release):
     data = talent(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/talent/index')
+    assert data[0].endswith('wow/talent/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3127,7 +3127,7 @@ def test_talent_id_invalid_region(region_tag, release, talent_id):
 def test_pvp_talent_default_index(region_tag, release):
     data = pvp_talent(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/pvp-talent/index')
+    assert data[0].endswith('wow/pvp-talent/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3173,7 +3173,7 @@ def test_pvp_talent_id_invalid_region(region_tag, release, pvp_talent_id):
 def test_tech_talent_tree_default_index(region_tag, release):
     data = tech_talent_tree(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/tech-talent-tree/index')
+    assert data[0].endswith('wow/tech-talent-tree/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3219,7 +3219,7 @@ def test_tech_talent_tree_id_invalid_region(region_tag, release, tech_talent_tre
 def test_tech_talent_default_index(region_tag, release):
     data = tech_talent(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/tech-talent/index')
+    assert data[0].endswith('wow/tech-talent/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3288,7 +3288,7 @@ def test_tech_talent_media_id_invalid_region(region_tag, release, tech_talent_id
 def test_title_default_index(region_tag, release):
     data = title(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/title/index')
+    assert data[0].endswith('wow/title/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -3334,7 +3334,7 @@ def test_title_id_invalid_region(region_tag, release, title_id):
 def test_wow_token_default_index(region_tag, release):
     data = wow_token_index(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/token/index')
+    assert data[0].endswith('wow/token/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]

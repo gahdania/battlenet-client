@@ -38,7 +38,7 @@ def test_card_back_search_textfilter_with_locale(region_tag):
     data = card_back_search(region_tag, field_values, locale='en_US')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/cardbacks')
+    assert data[0].endswith('hearthstone/cardbacks')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert 'textFilter' in data[1]
@@ -74,7 +74,7 @@ def test_card_deck_by_valid_code(region_tag):
         'code': 'AAECAQcG+wyd8AKS+AKggAOblAPanQMMS6IE/web8wLR9QKD+wKe+wKz/AL1gAOXlAOalAOSnwMA'}, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/deck')
+    assert data[0].endswith('hearthstone/deck')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert 'code' in data[1]
@@ -100,7 +100,7 @@ def test_card_deck_by_valid_ids(region_tag):
     data = card_deck(region_tag, field_values, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/deck')
+    assert data[0].endswith('hearthstone/deck')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert 'ids' in data[1]
@@ -132,7 +132,7 @@ def test_card_deck_by_valid_id(region_tag):
     data = card_deck(region_tag, field_values, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/deck')
+    assert data[0].endswith('hearthstone/deck')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert 'ids' in data[1]
@@ -158,7 +158,7 @@ def test_metadata_index(region_tag):
     data = metadata(region_tag, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/metadata')
+    assert data[0].endswith('hearthstone/metadata')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'en_US'
@@ -172,7 +172,7 @@ def test_metadata_index_region_error(region_tag):
 
 @pytest.mark.parametrize('region_tag, metadata_type',
                          list(product(VALID_REGIONS,
-                                      ('sets', 'setGroups', 'types', 'rarities', 'classes', 'minionTypes', 'keywords'))))
+                              ('sets', 'setGroups', 'types', 'rarities', 'classes', 'minionTypes', 'keywords'))))
 def test_metadata_types(region_tag, metadata_type):
     data = metadata(region_tag, meta_data=metadata_type, locale='enus')
     assert isinstance(data, tuple)
@@ -185,7 +185,7 @@ def test_metadata_types(region_tag, metadata_type):
 
 @pytest.mark.parametrize('region_tag, metadata_type',
                          list(product(INVALID_REGIONS,
-                                      ('sets', 'setGroups', 'types', 'rarities', 'classes', 'minionTypes', 'keywords'))))
+                              ('sets', 'setGroups', 'types', 'rarities', 'classes', 'minionTypes', 'keywords'))))
 def test_metadata_types_region_error(region_tag, metadata_type):
     with pytest.raises(BNetRegionNotFoundError):
         metadata(region_tag, meta_data=metadata_type, locale='enus')
@@ -204,7 +204,7 @@ def test_card_search_all_cards(region_tag):
     data = card_search(region_tag, {}, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/cards')
+    assert data[0].endswith('hearthstone/cards')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'en_US'
@@ -225,7 +225,7 @@ def test_card_search_valid_fields(region_tag):
     data = card_search(region_tag, field_values, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/cards')
+    assert data[0].endswith('hearthstone/cards')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert 'class' in data[1]
@@ -255,7 +255,7 @@ def test_card_search_invalid_fields(region_tag):
     data = card_search(region_tag, field_values, locale='enus')
     assert isinstance(data, tuple)
     assert isinstance(data[0], str)
-    assert data[0].endswith(f'hearthstone/cards')
+    assert data[0].endswith('hearthstone/cards')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
     assert 'class' in data[1]
@@ -288,9 +288,9 @@ def test_card_valid_region(region_tag, card_id):
     assert data[0].endswith(f'hearthstone/cards/{slugify(card_id)}')
     assert isinstance(data[1], dict)
     assert 'locale' in data[1]
-    assert 'class' in data[1]
-    assert 'attack' in data[1]
+    assert 'gameMode' in data[1]
     assert data[1]['locale'] == 'en_US'
+    assert data[1]['gameMode'] == 'constructed'
 
 
 @pytest.mark.parametrize('region_tag, card_id',
@@ -299,6 +299,6 @@ def test_card_valid_region(region_tag, card_id):
                                        '38913-a-light-in-the-darkness',
                                        '50019-a-new-challenger',
                                        '38531-aberrant-berserker'))))
-def test_card_valid_region(region_tag, card_id):
+def test_card_invalid_region(region_tag, card_id):
     with pytest.raises(BNetRegionNotFoundError):
         card(region_tag, card_id, locale='enus')

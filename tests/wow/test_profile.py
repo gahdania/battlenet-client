@@ -19,7 +19,7 @@ from ..constants import INVALID_REGIONS
 def test_account_profile_summary_default_index(region_tag, release):
     data = account_profile_summary(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'profile/user/wow')
+    assert data[0].endswith('profile/user/wow')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -65,7 +65,7 @@ def test_protected_character_profile_summary_id_invalid_region(region_tag, relea
 def test_account_collections_default_index(region_tag, release):
     data = account_collections(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'profile/user/wow/collections')
+    assert data[0].endswith('profile/user/wow/collections')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
@@ -89,7 +89,7 @@ def test_account_collections_id(region_tag, release, collection_type):
     data = account_collections(region_tag, category=collection_type, release=release, locale='enus')
     assert isinstance(data, tuple)
     if collection_type is None:
-        assert data[0].endswith(f'profile/user/wow/collections')
+        assert data[0].endswith('profile/user/wow/collections')
     else:
         assert data[0].endswith(f'profile/user/wow/collections/{collection_type}')
     assert isinstance(data[1], dict)
@@ -111,7 +111,7 @@ def test_character_profile_summary_id_invalid_region(region_tag, release, collec
 
 @pytest.mark.parametrize('region_tag, release, collection_type',
                          list(product(VALID_REGIONS, Release.all(), ('achivements', 'encounters'))))
-def test_character_profile_summary_id_invalid_region(region_tag, release, collection_type):
+def test_character_profile_summary_id_invalid_category(region_tag, release, collection_type):
     with pytest.raises(BNetValueError):
         account_collections(region_tag, category=collection_type, release=release, locale='enus')
 
@@ -432,7 +432,9 @@ def test_character_media_summary_default_index_invalid_region(region_tag, releas
 def test_character_mythic_keystone_default_index(region_tag, release, realm_slug, character_slug):
     data = mythic_keystone(region_tag, realm_slug, character_slug, release=release, locale='enus')
     assert isinstance(data, tuple)
-    base_url = f'profile/wow/character/{utils.slugify(realm_slug)}/{utils.slugify(character_slug)}/mythic-keystone-profile'
+    base_url = (
+        f'profile/wow/character/{utils.slugify(realm_slug)}/{utils.slugify(character_slug)}/mythic-keystone-profile'
+    )
     assert data[0].endswith(base_url)
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
@@ -458,7 +460,9 @@ def test_character_mythic_keystone_default_index_invalid_region(region_tag, rele
 def test_character_mythic_keystone_id(region_tag, release, realm_slug, character_slug, season_id):
     data = mythic_keystone(region_tag, realm_slug, character_slug, season_id=season_id, release=release, locale='enus')
     assert isinstance(data, tuple)
-    base_url = f'profile/wow/character/{utils.slugify(realm_slug)}/{utils.slugify(character_slug)}/mythic-keystone-profile'
+    base_url = (
+        f'profile/wow/character/{utils.slugify(realm_slug)}/{utils.slugify(character_slug)}/mythic-keystone-profile'
+    )
     if season_id:
         assert data[0].endswith(f"{base_url}/season/{season_id}")
     else:
@@ -644,7 +648,8 @@ def test_character_reputations_summary_default_index_invalid_region(region_tag, 
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
+                         list(product(VALID_REGIONS, Release.all(),
+                                      ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_soulbinds_default_index(region_tag, release, realm_slug, character_slug):
     data = soulbinds(region_tag, realm_slug, character_slug, release=release, locale='enus')
@@ -699,7 +704,8 @@ def test_characters_specializations_summary_default_index_invalid_region(region_
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',
-                         list(product(VALID_REGIONS, Release.all(), ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
+                         list(product(VALID_REGIONS, Release.all(),
+                                      ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'))))
 def test_character_statistics_summary_default_index(region_tag, release, realm_slug, character_slug):
     data = statistics_summary(region_tag, realm_slug, character_slug, release=release, locale='enus')

@@ -45,15 +45,18 @@ def currency_convertor(value: int) -> Tuple[int, int, int]:
     return value // 10000, (value % 10000) // 100, value % 100
 
 
-def slugify(value: Union[str, int]) -> Union[str, int]:
+def slugify(value: Optional[Union[str, int]]) -> Optional[Union[str, int]]:
     """Returns value as a slug
 
     Args:
-        value (str): the string to be converted into a slug
+        value (str): the string to be converted into a slugs
 
     Returns:
         str: the slug
     """
+    if value is None:
+        return None
+
     if isinstance(value, int):
         return value
 
