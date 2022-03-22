@@ -44,5 +44,5 @@ def test_team_type(team_type, expected_value):
         ('MASTER', 5),
         ('GRANDMASTER', 6)
 ))
-def test_team_type(league, expected_value):
+def test_league(league, expected_value):
     assert getattr(LeagueID, league) == expected_value
