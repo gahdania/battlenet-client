@@ -260,7 +260,7 @@ def test_character_collections_id(region_tag, release, realm_slug, character_slu
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 'mounts', 'pets'))))
 def test_character_collections_id_invalid_region(region_tag, release, realm_slug, character_slug, collection_type):
-    with pytest.raises(BNetValueError):
+    with pytest.raises(BNetRegionNotFoundError):
         collections(region_tag, realm_slug, character_slug, category=collection_type, release=release, locale='enus')
 
 
@@ -327,18 +327,18 @@ def test_character_encounters_id(region_tag, release, realm_slug, character_slug
                          list(product(INVALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), (None, 'dungeons', 'raids'))))
-def test_character_collections_id_invalid_region(region_tag, release, realm_slug, character_slug, collection_type):
+def test_character_encounters_id_invalid_region(region_tag, release, realm_slug, character_slug, collection_type):
     with pytest.raises(BNetRegionNotFoundError):
-        collections(region_tag, realm_slug, character_slug, category=collection_type, release=release, locale='enus')
+        encounters(region_tag, realm_slug, character_slug, category=collection_type, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug, collection_type',
                          list(product(VALID_REGIONS, Release.all(),
                                       ('index', 1, '1', 1234, '1234', 'Area 52', 'Baelgun', 'Zul\'jin'),
                                       ('Gahdania', 'Hirotoh', 'Stonetoh'), ('achievements', 'encounters'))))
-def test_character_collections_id_invalid_category(region_tag, release, realm_slug, character_slug, collection_type):
+def test_character_counters_id_invalid_category(region_tag, release, realm_slug, character_slug, collection_type):
     with pytest.raises(BNetValueError):
-        collections(region_tag, realm_slug, character_slug, category=collection_type, release=release, locale='enus')
+        encounters(region_tag, realm_slug, character_slug, category=collection_type, release=release, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, release, realm_slug, character_slug',

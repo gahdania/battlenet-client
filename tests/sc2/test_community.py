@@ -214,8 +214,15 @@ def test_grandmaster_id_valid_region_id(region_tag, region_id):
 
 @pytest.mark.parametrize('region_tag, region_id',
                          list(product(VALID_REGIONS, (10, 'ZZ'))))
-def test_grandmaster_explicit_grandmaster_invalid_region_id_(region_tag, region_id):
+def test_grandmaster_explicit_grandmaster_invalid_region_id(region_tag, region_id):
     with pytest.raises(BNetValueError):
+        grandmaster(region_tag, region_id, locale='enus')
+
+
+@pytest.mark.parametrize('region_tag, region_id',
+                         list(product(('cn',), (1, 3, 5))))
+def test_grandmaster_explicit_grandmaster_invalid_region_cn(region_tag, region_id):
+    with pytest.raises(BNetRegionError):
         grandmaster(region_tag, region_id, locale='enus')
 
 
@@ -240,16 +247,16 @@ def test_season_id_valid_region_id(region_tag, region_id):
 
 @pytest.mark.parametrize('region_tag, region_id',
                          list(product(VALID_REGIONS, (10, 'ZZ'))))
-def test_season_id_explicit_season_invalid_region(region_tag, region_id):
+def test_season_id_explicit_season_invalid_region_tag(region_tag, region_id):
     with pytest.raises(BNetValueError):
         season(region_tag, region_id, locale='enus')
 
 
-@pytest.mark.parametrize('region_tag, region_id',
-                         list(product(VALID_REGIONS, (10, 'ZZ'))))
-def test_season_id_explicit_season_invalid_region(region_tag, region_id):
-    with pytest.raises(BNetValueError):
-        season(region_tag, region_id, locale='enus')
+# this is being reported as not being covered (Line 262-263 from community)
+@pytest.mark.parametrize('region_id', (1, 3, 5))
+def test_season_id_default_index_invalid_region_cn(region_id):
+    with pytest.raises(BNetRegionError):
+        season('cn', region_id, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, region_id',
@@ -346,9 +353,9 @@ def test_legacy_ladders_explicit_legacy_ladders_invalid_region_id(region_tag, re
 @pytest.mark.parametrize('region_tag, region_id, realm_id, profile_id',
                          list(product(('cn',), (1, 3, 5), (1788, 9138, 1093),
                                       (3, 123, 187389))))
-def test_legacy_profile_explicit_legacy_profile_invalid_region_tag_cn(region_tag, region_id, realm_id, profile_id):
+def test_legacy_ladders_explicit_legacy_profile_invalid_region_tag_cn(region_tag, region_id, realm_id, profile_id):
     with pytest.raises(BNetRegionError):
-        legacy_profile(region_tag, region_id, realm_id, profile_id, locale='enus')
+        legacy_ladders(region_tag, region_id, realm_id, profile_id, locale='enus')
 
 
 @pytest.mark.parametrize('region_tag, region_id, realm_id, profile_id',

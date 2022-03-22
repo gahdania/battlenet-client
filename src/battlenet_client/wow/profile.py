@@ -235,9 +235,6 @@ def collections(
     Returns:
         tuple: The URL (str) and parameters (dict)
     """
-    if category and category not in ('pets', 'mounts'):
-        raise BNetValueError("Category invalid: options are 'pets', 'mounts'")
-
     uri = f"{utils.api_host(region_tag)}/profile/wow/character/"
     uri += (
         f"{utils.slugify(realm_name)}/{utils.slugify(character_name)}/collections"
@@ -245,7 +242,7 @@ def collections(
 
     if category:
         if category.lower() not in ("pets", "mounts"):
-            raise ValueError("Category needs to pets or mounts")
+            raise BNetValueError("Category needs to pets or mounts")
         uri += f"/{utils.slugify(category)}"
 
     params = {
@@ -285,7 +282,7 @@ def encounters(
 
     if category:
         if category.lower() not in ("dungeons", "raids"):
-            raise ValueError("Available Categories: None, dungeons and raids")
+            raise BNetValueError("Available Categories: None, dungeons and raids")
         uri += f"/{utils.slugify(category)}"
 
     params = {

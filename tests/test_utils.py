@@ -42,6 +42,11 @@ def test_slugify_with_str():
     assert result == 'well-be-back'
 
 
+def test_slugify_with_none():
+    result = utils.slugify(None)
+    assert result is None
+
+
 def test_localize_with_none():
     result = utils.localize(None)
     assert result is None

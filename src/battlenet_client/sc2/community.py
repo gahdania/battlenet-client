@@ -57,16 +57,13 @@ def static(
         BNetValueError: when region ID is not valid
     """
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
 
     if region_tag == 'cn':
         raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
-
-    if int(region_id) not in (1, 2, 3, 5):
-        raise BNetValueError("Region ID Invalid")
 
     uri = f"{utils.api_host(region_tag)}/sc2/static/profile/{region_id}"
     params = {"locale": utils.localize(locale)}
@@ -101,7 +98,7 @@ def metadata(
         BNetValueError: when region ID is not valid
     """
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -146,7 +143,7 @@ def profile(
         raise BNetRegionError('CN not allowed')
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -186,7 +183,7 @@ def ladder(
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -224,7 +221,7 @@ def grandmaster(
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -257,12 +254,13 @@ def season(region_tag: str, region_id: int, locale: Optional[str] = None):
         BNetValueError: when region ID is not valid
     """
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
 
     if region_tag == 'cn':
+        # reported as not being covered (test_season_id_default_index_invalid_region_cn)
         raise BNetRegionError("Valid only for 'us', 'kr', 'eu', and 'tw' regions")
 
     uri = f"{utils.api_host(region_tag)}/sc2/ladder/season/{region_id}"
@@ -323,7 +321,7 @@ def legacy_profile(
    """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -365,7 +363,7 @@ def legacy_ladders(
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -407,7 +405,7 @@ def legacy_match_history(
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -449,7 +447,7 @@ def legacy_ladder(
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -485,7 +483,7 @@ def legacy_achievements(
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)
@@ -520,7 +518,7 @@ def legacy_rewards(region_tag: str, region_id: int, locale: Optional[str] = None
     """
 
     try:
-        if region_id not in (1, 2, 3, 5):
+        if int(region_id) not in (1, 2, 3, 5):
             raise BNetValueError("Invalid Region")
     except ValueError as error:
         raise BNetValueError(error)

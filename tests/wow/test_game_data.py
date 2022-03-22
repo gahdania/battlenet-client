@@ -2084,7 +2084,7 @@ def test_playable_race_id_invalid_region(region_tag, release, race_id):
 def test_playable_spec_default_index(region_tag, release):
     data = playable_spec(region_tag, release=release, locale='enus')
     assert isinstance(data, tuple)
-    assert data[0].endswith(f'wow/playable-specialization/index')
+    assert data[0].endswith('wow/playable-specialization/index')
     assert isinstance(data[1], dict)
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
