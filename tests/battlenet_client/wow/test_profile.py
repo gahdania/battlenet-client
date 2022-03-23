@@ -2,7 +2,7 @@ import pytest
 from itertools import product
 
 from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.wow.profile import (
     account_profile_summary, protected_character_profile_summary, account_collections, achievement_summary,
     appearance_summary, collections, encounters, equipment_summary, hunter_pets_summary, media_summary, mythic_keystone,

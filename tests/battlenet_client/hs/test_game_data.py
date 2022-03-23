@@ -2,7 +2,7 @@ from itertools import product
 
 import pytest
 
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError
 from battlenet_client.hs.game_data import card, card_search, card_back, card_back_search, card_deck, metadata
 from battlenet_client.utils import slugify

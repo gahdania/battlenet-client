@@ -1,6 +1,6 @@
 import pytest
 
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.bnet.oauth import user_info, token_validation
 from battlenet_client.exceptions import BNetRegionNotFoundError
 

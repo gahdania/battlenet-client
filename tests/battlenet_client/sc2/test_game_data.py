@@ -2,7 +2,7 @@ from itertools import product
 
 import pytest
 
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.exceptions import BNetRegionNotFoundError
 from battlenet_client.sc2.game_data import league_data
 from ..constants import INVALID_REGIONS

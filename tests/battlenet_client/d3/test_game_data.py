@@ -2,7 +2,7 @@ import pytest
 from itertools import product
 
 from battlenet_client.exceptions import BNetRegionNotFoundError
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.d3.game_data import season, season_leaderboard, era, era_leaderboard
 from ..constants import INVALID_REGIONS
 

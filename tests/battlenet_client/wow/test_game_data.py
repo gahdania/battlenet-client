@@ -2,7 +2,7 @@ import pytest
 from itertools import product
 
 from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError, BNetReleaseError
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client import utils
 from battlenet_client.wow.game_data import (
     achievement, achievement_category, achievement_media, auction, azerite_essence, azerite_essence_media,

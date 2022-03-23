@@ -2,7 +2,7 @@ from itertools import product
 import pytest
 
 
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.sc2.community_cn import profile, ladders, match_history, ladder
 from battlenet_client.sc2.community_cn import achievements, rewards
 from battlenet_client.exceptions import BNetRegionNotFoundError, BNetRegionError

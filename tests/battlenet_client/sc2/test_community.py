@@ -1,7 +1,7 @@
 from itertools import product
 import pytest
 
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.utils import slugify
 from battlenet_client.sc2.community import static, metadata, profile, ladder, grandmaster, season, player
 from battlenet_client.sc2.community import legacy_profile, legacy_ladder, legacy_ladders, legacy_rewards

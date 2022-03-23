@@ -2,7 +2,7 @@ import pytest
 from itertools import product
 from urllib.parse import quote as urlquote
 
-from battlenet_client.constants import VALID_REGIONS
+from battlenet_client.decorators import VALID_REGIONS
 from battlenet_client.exceptions import BNetRegionNotFoundError, BNetValueError
 from battlenet_client.utils import slugify
 from battlenet_client.d3.community import act, artisan, recipe, follower, character_class, api_skill

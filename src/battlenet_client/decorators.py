@@ -13,12 +13,14 @@ Copyright: February 24, 2022
 """
 import functools
 
-from .constants import VALID_REGIONS
 from .exceptions import BNetRegionNotFoundError
 
 
 __version__ = '1.0.0'
 __author__ = 'David \'Gahd\' Couples'
+
+
+VALID_REGIONS = ('us', 'kr', 'eu', 'tw', 'cn')
 
 
 def verify_region(func):
