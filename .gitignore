@@ -10,7 +10,6 @@ __pycache__/
 /build
 /docs/build/doctrees
 /public/
-battlenet_client.egg-info
 **/.coverage
 .coverage
 /.tox

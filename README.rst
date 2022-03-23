@@ -7,8 +7,11 @@
 .. _PyPI link: https://pypi.org/project/battlenet-client
 
 .. image:: https://github.com/gahdania/battlenet-client/actions/workflows/tests.yaml/badge.svg?branch=v3.0.0
-   :target: https://github.com/gahdania/battlenet-client/actions/workflows/tests.yaml
+   :target: https://github.com/gahdania/battlenet-client/actions?query=workflow%3A%22Tests%22
    :alt: tests
+
+.. image:: https://readthedocs.org/projects/battlenet-client/badge/?version=latest
+   :target: https://battlenet-client.readthedocs.io/en/latest/?badge=latest
 
 # BattleNet Clients
 BattleNet Clients provide a uniform interface for Blizzard's Battle.net Developer Rest Application Programming
