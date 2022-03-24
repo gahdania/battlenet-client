@@ -1576,9 +1576,9 @@ def test_mythic_keystone_dungeon_default_index(region_tag, release):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1599,9 +1599,9 @@ def test_mythic_keystone_dungeon_id(region_tag, release, mythic_keystone_dungeon
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1622,9 +1622,9 @@ def test_mythic_keystone_index(region_tag, release):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1645,9 +1645,9 @@ def test_mythic_keystone_period_default_index(region_tag, release):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1668,9 +1668,9 @@ def test_mythic_keystone_period_id(region_tag, release, mythic_keystone_period_i
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1691,9 +1691,9 @@ def test_mythic_keystone_season_default_index(region_tag, release):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1714,9 +1714,9 @@ def test_mythic_keystone_season_id(region_tag, release, mythic_keystone_season_i
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1737,9 +1737,9 @@ def test_mythic_keystone_leaderboard_default_index(region_tag, release, cr_id):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1762,9 +1762,9 @@ def test_mythic_keystone_leaderboard_id(region_tag, release, cr_id, dungeon_id, 
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -1788,9 +1788,9 @@ def test_mythic_raid_leaderboard_id(region_tag, release, raid_name, faction):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -2781,9 +2781,9 @@ def test_realm_default_index(region_tag, release):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -2805,9 +2805,9 @@ def test_realm_id(region_tag, release, realm_slug):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -2836,9 +2836,9 @@ def test_realm_search(region_tag, release):
     assert 'locale' in data[1]
     assert data[1]['locale'] == 'en_US'
     if release.lower() == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release.lower()}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release.lower()}-{region_tag.lower()}'
     for k, v in fields.items():
         assert k in data[1]
         assert data[1][k] == v
@@ -2866,9 +2866,9 @@ def test_region_default_index(region_tag, release):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 
@@ -2889,9 +2889,9 @@ def test_region_id(region_tag, release, region_req):
     assert 'namespace' in data[1]
     assert 'locale' in data[1]
     if release == 'retail':
-        assert data[1]['namespace'] == f'static-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{region_tag.lower()}'
     else:
-        assert data[1]['namespace'] == f'static-{release}-{region_tag.lower()}'
+        assert data[1]['namespace'] == f'dynamic-{release}-{region_tag.lower()}'
     assert data[1]['locale'] == 'en_US'
 
 

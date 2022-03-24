@@ -1,12 +1,11 @@
 Metadata-Version: 2.1
 Name: battlenet-client
-Version: 3.0.0a2
+Version: 3.0.0a3
 Summary: Battle.net REST API Connections
-Home-page: https://www.gitlab.com/battlenet1/battlenet-client/
+Home-page: https://www.github.com/gahdania/battlenet-client
 Author: David Couples
 Author-email: gahdania@gahd.io
 License: GPL v3+
-Description: UNKNOWN
 Platform: unix
 Platform: linux
 Platform: osx
@@ -21,3 +20,6 @@ Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Requires-Python: >=3.6
 Provides-Extra: testing
+License-File: LICENSE
+
+UNKNOWN

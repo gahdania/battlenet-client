@@ -1320,7 +1320,7 @@ def mythic_keystone_dungeon(
     uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/dungeon/{dungeon_id}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -1346,7 +1346,7 @@ def mythic_keystone_index(
     uri = f"{utils.api_host(region_tag)}/data/wow/mythic-keystone/index"
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -1376,7 +1376,7 @@ def mythic_keystone_period(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -1406,7 +1406,7 @@ def mythic_keystone_season(
     )
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -1445,7 +1445,7 @@ def mythic_keystone_leaderboard(
 
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -1476,7 +1476,7 @@ def mythic_raid_leaderboard(
     uri += f"{utils.slugify(raid_name)}/{utils.slugify(faction)}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -2275,7 +2275,7 @@ def realm(
     uri = f"{utils.api_host(region_tag)}/data/wow/realm/{utils.slugify(realm_slug)}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
@@ -2305,7 +2305,7 @@ def realm_search(
     uri = f"{utils.api_host(region_tag)}/data/wow/search/realm"
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
     params.update(field_values)
     return uri, params
@@ -2333,7 +2333,7 @@ def region(
     uri = f"{utils.api_host(region_tag)}/data/wow/region/{region_req}"
     params = {
         "locale": utils.localize(locale),
-        "namespace": namespace(region_tag, "static", release)
+        "namespace": namespace(region_tag, "dynamic", release)
     }
 
     return uri, params
